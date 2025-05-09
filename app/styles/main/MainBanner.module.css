@@ -1,0 +1,118 @@
+/* All Device */
+
+/* Mobile */
+@keyframes scroll-up {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(12px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Desktop */
+@keyframes scroll-down {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+}
+
+/* Custom, iPhone Retina : 320px ~ */
+@media only screen and (min-width: 320px) {
+  .Scroll_Indicator::before {
+    animation: scroll-up 1.2s infinite;
+  }
+}
+
+/* Extra Small Devices, Phones : 480px ~ */
+@media only screen and (min-width: 480px) {
+  .Scroll_Indicator::before {
+    animation: scroll-up 1.2s infinite;
+  }
+}
+
+/* Small Devices, Tablets : 768px ~ */
+@media only screen and (min-width: 768px) {
+  .Scroll_Indicator::before {
+    animation: scroll-up 1.2s infinite;
+  }
+}
+
+/* Mobile ~ Tablet */
+@media only screen and (max-width: 991px) {
+  .Scroll_Indicator::before {
+    animation: scroll-up 1.2s infinite;
+  }
+}
+
+/* Desktop 이상 */
+@media only screen and (min-width: 992px) {
+  .Scroll_Indicator::before {
+    animation: scroll-down 1.2s infinite;
+  }
+}
+
+/* Large Devices, Wide Screens : 1200px ~ */
+@media only screen and (min-width: 1200px) {
+  .Scroll_Indicator::before {
+    animation: scroll-down 1.2s infinite;
+  }
+}
+
+.container {
+  position: relative;
+  height: 100dvh;
+  padding: 0 20px;
+
+  background-image: url("https://cdn.imweb.me/thumbnail/20250204/e2a9b186be915.png");
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  font-weight: 500;
+  font-family: "Gowun Batang", serif;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: white;
+  padding-bottom: 1rem;
+}
+
+.sub_title {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  padding-bottom: 5rem;
+}
+
+.Scroll_Indicator {
+  width: 24px;
+  height: 40px;
+  border: 2px solid white;
+  position: relative;
+  border-radius: 5px;
+}
+
+.Scroll_Indicator::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: white;
+  border-radius: 2px;
+}
