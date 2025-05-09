@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.75.5",
     "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.3.2",
     "node-fetch": "^3.3.2",
     "npm": "^11.3.0",
