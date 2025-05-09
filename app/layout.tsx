@@ -4,7 +4,7 @@
 import { Geist } from "next/font/google";
 
 // css
-import "./globals.css";
+import "./styles/common/globals.css";
 import "./reset.css";
 
 // 함수

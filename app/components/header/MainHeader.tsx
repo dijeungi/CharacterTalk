@@ -1,4 +1,4 @@
-// components\headers\MainHeader.jsx
+// app/components/header/MainHeader.tsx
 
 // next.js
 import Link from "next/link";

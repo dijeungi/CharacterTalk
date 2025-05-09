@@ -1,3 +1,5 @@
+// app/components/header/HeaderManager.tsx
+
 // 헤더 관리 함수
 import { usePathname } from "next/navigation";
 import MainHeader from "./MainHeader";
