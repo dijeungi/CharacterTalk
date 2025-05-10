@@ -4,7 +4,7 @@
 import Link from "next/link";
 
 // css
-import styles from "@/app/styles/header/MainHeader.module.css";
+import styles from "@/styles/header/MainHeader.module.css";
 
 // React-icon Lib
 import { GoPerson } from "react-icons/go";

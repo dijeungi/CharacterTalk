@@ -2,17 +2,12 @@
 
 "use client";
 
-import styles from "@/app/styles/auth/Login.module.css";
+import styles from "@/styles/auth/Login.module.css";
 
-export default function Login() {
-  // Kakao Login Click Event
+export default function LoginPage() {
   const handleKakaoLogin = () => {
-    const clientId = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-    const redirectUri = encodeURIComponent(
-      process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI
-    );
-    const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
-    window.location.href = kakaoUrl;
+    const kakaoAuthUrl = `${process.env.NEXT_PUBLIC_KAUTH_HOST}/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}&response_type=code`;
+    window.location.href = kakaoAuthUrl;
   };
 
   return (

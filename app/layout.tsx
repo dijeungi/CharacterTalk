@@ -7,11 +7,12 @@ import { Geist } from "next/font/google";
 import "./styles/common/globals.css";
 import "./reset.css";
 
-// 함수
-import { useRenderHeader } from "@/app/components/header/HeaderManager";
+// 함수git ad
+import { useRenderHeader } from "@/components/header/HeaderManager";
 
-// next.js
-import { usePathname } from "next/navigation";
+// 라이브러리
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
 
 // Geist Sans 폰트 설정
 const geistSans = Geist({
@@ -26,12 +27,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const renderHeader = useRenderHeader();
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <html lang="ko" className={geistSans.variable}>
       <body>
-        {renderHeader()}
-        <main>{children}</main>
+        <QueryClientProvider client={queryClient}>
+          {renderHeader()}
+          <main>{children}</main>
+        </QueryClientProvider>
       </body>
     </html>
   );
