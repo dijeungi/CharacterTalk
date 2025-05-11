@@ -11,7 +11,12 @@ export default function MainBanner() {
           우리가 다시 대화할 수 있는 작은 기적
         </h4>
 
-        <div className={styles.Scroll_Indicator} />
+        <div className={styles.scroll_indicator} />
+
+        <div className={styles.responsive_text}>
+          <p className={styles.scroll_desktop}>Scroll</p>
+          <p className={styles.scroll_mobile}>Slide</p>
+        </div>
       </section>
     </>
   );
