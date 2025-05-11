@@ -25,43 +25,77 @@
 }
 
 /* Custom, iPhone Retina : 320px ~ */
-@media only screen and (min-width: 320px) {
-  .Scroll_Indicator::before {
+@media only screen and (min-width: 320px) and (max-width: 991px) {
+  .scroll_indicator {
+    width: 24px;
+    height: 40px;
+    border: 2px solid white;
+    position: relative;
+    border-radius: 5px;
+  }
+
+  .scroll_indicator::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 8px;
+    background: white;
+    border-radius: 2px;
+  }
+
+  .scroll_indicator::before {
     animation: scroll-up 1.2s infinite;
   }
-}
 
-/* Extra Small Devices, Phones : 480px ~ */
-@media only screen and (min-width: 480px) {
-  .Scroll_Indicator::before {
-    animation: scroll-up 1.2s infinite;
-  }
-}
-
-/* Small Devices, Tablets : 768px ~ */
-@media only screen and (min-width: 768px) {
-  .Scroll_Indicator::before {
-    animation: scroll-up 1.2s infinite;
-  }
-}
-
-/* Mobile ~ Tablet */
-@media only screen and (max-width: 991px) {
-  .Scroll_Indicator::before {
-    animation: scroll-up 1.2s infinite;
+  .scroll_mobile {
+    display: block !important;
+    font-weight: 300;
   }
 }
 
 /* Desktop 이상 */
 @media only screen and (min-width: 992px) {
-  .Scroll_Indicator::before {
+  .scroll_indicator {
+    width: 28px;
+    height: 40px;
+    border: 2px solid white;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
+  }
+
+  .scroll_indicator::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 8px;
+    background: white;
+    border-radius: 2px;
+  }
+
+  .scroll_indicator::before {
     animation: scroll-down 1.2s infinite;
+  }
+
+  .scroll_desktop {
+    display: block !important;
+    font-weight: 300;
+  }
+
+  .scroll_mobile {
+    display: none !important;
   }
 }
 
 /* Large Devices, Wide Screens : 1200px ~ */
 @media only screen and (min-width: 1200px) {
-  .Scroll_Indicator::before {
+  .scroll_indicator::before {
     animation: scroll-down 1.2s infinite;
   }
 }
@@ -94,25 +128,18 @@
 .sub_title {
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.9);
-  padding-bottom: 5rem;
+  padding-bottom: 2.5rem;
 }
 
-.Scroll_Indicator {
-  width: 24px;
-  height: 40px;
-  border: 2px solid white;
-  position: relative;
-  border-radius: 5px;
+.responsive_text {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.Scroll_Indicator::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 8px;
-  background: white;
-  border-radius: 2px;
+.scroll_desktop,
+.scroll_mobile {
+  display: none;
+  font-family: var(--font-roboto), sans-serif;
 }
