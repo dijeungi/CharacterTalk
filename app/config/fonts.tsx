@@ -4,6 +4,11 @@
 import localFont from "next/font/local";
 
 export const gowunBatang = localFont({
-  src: "../public/fonts/GowunBatang-Regular.ttf",
+  src: "../../public/fonts/GowunBatang-Regular.ttf",
   variable: "--font-gowun-batang",
+});
+
+export const roboto = localFont({
+  src: "../../public/fonts/Roboto-VariableFont_wdth,wght.ttf",
+  variable: "--font-roboto",
 });
