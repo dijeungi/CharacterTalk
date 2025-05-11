@@ -71,7 +71,7 @@ export default function SignUpPage() {
             type="email"
             name="email"
             value={form.email}
-            disabled // 수정 불가
+            disabled
             onFocus={() => setFocusedField("email")}
             onBlur={() => setFocusedField(null)}
             placeholder={
@@ -142,7 +142,9 @@ export default function SignUpPage() {
       </div>
 
       {/* 회원가입 완료 버튼 */}
-      <button onClick={handleSubmit} className={style.Button}></button>
+      <button onClick={handleSubmit} className={style.Button}>
+        가입 완료
+      </button>
     </div>
   );
 }
