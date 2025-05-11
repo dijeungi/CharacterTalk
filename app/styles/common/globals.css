@@ -1,7 +1,12 @@
+/* app/styles/common/globals.css */
+
 /* All Device */
 
 /* Custom, iPhone Retina : 320px ~ */
 @media only screen and (min-width: 320px) {
+  .main {
+    height: 100dvh;
+  }
 }
 
 /* Extra Small Devices, Phones : 480px ~ */

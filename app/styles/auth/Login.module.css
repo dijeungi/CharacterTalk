@@ -10,17 +10,8 @@
   }
 }
 
-/* Custom, iPhone Retina : 320px ~ */
-@media only screen and (min-width: 320px) {
-}
-
-/* Extra Small Devices, Phones : 480px ~ */
-@media only screen and (min-width: 480px) {
-}
-
 .container {
   position: relative;
-  height: 100dvh;
   padding: 0 20px;
 
   background-image: url("https://cdn.imweb.me/thumbnail/20250204/e2a9b186be915.png");
