@@ -14,7 +14,7 @@ export default function ProtectedLayout({
   try {
     jwt.verify(token, process.env.JWT_SECRET!);
   } catch {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
   return <>{children}</>;

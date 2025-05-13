@@ -2,6 +2,7 @@ import { pool } from "@/lib/PostgreSQL";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
+import redis from "@/lib/Redis";
 
 export async function GET(req: NextRequest) {
   try {
@@ -44,14 +45,19 @@ export async function GET(req: NextRequest) {
     const user = result.rows[0];
 
     if (!user) {
-      // 첫 로그인 시 임시 데이터 저장소에 정보 저장
+      // 변경 후 (Redis 저장)
       const tempId = uuidv4();
-      await pool.query(
-        "INSERT INTO temp_users (temp_id, email, full_name) VALUES ($1, $2, $3)",
-        [tempId, kakaoUser.kakao_account.email, kakaoUser.properties?.nickname]
+      await redis.set(
+        `temp_user:${tempId}`,
+        JSON.stringify({
+          email: kakaoUser.kakao_account.email,
+          full_name: kakaoUser.properties?.nickname,
+        }),
+        "EX",
+        600 // 10분 만료 (선택)
       );
       return NextResponse.redirect(
-        `${req.nextUrl.origin}/auth/signup?tempId=${tempId}`
+        `${req.nextUrl.origin}/signup?tempId=${tempId}`
       );
     }
 
