@@ -1,15 +1,16 @@
+// app/layout.tsx
+
 "use client";
 
 // font
 import { Geist } from "next/font/google";
 
 // css
-import "./styles/common/globals.css";
-import "./config/fonts";
 import "./reset.css";
+import "@/_config/fonts";
 
-// 함수git ad
-import { useRenderHeader } from "@/components/header/HeaderManager";
+// 함수
+import { useRenderHeader } from "@/_components/header/HeaderManager";
 
 // 라이브러리
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

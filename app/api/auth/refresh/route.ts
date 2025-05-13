@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { pool } from "@/lib/db";
+import { pool } from "@/lib/PostgreSQL";
 
 export async function GET(req: NextRequest) {
   try {

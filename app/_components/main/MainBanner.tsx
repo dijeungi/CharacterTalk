@@ -1,6 +1,6 @@
 // app/components/main/MainBanner.tsx
 
-import styles from "@/styles/main/MainBanner.module.css";
+import styles from "@/_styles/main/MainBanner.module.css";
 
 export default function MainBanner() {
   return (

@@ -4,7 +4,7 @@
 import Link from "next/link";
 
 // css
-import styles from "@/styles/header/MainHeader.module.css";
+import styles from "@/_styles/header/MainHeader.module.css";
 
 // React-icon Lib
 import { GoPerson } from "react-icons/go";
@@ -16,7 +16,7 @@ export default function MainHeader() {
       <Link href="/" className={styles.logo}>
         다시, 안녕
       </Link>
-      <Link href="/auth/login" className={styles.button}>
+      <Link href="/login" className={styles.button}>
         <GoPerson />
       </Link>
     </header>

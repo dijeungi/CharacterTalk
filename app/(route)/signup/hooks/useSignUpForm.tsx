@@ -1,9 +1,16 @@
-// hooks/useSignUpForm.ts
+/*
+  회원가입 입력값 관리 로직
+  app/(route)/signup/hooks/useSignUpForm.tsx
+*/
+
+// 라이브러리
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
+// 포커스 필드 타입 정의
 type FocusedField = "email" | "fullName" | "gender" | "number" | null;
 
+// 회원가입 폼 상태 관리 훅
 export const useSignUpForm = () => {
   const searchParams = useSearchParams();
   const [focusedField, setFocusedField] = useState<FocusedField>(null);
@@ -15,6 +22,7 @@ export const useSignUpForm = () => {
     number: "",
   });
 
+  // 입력값 변경 핸들러
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {

@@ -1,8 +1,7 @@
 // app/page.tsx
 
-import MainBanner from "./components/main/MainBanner";
-
-import "@/styles/common/globals.css";
+import MainBanner from "./_components/main/MainBanner";
+// import style from "@/globals.module.css";
 
 /*
   React로 치면 메인 화면 App.js 라고 생각하시면 됩니다.
@@ -11,8 +10,8 @@ import "@/styles/common/globals.css";
 
 export default function Home() {
   return (
-    <main className="main">
+    <>
       <MainBanner />
-    </main>
+    </>
   );
 }

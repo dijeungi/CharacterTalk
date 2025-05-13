@@ -1,4 +1,4 @@
-import { pool } from "@/lib/db";
+import { pool } from "@/lib/PostgreSQL";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

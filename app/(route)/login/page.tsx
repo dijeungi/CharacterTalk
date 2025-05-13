@@ -2,7 +2,7 @@
 
 "use client";
 
-import styles from "@/styles/auth/Login.module.css";
+import styles from "@/_styles/auth/Login.module.css";
 
 export default function LoginPage() {
   const handleKakaoLogin = () => {
