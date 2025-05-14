@@ -27,7 +27,7 @@
 
   .InputGroup {
     position: relative;
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
 
   .ClickLabel {
@@ -39,6 +39,64 @@
     transition: all 0.2s ease;
     pointer-events: none;
     background-color: #fff;
+  }
+
+  .ResidentWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 6px;
+  }
+
+  .ResidentInput {
+    width: 50%;
+    padding: 8px 0;
+    font-size: 1.3rem;
+    text-align: left;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+    background-color: transparent;
+  }
+
+  .Hyphen {
+    flex: 0 0 auto;
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .BackWrapper {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    min-width: 0;
+  }
+
+  .ResidentBackInput {
+    width: 20%;
+    min-width: 0;
+    padding: 8px 0;
+    font-size: 1.3rem;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+    background-color: transparent;
+    margin-right: 0px;
+  }
+
+  .MaskingInput {
+    width: 80%;
+    padding: 4.5px 0 8px 0;
+    font-size: 1.5rem;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+    background-color: transparent;
+    pointer-events: none;
+    color: #999;
+    letter-spacing: 0.4em;
   }
 
   .Email,
