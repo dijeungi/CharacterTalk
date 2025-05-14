@@ -15,11 +15,13 @@ const sendSMSFn = async (phoneNumber: string) => {
     body: JSON.stringify({ phoneNumber }),
   });
 
+  // 응답이 실패일 경우 에러 처리
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error?.message || "문자 전송 실패");
   }
 
+  // 성공 시 응답 데이터 반환
   return response.json();
 };
 

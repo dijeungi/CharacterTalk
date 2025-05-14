@@ -20,6 +20,9 @@ export const useSignUpForm = () => {
     fullName: searchParams.get("fullName") || "",
     gender: "",
     number: "",
+    carrier: "",
+    residentFront: "",
+    residentBack: "",
   });
 
   // 입력값 변경 핸들러
