@@ -139,6 +139,61 @@ export default function SignUpPage() {
     setCarrierSelected(true);
   };
 
+  // 주민번호 + 이름 입력 컴포넌트
+  function NameAndResidentInputs() {
+    return (
+      <>
+        <div className={style.InputGroup}>
+          <label className={style.ClickLabel}>주민등록번호</label>
+          <div className={style.ResidentWrapper}>
+            <input
+              className={style.ResidentInput}
+              type="text"
+              value={form.residentFront}
+              onChange={handleResidentFrontChange}
+              placeholder="앞 6자리"
+              maxLength={6}
+              required
+            />
+            <span className={style.Hyphen}>-</span>
+            <div className={style.BackWrapper}>
+              <input
+                className={style.ResidentBackInput}
+                type="text"
+                value={form.residentBack}
+                onChange={handleResidentBackChange}
+                placeholder=""
+                maxLength={1}
+                required
+                ref={residentBackRef}
+              />
+              <input
+                className={style.MaskingInput}
+                type="text"
+                value={"●●●●●●"}
+                readOnly
+                tabIndex={-1}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className={style.InputGroup}>
+          <label className={style.ClickLabel}>이름</label>
+          <input
+            className={style.FullName}
+            type="text"
+            name="fullName"
+            value={form.fullName}
+            onChange={handleNameChange}
+            placeholder="이름을 입력해 주세요"
+            required
+          />
+        </div>
+      </>
+    );
+  }
+
   return (
     <div className={style.Container}>
       <div className={style.Content}>
@@ -148,7 +203,6 @@ export default function SignUpPage() {
           <p className={style.SubTitle}>정확한 정보 입력이 필요합니다.</p>
         </h2>
 
-        {/* 단계별 렌더링 */}
         {step === 1 && (
           <div className={style.InputGroup}>
             <label className={style.ClickLabel}>이름</label>
@@ -164,41 +218,7 @@ export default function SignUpPage() {
           </div>
         )}
 
-        {step === 2 && (
-          <div className={style.InputGroup}>
-            <label className={style.ClickLabel}>주민등록번호</label>
-            <div className={style.ResidentWrapper}>
-              <input
-                className={style.ResidentInput}
-                type="text"
-                value={form.residentFront}
-                onChange={handleResidentFrontChange}
-                placeholder="앞 6자리"
-                maxLength={6}
-                required
-              />
-              <span className={style.Hyphen}>-</span>
-              <div className={style.BackWrapper}>
-                <input
-                  className={style.ResidentBackInput}
-                  type="text"
-                  value={form.residentBack}
-                  onChange={handleResidentBackChange}
-                  placeholder=""
-                  maxLength={1}
-                  required
-                  ref={residentBackRef}
-                />
-                <input
-                  className={style.MaskingInput}
-                  type="text"
-                  value={"●●●●●●"}
-                  readOnly
-                />
-              </div>
-            </div>
-          </div>
-        )}
+        {step === 2 && <NameAndResidentInputs />}
 
         {step === 3 && (
           <>
@@ -240,44 +260,34 @@ export default function SignUpPage() {
                     인증요청
                   </button>
                 </div>
+
+                <div className={style.InputGroup}>
+                  <input
+                    className={style.FullName}
+                    type="text"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    placeholder="인증번호 입력"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleVerifySMS}
+                    className={style.SMSButton}
+                  >
+                    인증확인
+                  </button>
+                </div>
               </>
             )}
 
-            <div className={style.InputGroup}>
-              <label className={style.ClickLabel}>주민등록번호 (확인용)</label>
-              <input
-                className={style.FullName}
-                type="text"
-                value={`${form.residentFront}-${form.residentBack}******`}
-                disabled
-              />
-            </div>
-
-            {carrierSelected && (
-              <div className={style.InputGroup}>
-                <input
-                  className={style.FullName}
-                  type="text"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  placeholder="인증번호 입력"
-                />
-                <button
-                  type="button"
-                  onClick={handleVerifySMS}
-                  className={style.SMSButton}
-                >
-                  인증확인
-                </button>
-              </div>
-            )}
-
             {verified && <p className={style.Verified}>휴대폰 인증 완료</p>}
+
+            {/* NameAndResidentInputs를 아래로 이동 */}
+            <NameAndResidentInputs />
           </>
         )}
       </div>
 
-      {/* 하단 버튼 */}
       <div className={style.ButtonGroup}>
         {step < 3 ? (
           <button
