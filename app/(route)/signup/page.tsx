@@ -14,7 +14,6 @@ import { useVerifySMS } from "@/(route)/signup/hooks/useVerifySMS";
 export default function SignUpPage() {
   const searchParams = useSearchParams();
   const tempId = searchParams.get("tempId");
-  const residentBackRef = useRef<HTMLInputElement>(null);
 
   const { data: tempUserData } = useTempUserData(tempId!);
   const { mutate: signup } = useSignupUser();
@@ -26,6 +25,9 @@ export default function SignUpPage() {
   const [verified, setVerified] = useState(false);
   const [step, setStep] = useState(1);
   const [carrierSelected, setCarrierSelected] = useState(false);
+
+  const residentFrontRef = useRef<HTMLInputElement>(null);
+  const residentBackRef = useRef<HTMLInputElement>(null);
 
   // 임시 데이터 반영 (필요시 삭제 가능)
   useEffect(() => {
@@ -87,27 +89,37 @@ export default function SignUpPage() {
     }));
   };
 
-  // 주민등록번호 포맷팅
+  // 주민등록번호 앞
   const handleResidentFrontChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 6);
-    setForm((prev) => ({
-      ...prev,
-      residentFront: value,
-    }));
+    const raw = e.target.value.replace(/\D/g, "").slice(0, 6);
 
-    if (value.length === 6) {
-      residentBackRef.current?.focus();
-    }
+    setForm((prev) => {
+      if (raw.length === 6 && prev.residentFront.length < 6) {
+        setTimeout(() => {
+          residentBackRef.current?.focus();
+        }, 0);
+      }
+
+      return {
+        ...prev,
+        residentFront: raw,
+      };
+    });
   };
 
+  // 뒤
   const handleResidentBackChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "").slice(0, 1);
     setForm((prev) => ({
       ...prev,
       residentBack: value,
     }));
+
+    setTimeout(() => {
+      residentBackRef.current?.focus();
+    }, 0);
   };
 
   // 휴대폰 번호 포맷팅
@@ -154,6 +166,7 @@ export default function SignUpPage() {
               placeholder="앞 6자리"
               maxLength={6}
               required
+              autoFocus
             />
             <span className={style.Hyphen}>-</span>
             <div className={style.BackWrapper}>
