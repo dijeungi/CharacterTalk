@@ -1,43 +1,46 @@
+/*
+  회원가입 페이지 컴포넌트
+  app/(route)/signup/page.tsx
+*/
+
 "use client";
 
+// 라이브러리
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 
+// 스타일
 import style from "@/_styles/auth/SignUp.module.css";
 
-import { useTempUserData } from "@/(route)/signup/hooks/useTempUserData";
+// 커스텀 훅
 import { useSignupUser } from "@/(route)/signup/hooks/useSignupUser";
 import { useSignUpForm } from "@/(route)/signup/hooks/useSignUpForm";
 import { useSendSMS } from "@/(route)/signup/hooks/useSendSMS";
 import { useVerifySMS } from "@/(route)/signup/hooks/useVerifySMS";
 
 export default function SignUpPage() {
+  // URL 파라미터로 tempId 추출
   const searchParams = useSearchParams();
   const tempId = searchParams.get("tempId");
 
-  const { data: tempUserData } = useTempUserData(tempId!);
+  // 회원가입 요청 훅
   const { mutate: signup } = useSignupUser();
+
+  // 회원가입 폼 상태 관리
   const { form, setForm } = useSignUpForm();
+
+  // 문자 인증 요청 및 검증 훅
   const { mutate: sendSMS } = useSendSMS();
   const { mutate: verifySMS } = useVerifySMS();
 
+  // 상태값들
   const [code, setCode] = useState("");
   const [verified, setVerified] = useState(false);
   const [step, setStep] = useState(1);
   const [carrierSelected, setCarrierSelected] = useState(false);
   const residentBackRef = useRef<HTMLInputElement>(null);
 
-  // 임시 데이터 반영 (필요시 삭제 가능)
-  useEffect(() => {
-    if (tempUserData) {
-      setForm((prev) => ({
-        ...prev,
-        email: tempUserData.email,
-        fullName: tempUserData.full_name,
-      }));
-    }
-  }, [tempUserData, setForm]);
-
+  // 가입 최종 제출
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!verified) {
@@ -52,6 +55,7 @@ export default function SignUpPage() {
     signup(submitForm);
   };
 
+  // 문자 인증 요청
   const handleSendSMS = () => {
     if (!form.number) {
       alert("전화번호를 입력해 주세요.");
@@ -60,6 +64,7 @@ export default function SignUpPage() {
     sendSMS(form.number);
   };
 
+  // 문자 인증번호 확인
   const handleVerifySMS = () => {
     if (!form.number || !code) {
       alert("전화번호와 인증번호를 모두 입력해 주세요.");
@@ -79,7 +84,7 @@ export default function SignUpPage() {
     );
   };
 
-  // 이름 입력 처리
+  // 이름 입력 핸들러
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({
       ...prev,
@@ -87,7 +92,7 @@ export default function SignUpPage() {
     }));
   };
 
-  // 주민등록번호 앞
+  // 주민등록번호 앞자리 입력
   const handleResidentFrontChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -107,7 +112,7 @@ export default function SignUpPage() {
     });
   };
 
-  // 뒤
+  // 주민등록번호 뒷자리 (첫 자리만)
   const handleResidentBackChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "").slice(0, 1);
     setForm((prev) => ({
@@ -120,17 +125,14 @@ export default function SignUpPage() {
     }, 0);
   };
 
-  // 휴대폰 번호 포맷팅
+  // 휴대폰 번호 포맷 처리
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "");
     if (value.length < 4) {
-      // 3자리 이하
       value = value;
     } else if (value.length < 8) {
-      // 3-3
       value = value.slice(0, 3) + "-" + value.slice(3);
     } else {
-      // 3-4-4
       value =
         value.slice(0, 3) + "-" + value.slice(3, 7) + "-" + value.slice(7, 11);
     }
@@ -149,7 +151,7 @@ export default function SignUpPage() {
     setCarrierSelected(true);
   };
 
-  // 주민번호 + 이름 입력 컴포넌트
+  // 이름 + 주민등록번호
   function NameAndResidentInputs() {
     return (
       <>
