@@ -25,8 +25,6 @@ export default function SignUpPage() {
   const [verified, setVerified] = useState(false);
   const [step, setStep] = useState(1);
   const [carrierSelected, setCarrierSelected] = useState(false);
-
-  const residentFrontRef = useRef<HTMLInputElement>(null);
   const residentBackRef = useRef<HTMLInputElement>(null);
 
   // 임시 데이터 반영 (필요시 삭제 가능)
