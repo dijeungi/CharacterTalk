@@ -37,6 +37,9 @@ export default function RootLayout({
 
   return (
     <html lang="ko" className={`${geistSans.variable} ${roboto.variable}`}>
+      <head>
+        <script src="https://cdn.toss.im/cert/v1"></script>
+      </head>
       <body>
         <QueryClientProvider client={queryClient}>
           {renderHeader()}
