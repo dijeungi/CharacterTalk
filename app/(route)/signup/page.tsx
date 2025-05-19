@@ -6,16 +6,13 @@
 "use client";
 
 // 라이브러리
-import { useEffect, useState, useRef, useCallback, useReducer } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useRef, useCallback, useReducer } from "react";
 
 // 스타일
 import style from "@/_styles/auth/SignUp.module.css";
-
-// 커스텀 훅
-import { useSignupUser } from "@/(route)/signup/hooks/useSignupUser";
-import { useSendSMS } from "@/(route)/signup/hooks/useSendSMS";
-import { useVerifySMS } from "@/(route)/signup/hooks/useVerifySMS";
+import { ConfirmationResult } from "firebase/auth";
+import { useFirebaseAuth } from "./hooks/useFirebaseAuth";
+import { Toast } from "@/_utils/Swal";
 
 // 상태 초기값
 const initialState = {
@@ -40,55 +37,17 @@ const formatPhone = (value: string) => {
 };
 
 export default function SignUpPage() {
-  // URL 파라미터로 tempId 추출
-  const searchParams = useSearchParams();
-  const tempId = searchParams.get("tempId");
-
-  // 회원가입 요청 훅
-  const { mutate: signup } = useSignupUser();
-
-  // 문자 인증 요청 및 검증 훅
-  const { mutate: sendSMS } = useSendSMS();
-  const { mutate: verifySMS } = useVerifySMS();
-
   // 회원가입 폼 상태 관리
   const [form, dispatch] = useReducer(formReducer, initialState);
 
   // 상태값들
-  const [code, setCode] = useState("");
-  const [verified, setVerified] = useState(false);
   const [step, setStep] = useState(1);
-  const [carrierSelected, setCarrierSelected] = useState(false);
   const residentBackRef = useRef<HTMLInputElement>(null);
-
-  // 문자 인증 요청
-  const handleSendSMS = () => {
-    if (!form.number) {
-      alert("전화번호를 입력해 주세요.");
-      return;
-    }
-    sendSMS(form.number);
-  };
-
-  // 문자 인증번호 확인
-  const handleVerifySMS = () => {
-    if (!form.number || !code) {
-      alert("전화번호와 인증번호를 모두 입력해 주세요.");
-      return;
-    }
-    verifySMS(
-      { phoneNumber: form.number, code },
-      {
-        onSuccess: () => {
-          setVerified(true);
-          alert("휴대폰 인증이 완료되었습니다.");
-        },
-        onError: (error: any) => {
-          alert(error.message || "인증 실패");
-        },
-      }
-    );
-  };
+  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(
+    null
+  );
+  const { requestSMS } = useFirebaseAuth(setConfirmation, () => setStep(4));
+  const [code, setCode] = useState("");
 
   // 이름 입력 핸들러
   const handleNameChange = useCallback(
@@ -118,68 +77,14 @@ export default function SignUpPage() {
     const value = e.target.value.replace(/\D/g, "").slice(0, 1);
     dispatch({ name: "residentBack", value });
 
-    setTimeout(() => {
-      residentBackRef.current?.focus();
-    }, 0);
+    // setTimeout(() => {
+    //   residentBackRef.current?.focus();
+    // }, 0);
   };
 
   // 휴대폰 번호 포맷 처리
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ name: "number", value: formatPhone(e.target.value) });
-  };
-
-  // 통신사 선택
-  const handleCarrierChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch({ name: "carrier", value: e.target.value });
-    setCarrierSelected(true);
-  };
-
-  // 토스 본인인증
-  const handleEasyAuth = async () => {
-    const tossCert = TossCert();
-    tossCert.preparePopup();
-
-    // 생년월일 계산 (residentFront 기준)
-    const raw = form.residentFront;
-    if (raw.length !== 6) {
-      alert("주민등록번호 앞자리를 정확히 입력해 주세요.");
-      return;
-    }
-
-    const birthYearPrefix = parseInt(raw.slice(0, 2)) <= 25 ? "20" : "19";
-    const birthday = `${birthYearPrefix}${raw}`;
-
-    const res = await fetch("/api/toss/init", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.fullName,
-        phone: form.number.replace(/-/g, ""),
-        birthday,
-      }),
-    });
-
-    const { authUrl, txId, error } = await res.json();
-
-    if (error || !authUrl || !txId) {
-      console.error("토스 인증 에러:", error);
-      alert("본인인증 요청 실패");
-      return;
-    }
-
-    tossCert.start({
-      authUrl,
-      txId,
-      onSuccess: () => {
-        alert("본인인증 완료되었습니다.");
-        setVerified(true);
-        setStep(4); // 인증 후 다음 단계
-      },
-      onFail: (err) => {
-        console.error("본인인증 실패", err);
-        alert("본인인증 실패");
-      },
-    });
   };
 
   // 회원가입 완료 폼
@@ -218,8 +123,46 @@ export default function SignUpPage() {
     }
   };
 
+  // SMS 인증 요청
+  const handleRequestSMS = async () => {
+    const rawPhone = form.number;
+    const phoneDigits = rawPhone.replace(/-/g, "");
+    const isValid = /^010\d{7,8}$/.test(phoneDigits);
+
+    if (!isValid) {
+      Toast.fire({
+        icon: "error",
+        title: "유효한 휴대폰 번호를 입력해 주세요.",
+      });
+      return;
+    }
+
+    try {
+      await requestSMS(rawPhone);
+      setStep(4);
+    } catch {}
+  };
+
+  // 본인 인증 완료 여부
+  const handleConfirmCode = async () => {
+    if (!confirmation) return;
+
+    try {
+      await confirmation.confirm(code);
+      Toast.fire({ icon: "success", title: "인증에 성공했습니다." });
+    } catch (error: any) {
+      Toast.fire({
+        icon: "error",
+        title:
+          error.message || "인증에 실패했습니다. 인증번호를 확인해 주세요.",
+      });
+    }
+  };
+
   return (
     <div className={style.Container}>
+      <div id="recaptcha-container" />
+
       <div className={style.Content}>
         <h2 className={style.Title}>
           회원가입을 위해
@@ -353,22 +296,58 @@ export default function SignUpPage() {
       </div>
 
       <div className={style.ButtonGroup}>
-        {step < 3 ? (
+        {step === 1 || step === 2 ? (
           <button
             type="button"
             onClick={() => setStep((prev) => prev + 1)}
             className={style.Button}
+            disabled={
+              (step === 1 && !form.fullName.trim()) ||
+              (step === 2 &&
+                (form.residentFront.length !== 6 ||
+                  form.residentBack.length !== 1))
+            }
           >
             다음
           </button>
-        ) : verified ? (
-          <button onClick={handleSubmit} className={style.Button}>
-            가입 완료
-          </button>
-        ) : (
-          <button onClick={handleEasyAuth} className={style.Button}>
+        ) : step === 3 ? (
+          <button
+            className={style.Button}
+            onClick={handleRequestSMS}
+            disabled={
+              !form.fullName.trim() ||
+              form.residentFront.length !== 6 ||
+              form.residentBack.length !== 1 ||
+              form.number.replace(/\D/g, "").length !== 11
+            }
+          >
             본인 인증
           </button>
+        ) : null}
+      </div>
+      <div className={style.ButtonGroup}>
+        {step === 4 && (
+          <>
+            <div className={style.InputGroup}>
+              <label className={style.ClickLabel}>인증번호</label>
+              <input
+                className={style.FullName}
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="인증번호 6자리"
+              />
+            </div>
+            <div className={style.ButtonGroup}>
+              <button
+                className={style.Button}
+                onClick={handleConfirmCode}
+                disabled={code.length !== 6}
+              >
+                인증 확인
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>
