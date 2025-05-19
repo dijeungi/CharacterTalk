@@ -13,6 +13,7 @@ import style from "@/_styles/auth/SignUp.module.css";
 import { ConfirmationResult } from "firebase/auth";
 import { useFirebaseAuth } from "./hooks/useFirebaseAuth";
 import { Toast } from "@/_utils/Swal";
+import { useRouter } from "next/navigation";
 
 // 상태 초기값
 const initialState = {
@@ -48,6 +49,7 @@ export default function SignUpPage() {
   );
   const { requestSMS } = useFirebaseAuth(setConfirmation, () => setStep(4));
   const [code, setCode] = useState("");
+  const router = useRouter();
 
   // 이름 입력 핸들러
   const handleNameChange = useCallback(
@@ -149,7 +151,11 @@ export default function SignUpPage() {
 
     try {
       await confirmation.confirm(code);
-      Toast.fire({ icon: "success", title: "인증에 성공했습니다." });
+      Toast.fire({
+        icon: "success",
+        title: "인증에 성공했습니다.",
+      });
+      router.push("/");
     } catch (error: any) {
       Toast.fire({
         icon: "error",
@@ -293,6 +299,29 @@ export default function SignUpPage() {
             </div>
           </>
         )}
+        {step === 4 && (
+          <>
+            <div className={style.InputGroup}>
+              <label className={style.ClickLabel}>인증번호</label>
+              <input
+                className={style.FullName}
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="인증번호 6자리"
+              />
+            </div>
+            <div className={style.ButtonGroup}>
+              <button
+                className={style.Button}
+                onClick={handleConfirmCode}
+                disabled={code.length !== 6}
+              >
+                인증 확인
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       <div className={style.ButtonGroup}>
@@ -324,31 +353,6 @@ export default function SignUpPage() {
             본인 인증
           </button>
         ) : null}
-      </div>
-      <div className={style.ButtonGroup}>
-        {step === 4 && (
-          <>
-            <div className={style.InputGroup}>
-              <label className={style.ClickLabel}>인증번호</label>
-              <input
-                className={style.FullName}
-                type="text"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="인증번호 6자리"
-              />
-            </div>
-            <div className={style.ButtonGroup}>
-              <button
-                className={style.Button}
-                onClick={handleConfirmCode}
-                disabled={code.length !== 6}
-              >
-                인증 확인
-              </button>
-            </div>
-          </>
-        )}
       </div>
     </div>
   );
