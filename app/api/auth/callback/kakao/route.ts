@@ -45,16 +45,16 @@ export async function GET(req: NextRequest) {
     const user = result.rows[0];
 
     if (!user) {
-      // 변경 후 (Redis 저장)
       const tempId = uuidv4();
       await redis.set(
         `temp_user:${tempId}`,
         JSON.stringify({
           email: kakaoUser.kakao_account.email,
           full_name: kakaoUser.properties?.nickname,
+          oauth: "kakao",
         }),
         "EX",
-        600 // 10분 만료 (선택)
+        600
       );
       return NextResponse.redirect(
         `${req.nextUrl.origin}/signup?tempId=${tempId}`
