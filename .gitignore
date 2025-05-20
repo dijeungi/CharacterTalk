@@ -1,3 +1,6 @@
+# project idx
+.idx/
+
 # dependencies
 /node_modules/
 /.pnp/
