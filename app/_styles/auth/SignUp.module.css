@@ -1,3 +1,18 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
 @media (max-width: 480px) {
   .Container {
     display: flex;
@@ -5,7 +20,7 @@
     justify-content: space-between;
     min-height: 100dvh;
     padding: 2rem 2rem 2rem 2rem;
-    font-family: "Toss Product Sans", sans-serif;
+    font-family: 'Toss Product Sans', sans-serif;
     box-sizing: border-box;
   }
 
@@ -54,7 +69,6 @@
     transition: border-color 0.2s ease;
     caret-color: #3b82f6;
   }
-  
 
   .ResidentWrapper {
     display: flex;
@@ -83,24 +97,45 @@
 
   .BackWrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     width: 50%;
-    min-width: 0;
   }
 
-  .MaskingInput {
-    width: 80%;
-    padding: 5px 0 8px 0;
-    font-size: 1.5rem;
+  .ResidentBackInput {
+    max-width: 20%;
+    min-width: 20%;
+    /* min-width: 0; */
+    padding: 8px 0;
+    font-size: 1.3rem;
     text-align: center;
     border: none;
     border-bottom: 2px solid #ccc;
+    border-radius: 0;
     outline: none;
     background-color: transparent;
-    border-radius: 0;
-    pointer-events: none;
+    margin-right: 0px;
+    box-sizing: border-box;
+  }
+
+  .Masking {
+    flex: 1 1 0%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 8px 0;
+    font-size: 1.25rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background-color: transparent;
     color: #999;
-    letter-spacing: 0.4em;
+    pointer-events: none;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .Dot {
+    flex-shrink: 1;
+    min-width: 0;
   }
 
   .Email,
@@ -160,20 +195,5 @@
   .CompleteImage {
     width: 20rem;
     height: auto;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .fadeIn {
-    animation: fadeIn 0.4s ease-out forwards;
   }
 }
