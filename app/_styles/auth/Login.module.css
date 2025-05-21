@@ -13,7 +13,7 @@
 .container {
   position: relative;
   padding: 0 20px;
-  height: 100vh;
+  height: 100dvh;
 
   background-image: url("https://cdn.imweb.me/thumbnail/20250204/e2a9b186be915.png");
   background-size: cover;

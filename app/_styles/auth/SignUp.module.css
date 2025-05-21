@@ -2,7 +2,8 @@
   .Container {
     display: flex;
     flex-direction: column;
-    /* min-height: 90vh; */
+    justify-content: space-between;
+    min-height: 100dvh;
     padding: 2rem 2rem 2rem 2rem;
     font-family: "Toss Product Sans", sans-serif;
     box-sizing: border-box;
@@ -41,6 +42,20 @@
     background-color: #fff;
   }
 
+  .Input {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 1.2rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+    outline: none;
+    background-color: transparent;
+    transition: border-color 0.2s ease;
+    caret-color: #3b82f6;
+  }
+  
+
   .ResidentWrapper {
     display: flex;
     align-items: center;
@@ -55,6 +70,7 @@
     text-align: left;
     border: none;
     border-bottom: 2px solid #ccc;
+    border-radius: 0;
     outline: none;
     background-color: transparent;
   }
@@ -72,28 +88,16 @@
     min-width: 0;
   }
 
-  .ResidentBackInput {
-    width: 20%;
-    min-width: 0;
-    padding: 8px 0;
-    font-size: 1.3rem;
-    text-align: center;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    outline: none;
-    background-color: transparent;
-    margin-right: 0px;
-  }
-
   .MaskingInput {
     width: 80%;
-    padding: 4.5px 0 8px 0;
+    padding: 5px 0 8px 0;
     font-size: 1.5rem;
     text-align: center;
     border: none;
     border-bottom: 2px solid #ccc;
     outline: none;
     background-color: transparent;
+    border-radius: 0;
     pointer-events: none;
     color: #999;
     letter-spacing: 0.4em;
@@ -128,6 +132,7 @@
     padding: 1rem 0;
     margin: 1rem 0 0rem 0;
     background-color: #2e80ff;
+    margin-bottom: 1.5rem;
     color: #fff;
     font-size: 1.2rem;
     font-weight: bold;
@@ -149,7 +154,7 @@
   .ImageWrapper {
     display: flex;
     justify-content: center;
-    margin: 10rem 0;
+    margin: 7.5rem 0;
   }
 
   .CompleteImage {
