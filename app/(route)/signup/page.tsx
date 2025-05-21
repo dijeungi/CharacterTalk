@@ -1,32 +1,31 @@
 /*
-  회원가입 페이지 컴포넌트 (Firebase 인증 기반)
+  회원가입 페이지 컴포넌트 (Firebase 인증 기반 + OAuth 임시 사용자 정보 활용)
   app/(route)/signup/page.tsx
 */
 
-"use client";
+'use client';
 
 // 라이브러리
-import { useState, useRef, useCallback, useReducer, useEffect } from "react";
-import { ConfirmationResult } from "firebase/auth";
-import { useRouter } from "next/navigation";
+import { useState, useRef, useCallback, useReducer, useEffect } from 'react';
+import { ConfirmationResult } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 // 스타일
-import style from "@/_styles/auth/SignUp.module.css";
+import style from '@/_styles/auth/SignUp.module.css';
 
-// 유틸 / 커스텀 훅
-import { useFirebaseAuth } from "./hooks/useFirebaseAuth";
-import { useSignupUser } from "./hooks/useSignupUser";
-import { useTempUser } from "./hooks/useTempUser";
-
-import { Toast } from "@/_utils/Swal";
+// 커스텀 훅 / 유틸
+import { useFirebaseAuth } from './hooks/useFirebaseAuth';
+import { useSignupUser } from './hooks/useSignupUser';
+import { useTempUser } from './hooks/useTempUser';
+import { Toast } from '@/_utils/Swal';
 
 // 회원가입 폼 초기 상태
 const initialState = {
-  fullName: "",
-  residentFront: "",
-  residentBack: "",
-  number: "",
-  carrier: "",
+  fullName: '',
+  residentFront: '',
+  residentBack: '',
+  number: '',
+  carrier: '',
 };
 
 // 회원가입 폼 reducer 함수
@@ -34,16 +33,17 @@ function formReducer(state: typeof initialState, action: any) {
   return { ...state, [action.name]: action.value };
 }
 
-// 전화번호 포맷 유틸 함수
+// 전화번호 포맷 함수
 const formatPhone = (value: string) => {
-  const raw = value.replace(/\D/g, "");
+  const raw = value.replace(/\D/g, '');
   if (raw.length < 4) return raw;
   if (raw.length < 8) return `${raw.slice(0, 3)}-${raw.slice(3)}`;
   return `${raw.slice(0, 3)}-${raw.slice(3, 7)}-${raw.slice(7, 11)}`;
 };
 
-// 회원가입 컴포넌트
+// 회원가입 페이지 컴포넌트
 export default function SignUpPage() {
+  // 타이틀 렌더링 함수
   const renderTitle = () => {
     switch (step) {
       case 1:
@@ -63,9 +63,7 @@ export default function SignUpPage() {
             휴대폰에서 확인하신
             <br />
             인증번호를 입력해 주세요
-            <p className={style.SubTitle}>
-              문자로 받은 인증번호 6자리를 입력하세요.
-            </p>
+            <p className={style.SubTitle}>문자로 받은 인증번호 6자리를 입력하세요.</p>
           </>
         );
       case 5:
@@ -74,9 +72,7 @@ export default function SignUpPage() {
             ~~님,
             <br />
             가입을 축하드립니다 !
-            <p className={style.SubTitle}>
-              모든 정보가 정확한지 마지막으로 확인해 주세요.
-            </p>
+            <p className={style.SubTitle}>모든 정보가 정확한지 마지막으로 확인해 주세요.</p>
           </>
         );
       default:
@@ -86,112 +82,97 @@ export default function SignUpPage() {
 
   const [form, dispatch] = useReducer(formReducer, initialState);
 
-  // TempUser 훅
+  // OAuth 임시 사용자 정보 가져오기
   const oauthInfo = useTempUser(dispatch);
 
   // 상태값들
   const signupMutation = useSignupUser();
   const [step, setStep] = useState(1);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('');
   const [verified, setVerified] = useState(false);
   const [showCompleteButton, setShowCompleteButton] = useState(false);
-
   const residentBackRef = useRef<HTMLInputElement>(null);
-  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(
-    null
-  );
+  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null);
 
-  // Firebase 인증 훅
+  // Firebase 인증 요청 훅
   const { requestSMS } = useFirebaseAuth(setConfirmation, () => setStep(4));
-  const router = useRouter();
 
   // 이름 입력 핸들러
-  const handleNameChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch({ name: "fullName", value: e.target.value });
-    },
-    []
-  );
+  const handleNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ name: 'fullName', value: e.target.value });
+  }, []);
 
   // 주민등록번호 앞자리 입력 핸들러
-  const handleResidentFrontChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const raw = e.target.value.replace(/\D/g, "").slice(0, 6);
+  const handleResidentFrontChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, '').slice(0, 6);
     if (raw.length === 6) {
       setTimeout(() => {
         residentBackRef.current?.focus();
       }, 0);
     }
-    dispatch({ name: "residentFront", value: raw });
+    dispatch({ name: 'residentFront', value: raw });
   };
 
-  // 주민등록번호 뒷자리 입력 핸들러 (첫 자리만)
+  // 주민등록번호 뒷자리 입력 핸들러
   const handleResidentBackChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 1);
-    dispatch({ name: "residentBack", value });
+    const value = e.target.value.replace(/\D/g, '').slice(0, 1);
+    dispatch({ name: 'residentBack', value });
   };
 
   // 휴대폰 번호 입력 핸들러
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ name: "number", value: formatPhone(e.target.value) });
+    dispatch({ name: 'number', value: formatPhone(e.target.value) });
   };
 
-  // 회원가입 제출 핸들러
+  // 회원가입 요청 핸들러
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!verified) {
-      alert("본인인증을 먼저 완료해 주세요.");
+      alert('본인인증을 먼저 완료해 주세요.');
       return;
     }
-
-    const residentRaw = form.residentFront;
-    const birthYearPrefix =
-      parseInt(residentRaw.slice(0, 2)) <= 25 ? "20" : "19";
-    const birthday = `${birthYearPrefix}${residentRaw}`;
 
     const payload = {
       email: oauthInfo.email,
       oauth: oauthInfo.oauth,
       fullName: form.fullName,
-      gender:
-        form.residentBack === "1" || form.residentBack === "3" ? "M" : "F",
-      number: form.number.replace(/-/g, ""),
+      gender: form.residentBack === '1' || form.residentBack === '3' ? 'M' : 'F',
+      number: form.number.replace(/-/g, ''),
     };
+
     signupMutation.mutate(payload);
 
     try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("회원가입 요청 실패");
+      if (!res.ok) throw new Error('회원가입 요청 실패');
 
-      alert("가입이 완료되었습니다.");
+      alert('가입이 완료되었습니다.');
     } catch (err) {
       console.error(err);
-      alert("회원가입 중 오류가 발생했습니다.");
+      alert('회원가입 중 오류가 발생했습니다.');
     }
   };
 
-  // 본인인증 요청 핸들러
+  // 인증번호 요청 핸들러
   const handleRequestSMS = async () => {
-    const rawPhone = form.number;
-    const phoneDigits = rawPhone.replace(/-/g, "");
-    const isValid = /^010\d{7,8}$/.test(phoneDigits);
+    const rawPhone = form.number.replace(/-/g, '');
+    const isValid = /^010\d{7,8}$/.test(rawPhone);
 
     if (!isValid) {
       Toast.fire({
-        icon: "error",
-        title: "유효한 휴대폰 번호를 입력해 주세요.",
+        icon: 'error',
+        title: '유효한 휴대폰 번호를 입력해 주세요.',
       });
       return;
     }
 
     try {
-      await requestSMS(rawPhone);
+      await requestSMS(form.number);
       setStep(4);
     } catch {}
   };
@@ -203,17 +184,17 @@ export default function SignUpPage() {
     try {
       await confirmation.confirm(code);
       setVerified(true);
-      Toast.fire({ icon: "success", title: "인증에 성공했습니다." });
+      Toast.fire({ icon: 'success', title: '인증에 성공했습니다.' });
       setStep(5);
     } catch (error: any) {
       Toast.fire({
-        icon: "error",
-        title:
-          error.message || "인증에 실패했습니다. 인증번호를 확인해 주세요.",
+        icon: 'error',
+        title: error.message || '인증에 실패했습니다. 인증번호를 확인해 주세요.',
       });
     }
   };
 
+  // step 5 진입 시 버튼 표시 딜레이 처리
   useEffect(() => {
     if (step === 5) {
       const timer = setTimeout(() => {
@@ -236,7 +217,7 @@ export default function SignUpPage() {
           <div className={style.InputGroup}>
             <label className={style.ClickLabel}>이름</label>
             <input
-              className={style.FullName}
+              className={style.Input}
               type="text"
               name="fullName"
               value={form.fullName}
@@ -254,7 +235,7 @@ export default function SignUpPage() {
               <div className={style.ResidentWrapper}>
                 <input
                   className={style.ResidentInput}
-                  type="text"
+                  type="number"
                   value={form.residentFront}
                   onChange={handleResidentFrontChange}
                   placeholder="앞 6자리"
@@ -266,7 +247,7 @@ export default function SignUpPage() {
                 <div className={style.BackWrapper}>
                   <input
                     className={style.ResidentBackInput}
-                    type="text"
+                    type="number"
                     value={form.residentBack}
                     onChange={handleResidentBackChange}
                     placeholder=""
@@ -274,13 +255,15 @@ export default function SignUpPage() {
                     required
                     ref={residentBackRef}
                   />
-                  <input
-                    className={style.MaskingInput}
-                    type="text"
-                    value={"●●●●●●"}
-                    readOnly
-                    tabIndex={-1}
-                  />
+                  <div className={style.Masking}>
+                    <div className={style.DotWrapper}>
+                      {'●●●●●●'.split('').map((char, i, arr) => (
+                        <span key={i} className={style.Dot}>
+                          {char}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -288,7 +271,7 @@ export default function SignUpPage() {
             <div className={style.InputGroup}>
               <label className={style.ClickLabel}>이름</label>
               <input
-                className={style.FullName}
+                className={style.Input}
                 type="text"
                 name="fullName"
                 value={form.fullName}
@@ -305,7 +288,7 @@ export default function SignUpPage() {
             <div className={style.InputGroup}>
               <label className={style.ClickLabel}>휴대폰 번호</label>
               <input
-                className={style.FullName}
+                className={style.Input}
                 type="text"
                 name="number"
                 value={form.number}
@@ -318,27 +301,11 @@ export default function SignUpPage() {
             <div className={style.InputGroup}>
               <label className={style.ClickLabel}>주민등록번호</label>
               <div className={style.ResidentWrapper}>
-                <input
-                  className={style.ResidentInput}
-                  type="text"
-                  value={form.residentFront}
-                  readOnly
-                />
+                <input className={style.Input} type="text" value={form.residentFront} readOnly />
                 <span className={style.Hyphen}>-</span>
                 <div className={style.BackWrapper}>
-                  <input
-                    className={style.ResidentBackInput}
-                    type="text"
-                    value={form.residentBack}
-                    readOnly
-                  />
-                  <input
-                    className={style.MaskingInput}
-                    type="text"
-                    value={"●●●●●●"}
-                    readOnly
-                    tabIndex={-1}
-                  />
+                  <input className={style.Input} type="number" value={form.residentBack} readOnly />
+                  <input className={style.Input} value={'●●●●●●'} readOnly tabIndex={-1} />
                 </div>
               </div>
             </div>
@@ -346,7 +313,7 @@ export default function SignUpPage() {
             <div className={style.InputGroup}>
               <label className={style.ClickLabel}>이름</label>
               <input
-                className={style.FullName}
+                className={style.Input}
                 type="text"
                 name="fullName"
                 value={form.fullName}
@@ -360,45 +327,30 @@ export default function SignUpPage() {
             <div className={style.InputGroup}>
               <label className={style.ClickLabel}>인증번호</label>
               <input
-                className={style.FullName}
+                className={style.Input}
                 type="text"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={e => setCode(e.target.value)}
                 placeholder="인증번호 6자리"
               />
             </div>
 
             <div className={style.InputGroup}>
               <label className={style.ClickLabel}>이름</label>
-              <input
-                className={style.FullName}
-                type="text"
-                value={form.fullName}
-                readOnly
-              />
+              <input className={style.Input} type="text" value={form.fullName} readOnly />
             </div>
 
             <div className={style.InputGroup}>
               <label className={style.ClickLabel}>주민등록번호</label>
               <div className={style.ResidentWrapper}>
-                <input
-                  className={style.ResidentInput}
-                  type="text"
-                  value={form.residentFront}
-                  readOnly
-                />
+                <input className={style.Input} type="text" value={form.residentFront} readOnly />
                 <span className={style.Hyphen}>-</span>
                 <div className={style.BackWrapper}>
+                  <input className={style.Input} type="text" value={form.residentBack} readOnly />
                   <input
-                    className={style.ResidentBackInput}
+                    className={style.Input}
                     type="text"
-                    value={form.residentBack}
-                    readOnly
-                  />
-                  <input
-                    className={style.MaskingInput}
-                    type="text"
-                    value={"●●●●●●"}
+                    value={'●●●●●●'}
                     readOnly
                     tabIndex={-1}
                   />
@@ -408,12 +360,7 @@ export default function SignUpPage() {
 
             <div className={style.InputGroup}>
               <label className={style.ClickLabel}>휴대폰 번호</label>
-              <input
-                className={style.FullName}
-                type="text"
-                value={form.number}
-                readOnly
-              />
+              <input className={style.Input} type="text" value={form.number} readOnly />
             </div>
 
             <div className={style.ButtonGroup}>
@@ -452,13 +399,11 @@ export default function SignUpPage() {
         {step === 1 || step === 2 ? (
           <button
             type="button"
-            onClick={() => setStep((prev) => prev + 1)}
+            onClick={() => setStep(prev => prev + 1)}
             className={style.Button}
             disabled={
               (step === 1 && !form.fullName.trim()) ||
-              (step === 2 &&
-                (form.residentFront.length !== 6 ||
-                  form.residentBack.length !== 1))
+              (step === 2 && (form.residentFront.length !== 6 || form.residentBack.length !== 1))
             }
           >
             다음
@@ -471,7 +416,7 @@ export default function SignUpPage() {
               !form.fullName.trim() ||
               form.residentFront.length !== 6 ||
               form.residentBack.length !== 1 ||
-              form.number.replace(/\D/g, "").length !== 11
+              form.number.replace(/\D/g, '').length !== 11
             }
           >
             휴대폰 번호 인증
