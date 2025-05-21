@@ -7,16 +7,20 @@
 실제처럼 느껴지는 **자연스러운 대화 흐름**을 구현합니다.
 
 ## 🎯 주요 기능
-- 📌 음성/말투 복원 기반 대화 엔진  
-- 🧠 사용자 기억 반영 대화 시나리오  
+
+- 📌 음성/말투 복원 기반 대화 엔진
+- 🧠 사용자 기억 반영 대화 시나리오
 - 🔒 데이터 기반 맞춤형 회상 기능
 
 ## 📁 주요 기술 스택
-- Next.js 15 (App Router)  
-- TypeScript  
-- Tailwind CSS
+
+- Next.js 15 (App Router)
+- TypeScript
+- Module CSS
 
 ## 🚀 시작 방법
+
 ```bash
 npm install
 npm run dev
+```
