@@ -6,7 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:init": "dotenv -e .env -- psql -U $PGUSER -d $PGDATABASE -f db/schema.sql && dotenv -e .env -- psql -U $PGUSER -d $PGDATABASE -f db/seed.sql",
+    "setup": "npm install && npm run db:init && npm run dev",
+    "//": [
+      "실행 명령어 정리",
+      "npm run setup     # 전체 설치 + DB 초기화 + dev 실행",
+      "npm run db:init    # DB 테이블/시드 수동 초기화",
+      "npm run dev        # 개발 서버 실행"
+    ]
   },
   "dependencies": {
     "@tanstack/react-query": "^5.75.5",
@@ -30,6 +38,8 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^8.0.0",
     "typescript": "^5"
   }
 }
