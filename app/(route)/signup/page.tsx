@@ -129,33 +129,25 @@ export default function SignUpPage() {
     e.preventDefault();
     if (!verified) {
       alert('본인인증을 먼저 완료해 주세요.');
-      return;
+      return; 
     }
-
+  
+    const birthDate = form.residentFront;
+    const yearPrefix = form.residentBack === '1' || form.residentBack === '2' ? '19' : '20';
+  
     const payload = {
       email: oauthInfo.email,
       oauth: oauthInfo.oauth,
       fullName: form.fullName,
       gender: form.residentBack === '1' || form.residentBack === '3' ? 'M' : 'F',
       number: form.number.replace(/-/g, ''),
+      residentFront: form.residentFront,
+      residentBack: form.residentBack,
+      verified,
+      birthDate: `${yearPrefix}${birthDate.slice(0, 2)}-${birthDate.slice(2, 4)}-${birthDate.slice(4, 6)}`
     };
-
+  
     signupMutation.mutate(payload);
-
-    try {
-      const res = await fetch('/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error('회원가입 요청 실패');
-
-      alert('가입이 완료되었습니다.');
-    } catch (err) {
-      console.error(err);
-      alert('회원가입 중 오류가 발생했습니다.');
-    }
   };
 
   // 인증번호 요청 핸들러
