@@ -1,0 +1,161 @@
+{
+  // 기본 터미널: Command Prompt
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+
+  // 터미널 프로필 설정
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": { "source": "PowerShell", "icon": "terminal-powershell" },
+    "Command Prompt": {
+      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"],
+      "args": [],
+      "icon": "terminal-cmd"
+    },
+    "Git Bash": { "source": "Git Bash" },
+    "Comman": { "path": "C:\\Windows\\System32\\cmd.exe", "args": [] }
+  },
+
+  // 파일 삭제/이동시 확인창 끄기
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmPasteNative": false,
+
+  // 신뢰되지 않은 파일 열기 허용
+  "security.workspace.trust.untrustedFiles": "open",
+
+  // 테마 설정
+  "workbench.colorTheme": "One Dark Pro",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.productIconTheme": "material-product-icons",
+
+  // 저장할 때 포맷 자동 적용
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // 파일 이동 시 import 자동 업데이트 (JS/TS)
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  // 터미널 다중 줄 붙여넣기 경고 끄기
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+
+  // Git 관련 설정
+  "git.openRepositoryInParentFolders": "never",
+
+  // material-icon 폴더 & 파일 아이콘 설정
+  "material-icon-theme.folders.associations": {
+    "(route)": "Routes",
+    "protected": "Private",
+    "login": "Secure",
+    "signup": "Secure"
+  },
+
+  // git emoji 커스텀 설정
+  "gitmoji.addCustomEmoji": [
+    { "emoji": "🎨", "name": "art", "description": "코드의 구조/형태 개선" },
+    { "emoji": "⚡️", "name": "zap", "description": "성능 개선" },
+    { "emoji": "🔥", "name": "fire", "description": "코드/파일 삭제" },
+    { "emoji": "🐛", "name": "bug", "description": "버그 수정" },
+    { "emoji": "🚑", "name": "ambulance", "description": "긴급 수정" },
+    { "emoji": "✨", "name": "sparkles", "description": "새 기능" },
+    { "emoji": "📝", "name": "memo", "description": "문서 추가/수정" },
+    {
+      "emoji": "💄",
+      "name": "lipstick",
+      "description": "UI/스타일 파일 추가/수정"
+    },
+    { "emoji": "🎉", "name": "tada", "description": "프로젝트 시작" },
+    {
+      "emoji": "✅",
+      "name": "white_check_mark",
+      "description": "테스트 추가/수정"
+    },
+    { "emoji": "🔒", "name": "lock", "description": "보안 이슈 수정" },
+    { "emoji": "🔖", "name": "bookmark", "description": "릴리즈/버전 태그" },
+    { "emoji": "💚", "name": "green_heart", "description": "CI 빌드 수정" },
+    {
+      "emoji": "📌",
+      "name": "pushpin",
+      "description": "특정 버전 의존성 고정"
+    },
+    {
+      "emoji": "👷",
+      "name": "construction_worker",
+      "description": "CI 빌드 시스템 추가/수정"
+    },
+    {
+      "emoji": "📈",
+      "name": "chart_with_upwards_trend",
+      "description": "분석, 추적 코드 추가/수정"
+    },
+    { "emoji": "♻️", "name": "recycle", "description": "코드 리팩토링" },
+    { "emoji": "➕", "name": "heavy_plus_sign", "description": "의존성 추가" },
+    { "emoji": "➖", "name": "heavy_minus_sign", "description": "의존성 제거" },
+    { "emoji": "🔧", "name": "wrench", "description": "구성 파일 추가/삭제" },
+    {
+      "emoji": "🔨",
+      "name": "hammer",
+      "description": "개발 스크립트 추가/수정"
+    },
+    {
+      "emoji": "🌐",
+      "name": "globe_with_meridians",
+      "description": "국제화/현지화"
+    },
+    { "emoji": "💩", "name": "poop", "description": "똥싼 코드" },
+    { "emoji": "⏪", "name": "rewind", "description": "변경 내용 되돌리기" },
+    {
+      "emoji": "🔀",
+      "name": "twisted_rightwards_arrows",
+      "description": "브랜치 합병"
+    },
+    {
+      "emoji": "📦",
+      "name": "package",
+      "description": "컴파일된 파일 추가/수정"
+    },
+    {
+      "emoji": "👽",
+      "name": "alien",
+      "description": "외부 API 변화로 인한 수정"
+    },
+    { "emoji": "🚚", "name": "truck", "description": "리소스 이동, 이름 변경" },
+    {
+      "emoji": "📄",
+      "name": "page_facing_up",
+      "description": "라이센스 추가/수정"
+    },
+    { "emoji": "💡", "name": "bulb", "description": "주석 추가/수정" },
+    { "emoji": "🍻", "name": "beers", "description": "술 취해서 쓴 코드" },
+    {
+      "emoji": "🗃",
+      "name": "card_file_box",
+      "description": "데이터베이스 관련 수정"
+    },
+    { "emoji": "🔊", "name": "loud_sound", "description": "로그 추가/수정" },
+    {
+      "emoji": "🙈",
+      "name": "see_no_evil",
+      "description": ".gitignore 추가/수정"
+    }
+  ],
+  "git.suggestSmartCommit": false,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "http.proxySupport": "off",
+  "terminal.integrated.localEchoLatencyThreshold": -1,
+  "terminal.integrated.localEchoEnabled": "off",
+  "terminal.integrated.fontSize": 13,
+  "workbench.startupEditor": "none",
+  "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, Courier New, monospace",
+  "editor.fontWeight": "normal",
+  "editor.fontSize": 13,
+  "editor.lineHeight": 1.5,
+  "editor.letterSpacing": 0,
+  "debug.console.fontSize": 13,
+  "window.commandCenter": false,
+  "workbench.preferredDarkColorTheme": "Monospace Dark",
+  "workbench.preferredLightColorTheme": "Monospace Light",
+  "window.autoDetectColorScheme": true,
+  "workbench.layoutControl.enabled": false,
+  "inlineChat.mode": "preview"
+}
