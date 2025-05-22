@@ -1,15 +1,17 @@
 /*
-  layout.tsx 에만 적용할 컴포넌트 입니다.
+  layout.tsx 에만 적용할 컴포넌트입니다.
   app/_components/common/LoadingOverlay.tsx
 */
 
-"use client";
+'use client';
 
 // css
-import "@/globals.css";
+import '@/globals.css';
 
-import { ScaleLoader } from "react-spinners";
+// 로딩바 컴포넌트
+import { ScaleLoader } from 'react-spinners';
 
+// 전체 화면 로딩 오버레이 컴포넌트
 export default function Loading() {
   return (
     <div className="Spinner_Overlay">

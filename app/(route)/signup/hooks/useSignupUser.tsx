@@ -3,10 +3,12 @@
   app/(route)/signup/hooks/useSignupUser.tsx
 */
 
+'use client';
+
 // 라이브러리
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { Toast } from "@/_utils/Swal";
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { Toast } from '@/_utils/Swal';
 
 // 회원가입 API 호출 함수
 const signupUserFn = async (userData: {
@@ -16,17 +18,17 @@ const signupUserFn = async (userData: {
   gender: string;
   number: string;
 }) => {
-  const response = await fetch("/api/auth/signup", {
-    method: "POST",
+  const response = await fetch('/api/auth/signup', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(userData),
   });
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error?.message || "회원가입 실패");
+    throw new Error(error?.message || '회원가입 실패');
   }
 
   return response.json();
@@ -39,15 +41,15 @@ export const useSignupUser = () => {
     mutationFn: signupUserFn,
     onSuccess: () => {
       Toast.fire({
-        icon: "success",
-        title: "회원가입 성공!",
+        icon: 'success',
+        title: '회원가입 성공!',
       }).then(() => {
-        router.push("/");
+        router.push('/');
       });
     },
     onError: (err: Error) => {
       Toast.fire({
-        icon: "error",
+        icon: 'error',
         title: `회원가입 실패: ${err.message}`,
       });
     },
