@@ -1,3 +1,7 @@
+/*
+  본인에게 공유하려고 만든 파일입니다.
+*/
+
 {
   // 기본 터미널: Command Prompt
   "terminal.integrated.defaultProfile.windows": "Command Prompt",
