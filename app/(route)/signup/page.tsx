@@ -257,7 +257,7 @@ export default function SignUpPage() {
                   />
                   <div className={style.Masking}>
                     <div className={style.DotWrapper}>
-                      {'●●●●●●'.split('').map((char, i, arr) => (
+                      {'●●●●●●'.split('').map((char, i) => (
                         <span key={i} className={style.Dot}>
                           {char}
                         </span>
@@ -304,8 +304,25 @@ export default function SignUpPage() {
                 <input className={style.Input} type="text" value={form.residentFront} readOnly />
                 <span className={style.Hyphen}>-</span>
                 <div className={style.BackWrapper}>
-                  <input className={style.Input} type="number" value={form.residentBack} readOnly />
-                  <input className={style.Input} value={'●●●●●●'} readOnly tabIndex={-1} />
+                  <input
+                    className={style.ResidentBackInput}
+                    type="number"
+                    value={form.residentBack}
+                    onChange={handleResidentBackChange}
+                    placeholder=""
+                    maxLength={1}
+                    required
+                    ref={residentBackRef}
+                  />
+                  <div className={style.Masking}>
+                    <div className={style.DotWrapper}>
+                      {'●●●●●●'.split('').map((char, i) => (
+                        <span key={i} className={style.Dot}>
+                          {char}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -346,14 +363,25 @@ export default function SignUpPage() {
                 <input className={style.Input} type="text" value={form.residentFront} readOnly />
                 <span className={style.Hyphen}>-</span>
                 <div className={style.BackWrapper}>
-                  <input className={style.Input} type="text" value={form.residentBack} readOnly />
                   <input
-                    className={style.Input}
-                    type="text"
-                    value={'●●●●●●'}
-                    readOnly
-                    tabIndex={-1}
+                    className={style.ResidentBackInput}
+                    type="number"
+                    value={form.residentBack}
+                    onChange={handleResidentBackChange}
+                    placeholder=""
+                    maxLength={1}
+                    required
+                    ref={residentBackRef}
                   />
+                  <div className={style.Masking}>
+                    <div className={style.DotWrapper}>
+                      {'●●●●●●'.split('').map((char, i) => (
+                        <span key={i} className={style.Dot}>
+                          {char}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
