@@ -43,9 +43,10 @@ export const useSignupUser = () => {
       Toast.fire({
         icon: 'success',
         title: '회원가입 성공!',
-      }).then(() => {
-        router.push('/');
+        timer: 1500,
+        showConfirmButton: false,
       });
+      router.push('/');
     },
     onError: (err: Error) => {
       Toast.fire({
