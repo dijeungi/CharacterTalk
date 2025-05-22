@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:init": "dotenv -e .env -- psql -U $PGUSER -d $PGDATABASE -f db/schema.sql && dotenv -e .env -- psql -U $PGUSER -d $PGDATABASE -f db/seed.sql",
+    "db:init": "dotenv -e .env -- bash -c 'psql -U $PGUSER -d $PGDATABASE -f db/schema.sql && psql -U $PGUSER -d $PGDATABASE -f db/seed.sql'",
     "setup": "npm install && npm run db:init && npm run dev",
     "//": [
       "실행 명령어 정리",
