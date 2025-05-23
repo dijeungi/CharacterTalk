@@ -3,19 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "db:init": "dotenv -e .env -- bash -c 'psql -U $PGUSER -d $PGDATABASE -f db/schema.sql && psql -U $PGUSER -d $PGDATABASE -f db/seed.sql'",
-    "setup": "npm install && npm run db:init && npm run dev",
-    "//": [
-      "실행 명령어 정리",
-      "npm run setup     # 전체 설치 + DB 초기화 + dev 실행",
-      "npm run db:init    # DB 테이블/시드 수동 초기화",
-      "npm run dev        # 개발 서버 실행"
-    ]
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint"
+},
   "dependencies": {
     "@tanstack/react-query": "^5.75.5",
     "axios": "^1.9.0",
