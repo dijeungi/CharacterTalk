@@ -59,15 +59,20 @@ export async function GET(req: NextRequest) {
     }
 
     // 기존 로그인
-    const refreshToken = jwt.sign({ id: kakaoUser.id }, process.env.JWT_REFRESH_SECRET!, {
+    const accessToken = jwt.sign({ id: user.code }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+
+    const refreshToken = jwt.sign({ id: user.code }, process.env.JWT_REFRESH_SECRET!, {
       expiresIn: '7d',
     });
-    const accessToken = jwt.sign({ id: kakaoUser.id }, process.env.JWT_SECRET!, {
-      expiresIn: '2h',
-    });
+
+    // 마지막 로그인 관련 데이터 DB 최신화
+    await pool.query(
+      `UPDATE users SET last_login = TIMEZONE('Asia/Seoul', NOW()), refresh_token = $1 WHERE email = $2`,
+      [refreshToken, kakaoUser.kakao_account.email]
+    );
 
     // 쿠키에 저장
-    const response = new NextResponse('로그인 완료');
+    const response = NextResponse.redirect(`${req.nextUrl.origin}/`);
     response.cookies.set({
       name: 'access_token',
       value: accessToken,
@@ -86,7 +91,7 @@ export async function GET(req: NextRequest) {
     });
 
     // 리다이렉트 처리 (서버에서 직접 리다이렉트)
-    return NextResponse.redirect(`${req.nextUrl.origin}/`);
+    return response;
   } catch (error) {
     console.error('[!] Kakao OAuth 실패:', error);
     return new NextResponse('서버 오류', { status: 500 });
