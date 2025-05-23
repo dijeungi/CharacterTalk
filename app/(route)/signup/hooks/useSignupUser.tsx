@@ -17,6 +17,10 @@ const signupUserFn = async (userData: {
   fullName: string;
   gender: string;
   number: string;
+  residentFront: string;
+  residentBack: string;
+  verified: boolean;
+  birthDate: string;
 }) => {
   const response = await fetch('/api/auth/signup', {
     method: 'POST',
