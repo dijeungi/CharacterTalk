@@ -1,6 +1,11 @@
 // app/page.tsx
 
-import MainBanner from "./_components/main/MainBanner";
+'use client';
+
+import MainBanner from './_components/main/MainBanner';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { Toast } from './_utils/Swal';
 // import style from "@/globals.module.css";
 
 /*
@@ -9,6 +14,22 @@ import MainBanner from "./_components/main/MainBanner";
 */
 
 export default function Home() {
+  const params = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (params.get('login') === 'success') {
+      Toast.fire({
+        icon: 'success',
+        title: '로그인 성공!',
+        timer: 1500,
+      });
+      const url = new URL(window.location.href);
+      url.searchParams.delete('login');
+      router.replace(url.toString());
+    }
+  }, [params, router]);
+
   return (
     <>
       <MainBanner />
