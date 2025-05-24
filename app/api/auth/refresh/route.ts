@@ -17,7 +17,10 @@ export async function GET(req: NextRequest) {
         email?: string;
         nickname?: string;
       };
-    } catch {
+    } catch (err: any) {
+      if (err.name === 'TokenExpiredError') {
+        return new NextResponse('refreshToken 만료', { status: 401 });
+      }
       return new NextResponse('유효하지 않은 refreshToken', { status: 401 });
     }
 
@@ -36,7 +39,7 @@ export async function GET(req: NextRequest) {
         nickname: user.full_name,
       },
       process.env.JWT_SECRET!,
-      { expiresIn: '2h' }
+      { expiresIn: '30m' }
     );
 
     const newRefreshToken = jwt.sign({ id: user.code }, process.env.JWT_REFRESH_SECRET!, {
@@ -58,6 +61,7 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
+      maxAge: 30,
     });
     response.cookies.set({
       name: 'refresh_token',
@@ -66,11 +70,12 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;
   } catch (err) {
-    console.error('❌ refresh 처리 오류:', err);
+    console.error('refresh 처리 오류:', err);
     return new NextResponse('서버 오류', { status: 500 });
   }
 }

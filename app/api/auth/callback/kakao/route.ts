@@ -59,7 +59,7 @@ export async function GET(req: NextRequest) {
     }
 
     // 기존 로그인
-    const accessToken = jwt.sign({ id: user.code }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    const accessToken = jwt.sign({ id: user.code }, process.env.JWT_SECRET!, { expiresIn: '30m' });
 
     const refreshToken = jwt.sign({ id: user.code }, process.env.JWT_REFRESH_SECRET!, {
       expiresIn: '7d',
@@ -72,7 +72,7 @@ export async function GET(req: NextRequest) {
     );
 
     // 쿠키에 저장
-    const response = NextResponse.redirect(`${req.nextUrl.origin}/`);
+    const response = NextResponse.redirect(`${req.nextUrl.origin}?login=success`);
     response.cookies.set({
       name: 'access_token',
       value: accessToken,
@@ -80,6 +80,7 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
+      maxAge: 30,
     });
     response.cookies.set({
       name: 'refresh_token',
@@ -88,9 +89,10 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7,
     });
 
-    // 리다이렉트 처리 (서버에서 직접 리다이렉트)
+    // 리다이렉트 처리
     return response;
   } catch (error) {
     console.error('[!] Kakao OAuth 실패:', error);
