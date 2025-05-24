@@ -1,24 +1,76 @@
-// app/components/header/MainHeader.tsx
+/*
+  메인 헤더 컴포넌트
+  app/_components/header/MainHeader.tsx
+*/
 
-// next.js
-import Link from "next/link";
+'use client';
 
-// css
-import styles from "@/_styles/header/MainHeader.module.css";
+// 라이브러리
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { GoPerson } from 'react-icons/go';
+import { LuLogOut } from 'react-icons/lu';
 
-// React-icon Lib
-import { GoPerson } from "react-icons/go";
-import { LuLogOut } from "react-icons/lu";
+// 스타일 & 유틸
+import styles from '@/_styles/header/MainHeader.module.css';
+import { Toast } from '@/_utils/Swal';
+import axiosInstance from '@/lib/axiosInstance';
 
+// 메인 헤더 컴포넌트
 export default function MainHeader() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  // 로그인 상태 조회
+  const { data } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/api/user', { withCredentials: true });
+      return res.data;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const isLoggedIn = data?.isLoggedIn;
+
+  // 로그아웃 핸들러
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post('/api/auth/refresh/logout');
+
+      Toast.fire({
+        icon: 'success',
+        title: '로그아웃 완료',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      router.push('/');
+    } catch (err) {
+      Toast.fire({
+        icon: 'error',
+        title: '로그아웃 실패',
+      });
+    }
+  };
+
   return (
     <header className={styles.container}>
       <Link href="/" className={styles.logo}>
         다시, 안녕
       </Link>
-      <Link href="/login" className={styles.button}>
-        <GoPerson />
-      </Link>
+
+      {isLoggedIn ? (
+        <Link href="/" className={styles.button} onClick={handleLogout}>
+          <LuLogOut />
+        </Link>
+      ) : (
+        <Link href="/login" className={styles.button}>
+          <GoPerson />
+        </Link>
+      )}
     </header>
   );
 }

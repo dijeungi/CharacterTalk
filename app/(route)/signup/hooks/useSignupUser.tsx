@@ -9,6 +9,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Toast } from '@/_utils/Swal';
+import axiosInstance from '@/lib/axiosInstance';
 
 // 회원가입 API 호출 함수
 const signupUserFn = async (userData: {
@@ -22,20 +23,8 @@ const signupUserFn = async (userData: {
   verified: boolean;
   birthDate: string;
 }) => {
-  const response = await fetch('/api/auth/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(userData),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error?.message || '회원가입 실패');
-  }
-
-  return response.json();
+  const response = await axiosInstance.post('/api/auth/signup', userData);
+  return response.data;
 };
 
 // 회원가입 요청 훅
