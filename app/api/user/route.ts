@@ -1,22 +1,18 @@
-import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 
-export async function GET() {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('access_token')?.value;
+export async function GET(req: NextRequest) {
+  const accessToken = req.cookies.get('access_token')?.value;
 
+  // access_token 없으면 비회원 처리
   if (!accessToken) {
-    return new NextResponse('access_token 없음', { status: 401 });
+    return NextResponse.json({ isLoggedIn: false, user: null }, { status: 200 });
   }
 
   try {
     const payload = jwt.verify(accessToken, process.env.JWT_SECRET!);
     return NextResponse.json({ isLoggedIn: true, payload });
-  } catch (err: any) {
-    if (err.name === 'TokenExpiredError') {
-      return new NextResponse('access_token 만료', { status: 401 });
-    }
-    return new NextResponse('유효하지 않은 access_token', { status: 401 });
+  } catch {
+    return new NextResponse('access_token 만료 또는 유효하지 않음', { status: 401 });
   }
 }
