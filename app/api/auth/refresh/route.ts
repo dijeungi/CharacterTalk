@@ -27,8 +27,11 @@ export async function GET(req: NextRequest) {
     // 2. DB에서 사용자 조회 + 저장된 토큰과 비교
     const result = await pool.query('SELECT * FROM users WHERE code = $1', [payload.id]);
     const user = result.rows[0];
-    if (!user || user.refresh_token !== refreshToken) {
-      return new NextResponse('Refresh token 불일치', { status: 403 });
+    if (!user) {
+      return new NextResponse('사용자 없음', { status: 403 });
+    }
+    if (user.refresh_token !== refreshToken) {
+      return new NextResponse('refresh_token 불일치', { status: 403 });
     }
 
     // 3. 새 accessToken, refreshToken 생성
