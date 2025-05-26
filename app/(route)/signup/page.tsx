@@ -8,7 +8,7 @@
 // 라이브러리
 import { useState, useRef, useCallback, useReducer, useEffect } from 'react';
 import { ConfirmationResult } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
+import {  useSearchParams } from 'next/navigation';
 
 // 스타일
 import style from '@/_styles/auth/SignUp.module.css';
@@ -83,7 +83,10 @@ export default function SignUpPage() {
   const [form, dispatch] = useReducer(formReducer, initialState);
 
   // OAuth 임시 사용자 정보 가져오기
-  const oauthInfo = useTempUser(dispatch);
+  const searchParams = useSearchParams();
+  const tempId = searchParams.get('tempId');
+
+  const oauthInfo = useTempUser(tempId, dispatch);
 
   // 상태값들
   const signupMutation = useSignupUser();
@@ -129,12 +132,12 @@ export default function SignUpPage() {
     e.preventDefault();
     if (!verified) {
       alert('본인인증을 먼저 완료해 주세요.');
-      return; 
+      return;
     }
-  
+
     const birthDate = form.residentFront;
     const yearPrefix = form.residentBack === '1' || form.residentBack === '2' ? '19' : '20';
-  
+
     const payload = {
       email: oauthInfo.email,
       oauth: oauthInfo.oauth,
@@ -144,9 +147,12 @@ export default function SignUpPage() {
       residentFront: form.residentFront,
       residentBack: form.residentBack,
       verified,
-      birthDate: `${yearPrefix}${birthDate.slice(0, 2)}-${birthDate.slice(2, 4)}-${birthDate.slice(4, 6)}`
+      birthDate: `${yearPrefix}${birthDate.slice(0, 2)}-${birthDate.slice(2, 4)}-${birthDate.slice(
+        4,
+        6
+      )}`,
     };
-  
+
     signupMutation.mutate(payload);
   };
 
