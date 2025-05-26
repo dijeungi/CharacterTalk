@@ -4,12 +4,17 @@ import { pool } from '@/lib/PostgreSQL';
 
 export async function GET(req: NextRequest) {
   try {
-    const refreshToken = req.cookies.get('refresh_token')?.value;
-    if (!refreshToken) {
-      return new NextResponse('Refresh token 없음', { status: 401 });
+    // 1. 쿠키 존재 여부 검사
+    if (!req.cookies.has('refresh_token')) {
+      return new NextResponse('쿠키 없음', { status: 401 });
     }
 
-    // 1. refreshToken 유효성 검사
+    const refreshToken = req.cookies.get('refresh_token')?.value;
+    if (!refreshToken) {
+      return new NextResponse('refresh_token 값 없음', { status: 401 });
+    }
+
+    // 2. refreshToken 유효성 검사
     let payload;
     try {
       payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as {
@@ -19,22 +24,24 @@ export async function GET(req: NextRequest) {
       };
     } catch (err: any) {
       if (err.name === 'TokenExpiredError') {
-        return new NextResponse('refreshToken 만료', { status: 401 });
+        return new NextResponse('refresh_token 만료', { status: 401 });
       }
-      return new NextResponse('유효하지 않은 refreshToken', { status: 401 });
+      return new NextResponse('토큰 유효성 실패', { status: 401 });
     }
 
-    // 2. DB에서 사용자 조회 + 저장된 토큰과 비교
+    // 3. DB 사용자 조회
     const result = await pool.query('SELECT * FROM users WHERE code = $1', [payload.id]);
     const user = result.rows[0];
     if (!user) {
       return new NextResponse('사용자 없음', { status: 403 });
     }
+
+    // 4. 저장된 refresh_token과 비교
     if (user.refresh_token !== refreshToken) {
-      return new NextResponse('refresh_token 불일치', { status: 403 });
+      return new NextResponse('토큰 불일치 / 위조 가능성', { status: 403 });
     }
 
-    // 3. 새 accessToken, refreshToken 생성
+    // 5. access, refresh token 재발급
     const newAccessToken = jwt.sign(
       {
         id: user.code,
@@ -49,13 +56,13 @@ export async function GET(req: NextRequest) {
       expiresIn: '7d',
     });
 
-    // 4. DB에 새 refreshToken 저장
+    // 6. 새 refreshToken DB 저장
     await pool.query('UPDATE users SET refresh_token = $1 WHERE code = $2', [
       newRefreshToken,
       user.code,
     ]);
 
-    // 5. 새 쿠키 설정
+    // 7. 새 쿠키 설정
     const response = new NextResponse('accessToken 재발급 완료');
     response.cookies.set({
       name: 'access_token',
@@ -64,7 +71,7 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 30,
+      maxAge: 60 * 30, // 30분
     });
     response.cookies.set({
       name: 'refresh_token',
@@ -73,7 +80,7 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 7, // 7일
     });
 
     return response;
