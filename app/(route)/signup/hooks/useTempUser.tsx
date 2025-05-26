@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosInstance';
 
 export const useTempUser = (tempId: string | null, dispatch: React.Dispatch<any>) => {
-  const { data } = useQuery({
+  const { data } = useQuery({   
     queryKey: ['tempUser', tempId],
     queryFn: async () => {
       const res = await axiosInstance.get(`/api/auth/temp-user`, {
@@ -11,9 +11,9 @@ export const useTempUser = (tempId: string | null, dispatch: React.Dispatch<any>
       return res.data;
     },
     enabled: !!tempId,
-    onSuccess: data => {
-      if (data?.email) {
-        dispatch({ name: 'nickName', value: data.nick_name });
+    onSuccess: (userData) => {
+      if (userData?.email) {
+        dispatch({ name: 'nickName', value: userData.nick_name });
       }
     },
   });
