@@ -14,25 +14,5 @@ import { Toast } from './_utils/Swal';
 */
 
 export default function Home() {
-  const params = useSearchParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (params.get('login') === 'success') {
-      Toast.fire({
-        icon: 'success',
-        title: '로그인 성공!',
-        timer: 1500,
-      });
-      const url = new URL(window.location.href);
-      url.searchParams.delete('login');
-      router.replace(url.toString());
-    }
-  }, [params, router]);
-
-  return (
-    <>
-      <MainBanner />
-    </>
-  );
+  return <>test</>;
 }

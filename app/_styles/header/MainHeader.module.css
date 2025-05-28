@@ -34,11 +34,11 @@
   background: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  font-family: "Gowun Batang", serif;
 }
 
 .logo {
   font-size: 1.5rem;
+  font-family: var(--font-omyu-pretty), serif;
   text-decoration: none;
   pointer-events: auto;
 }

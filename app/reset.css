@@ -128,7 +128,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 table {
@@ -138,4 +138,6 @@ table {
 
 * {
   box-sizing: border-box;
+  /* Custom default Fonts */
+  font-family: var(--font-omyu-pretty), serif;
 }

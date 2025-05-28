@@ -15,7 +15,7 @@
   padding: 0 20px;
   height: 100dvh;
 
-  background-image: url("https://cdn.imweb.me/thumbnail/20250204/e2a9b186be915.png");
+  background-image: url('https://cdn.imweb.me/thumbnail/20250204/e2a9b186be915.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -27,13 +27,12 @@
 
   text-align: center;
   font-weight: 500;
-  font-family: "Gowun Batang", serif;
   z-index: 0;
 }
 
 /* 배경 흐리게 */
 .container::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background-color: rgba(71, 71, 71, 0.4);

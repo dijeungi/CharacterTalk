@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { GoPerson } from 'react-icons/go';
 import { LuLogOut } from 'react-icons/lu';
+import { CiMenuBurger } from 'react-icons/ci';
+import { IoSearchOutline } from 'react-icons/io5';
+import { TbBrandDingtalk } from 'react-icons/tb';
 
 // 스타일 & 유틸
 import styles from '@/_styles/header/MainHeader.module.css';
@@ -58,19 +61,20 @@ export default function MainHeader() {
 
   return (
     <header className={styles.container}>
-      <Link href="/" className={styles.logo}>
-        다시, 안녕
-      </Link>
+      <div className={styles.leftIcon}>
+        <CiMenuBurger />
+      </div>
 
-      {isLoggedIn ? (
-        <Link href="/" className={styles.button} onClick={handleLogout}>
-          <LuLogOut />
+      <div className={styles.logoWrapper}>
+        <Link href="/" className={styles.logo}>
+          캐릭톡
+          <TbBrandDingtalk />
         </Link>
-      ) : (
-        <Link href="/login" className={styles.button}>
-          <GoPerson />
-        </Link>
-      )}
+      </div>
+
+      <div className={styles.rightIcon}>
+        <IoSearchOutline />
+      </div>
     </header>
   );
 }
