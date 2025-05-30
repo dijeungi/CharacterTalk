@@ -139,5 +139,5 @@ table {
 * {
   box-sizing: border-box;
   /* Custom default Fonts */
-  font-family: var(--font-omyu-pretty), serif;
+  font-family: var(--font-pretendard), serif;
 }
