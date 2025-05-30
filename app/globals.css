@@ -1,3 +1,10 @@
+/* pc버전에서도 휴대폰 사이즈로 고정 */
+.container {
+  width: 480px;
+  margin: 0 auto;
+  height: 100dvh;
+}
+
 .Spinner_Overlay {
   position: fixed;
   top: 0;
