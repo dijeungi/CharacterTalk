@@ -2,11 +2,9 @@
 
 'use client';
 
-import MainBanner from './_components/main/MainBanner';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
-import { Toast } from './_utils/Swal';
-// import style from "@/globals.module.css";
+import MainSwiper from './_components/main/MainSwiper';
+import SearchForm from './_components/main/SearchForm';
+import SubSwiper from './_components/main/SubSwiper';
 
 /*
   React로 치면 메인 화면 App.js 라고 생각하시면 됩니다.
@@ -14,5 +12,11 @@ import { Toast } from './_utils/Swal';
 */
 
 export default function Home() {
-  return <>test</>;
+  return (
+    <main>
+      <MainSwiper />
+      <SubSwiper />
+      <SearchForm />
+    </main>
+  );
 }
