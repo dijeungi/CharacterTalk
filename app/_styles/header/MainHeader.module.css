@@ -20,29 +20,43 @@
 }
 
 .container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4rem;
-  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  font-weight: 500;
-  background: transparent;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
+  height: 4rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-family: var(--font-omyu-pretty), serif;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   text-decoration: none;
-  pointer-events: auto;
 }
 
-.button {
-  font-size: 1.875rem;
+.logoImage {
+  width: 36px;
+  height: 36px;
+}
+
+.logoText {
+  font-size: 2.25rem;
+  font-family: var(--font-omyu-pretty);
+}
+
+.menu {
+  display: flex;
+  gap: 1rem;
+  font-size: 1rem;
+}
+
+.Icon {
+  font-size: 1.75rem;
 }

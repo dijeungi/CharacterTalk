@@ -1,0 +1,79 @@
+.Container {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  padding: 1rem 2.5rem 1rem 2.5rem;
+  overflow: hidden;
+}
+
+.Box {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 100%;
+  border: none;
+}
+
+.Image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.Pagination {
+  position: absolute;
+  top: 60px;
+  right: 24px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.blackSlide {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+.blackTitle {
+  font-size: 1.125rem;
+  white-space: pre-wrap;
+  text-align: left;
+  z-index: 3;
+  transform: none;
+  transform-origin: left center;
+  color: white;
+  line-height: 1.4;
+}
+
+.TextOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: #fff;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+}
+
+.Title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.Subtitle {
+  font-size: 0.9rem;
+  color: #ccc;
+}
