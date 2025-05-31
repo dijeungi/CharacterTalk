@@ -1,3 +1,18 @@
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: 사용자 로그아웃
+ *     description: 리프레시 토큰을 검증하고 서버와 클라이언트의 토큰을 삭제합니다.
+ *     responses:
+ *       200:
+ *         description: 로그아웃 완료
+ *       401:
+ *         description: 토큰 없음 또는 무효
+ *       500:
+ *         description: 서버 오류
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { pool } from '@/lib/PostgreSQL';
 import jwt from 'jsonwebtoken';

@@ -1,3 +1,27 @@
+/**
+ * @swagger
+ * /api/auth/kakao/callback:
+ *   get:
+ *     summary: 카카오 OAuth 로그인 콜백
+ *     description: 카카오 인증 코드로 사용자 정보를 조회하고 JWT 토큰을 발급합니다.
+ *     parameters:
+ *       - in: query
+ *         name: code
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 카카오에서 받은 인증 코드
+ *     responses:
+ *       302:
+ *         description: 로그인 성공 시 리다이렉트
+ *       400:
+ *         description: 인증 코드 없음
+ *       401:
+ *         description: 토큰 발급 실패
+ *       500:
+ *         description: 서버 오류
+ */
+
 import { pool } from '@/lib/PostgreSQL';
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
