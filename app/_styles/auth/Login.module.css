@@ -1,75 +1,61 @@
-@keyframes glowText {
-  0%,
-  100% {
-    color: #efefef;
-    text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-  }
-  50% {
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-  }
-}
-
-.container {
-  position: relative;
-  padding: 0 20px;
-  height: 100dvh;
-
-  background-image: url('https://cdn.imweb.me/thumbnail/20250204/e2a9b186be915.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
+.Container {
+  min-height: 100dvh;
+  border: 1px solide #111;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-
-  text-align: center;
-  font-weight: 500;
-  z-index: 0;
+  padding: 3rem 1.5rem 1.5rem;
+  box-sizing: border-box;
 }
 
-/* 배경 흐리게 */
-.container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-color: rgba(71, 71, 71, 0.4);
-  backdrop-filter: blur(3px);
-  z-index: -1;
+.Title {
+  width: 100%;
+  max-width: 25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0;
 }
 
-.title {
-  color: white;
-  padding-bottom: 2.15rem;
+.titleText {
+  display: flex;
+  flex-direction: column;
 }
 
 .top_title {
-  font-size: 2.5rem;
-  color: white;
-  padding-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 0.5rem;
+  text-align: left;
 }
 
 .sub_title {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #111;
+  text-align: left;
 }
 
-.top_Title,
-.sub_Title {
-  display: block;
-  text-align: center;
-  color: rgb(255, 255, 255);
-  text-shadow: none;
+.Explanation {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #898989;
 }
 
-.Sub_Title {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 600;
-  line-height: 1.6;
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  margin-top: 0;
+}
+
+.logoImage {
+  width: 7.5rem;
+  height: 7.5rem;
 }
 
 /* ----------------------------------------- */
@@ -77,6 +63,14 @@
 .Social_Login {
   width: 100%;
   max-width: 320px;
+  margin: 3rem 0;
+}
+
+.Social_Explanation {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #898989;
 }
 
 .Social_Login_Button {
@@ -107,10 +101,11 @@
 .Social_Login_Description {
   margin-top: 12px;
   font-size: 0.85rem;
-  color: #efefef;
+  color: #818181;
   text-align: center;
-  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-  animation: glowText 1.8s ease-in-out infinite;
+  text-decoration: underline;
+  /* text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  animation: glowText 1.8s ease-in-out infinite; */
 }
 
 .Social_Login_Logo {
