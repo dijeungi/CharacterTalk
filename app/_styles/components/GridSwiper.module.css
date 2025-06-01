@@ -1,0 +1,116 @@
+.Container {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  padding: 1rem 2.5rem 1rem 2.5rem;
+  overflow: hidden;
+}
+
+.Title {
+  color: #000;
+  font-size: 1.5rem;
+  line-height: 100%;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.SubTitle {
+  color: #898989;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.Grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.Box {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 3 / 5;
+  width: 100%;
+  height: auto;
+  border: none;
+}
+
+.Pagination {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.Image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* 슬라이드 내 텍스트 */
+.Text_Box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  padding: 20px;
+  background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  text-align: center;
+  z-index: 2;
+}
+
+.Label_Box {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.Label {
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.Explanation_Box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.Box_Title {
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 100%;
+  font-weight: 600;
+}
+
+.Box_Subtitle {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.Tag_Box {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.Tag {
+  color: #888;
+  font-size: 13px;
+}
