@@ -3,8 +3,8 @@
 'use client';
 
 import MainSwiper from './_components/main/MainSwiper';
-import SearchForm from './_components/main/SearchForm';
 import SubSwiper from './_components/main/SubSwiper';
+import GridSwiper from './_components/main/GridSwiper';
 
 /*
   React로 치면 메인 화면 App.js 라고 생각하시면 됩니다.
@@ -16,7 +16,7 @@ export default function Home() {
     <main>
       <MainSwiper />
       <SubSwiper />
-      <SearchForm />
+      <GridSwiper />
     </main>
   );
 }
