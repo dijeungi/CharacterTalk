@@ -33,8 +33,8 @@ export default function LoginPage() {
             alt="Kakao Login"
           />
         </button>
-        <Link href="/">
-          <p className={styles.Social_Login_Description}>로그인하지 않고 둘러보기</p>
+        <Link href="/" className={styles.Social_Login_Description}>
+          로그인하지 않고 둘러보기
         </Link>
       </div>
     </div>

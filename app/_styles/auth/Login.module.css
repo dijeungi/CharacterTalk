@@ -64,6 +64,7 @@
   width: 100%;
   max-width: 320px;
   margin: 3rem 0;
+  text-align: center;
 }
 
 .Social_Explanation {
@@ -102,7 +103,6 @@
   margin-top: 12px;
   font-size: 0.85rem;
   color: #818181;
-  text-align: center;
   text-decoration: underline;
   /* text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
   animation: glowText 1.8s ease-in-out infinite; */
