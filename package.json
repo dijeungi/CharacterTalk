@@ -31,7 +31,8 @@
     "swagger-ui-react": "^5.22.0",
     "sweetalert2": "^11.21.0",
     "swiper": "^11.2.8",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@types/node": "^20",
