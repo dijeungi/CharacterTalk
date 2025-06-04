@@ -38,6 +38,8 @@
 .rightSection {
   display: flex;
   align-items: center;
+  width: 3.75rem;
+  justify-content: center;
 }
 
 .centerSection {
@@ -70,4 +72,11 @@
 
 .Icon {
   font-size: 1.75rem;
+}
+
+.Drawer_Icon {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  gap: 0.5rem;
 }

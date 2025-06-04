@@ -1,12 +1,12 @@
-.Container {
+.characterSection {
   width: 100%;
   position: relative;
   box-sizing: border-box;
-  padding: 1rem 2.5rem 1rem 2.5rem;
+  padding: 1rem 2.5rem;
   overflow: hidden;
 }
 
-.Title {
+.sectionTitle {
   color: #000;
   font-size: 1.5rem;
   line-height: 100%;
@@ -14,19 +14,19 @@
   margin-bottom: 0.5rem;
 }
 
-.SubTitle {
+.sectionSubtitle {
   color: #898989;
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
 
-.Grid {
+.characterGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1rem;
 }
 
-.Box {
+.characterCard {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
@@ -36,26 +36,13 @@
   border: none;
 }
 
-.Pagination {
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  z-index: 10;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-size: 14px;
-  padding: 4px 8px;
-  border-radius: 12px;
-}
-
-.Image {
+.characterImage {
   width: 100%;
   height: auto;
   object-fit: cover;
 }
 
-/* 슬라이드 내 텍스트 */
-.Text_Box {
+.cardOverlay {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -72,45 +59,45 @@
   z-index: 2;
 }
 
-.Label_Box {
+.characterLabelWrapper {
   flex-shrink: 0;
   display: flex;
   align-items: center;
 }
 
-.Label {
+.characterLabel {
   color: #fff;
   font-weight: bold;
   font-size: 16px;
 }
 
-.Explanation_Box {
+.characterInfo {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 10px;
 }
 
-.Box_Title {
+.characterName {
   color: #fff;
   font-size: 1.5rem;
   line-height: 100%;
   font-weight: 600;
 }
 
-.Box_Subtitle {
+.characterDescription {
   color: #ccc;
   font-size: 14px;
 }
 
-.Tag_Box {
+.characterTagList {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.Tag {
+.characterTag {
   color: #888;
   font-size: 13px;
 }
