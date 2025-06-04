@@ -4,9 +4,10 @@
 */
 
 // 미들웨어 함수
-import { authMiddleware } from './frontend/app/lib/middleware/authMiddleware';
+import { authMiddleware } from './app/lib/middleware/authMiddleware';
+
 // 매칭 경로
-import { matcher } from './frontend/app/lib/middleware/config';
+import { matcher } from './app/lib/middleware/config';
 
 // 미들웨어 설정
 export const config = { matcher };
