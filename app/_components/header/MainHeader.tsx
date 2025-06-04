@@ -1,5 +1,5 @@
 /*
-  route: '/header/main'
+  Route: '/header/main'
   Path: app/_components/header/MainHeader.tsx
   Description:
     - 이 페이지는 상단 네비게이션 바와 MUI 드로어 메뉴를 구현한 헤더 컴포넌트입니다.

@@ -1,5 +1,5 @@
 /*
-  route: '/'
+  Route: '/'
   Path: app/_components/header/HeaderController.tsx
   Description:
     - 이 페이지는 현재 경로에 맞는 헤더 컴포넌트를 선택적으로 렌더링하는 역할을 합니다.

@@ -1,5 +1,5 @@
 /*
-  route: '/sub-banner'
+  Route: '/sub-banner'
   Path: app/_components/main/SubSwiper.tsx
   Description:
     - 이 페이지는 서브 배너 슬라이드를 관리하며, `swiper` 라이브러리의 페이드 효과를 사용하여 슬라이드를 전환합니다.

@@ -1,5 +1,5 @@
 /*
-  route: '/header/character-step'
+  Route: '/header/character-step'
   Path: app/_components/header/CharacterStepHeader.tsx
   Description:
     - 이 페이지는 캐릭터 만들기 화면에서 상단 헤더를 구현하는 컴포넌트입니다.
@@ -23,7 +23,7 @@ export default function CharacterStepHeader() {
       <header className={styles.container}>
         {/* 왼쪽 섹션 - 뒤로 가기 버튼 및 제목 */}
         <div className={styles.leftSection}>
-          <Link href="/">
+          <Link href="/characters">
             <MdKeyboardBackspace className={styles.Icon} />
           </Link>
           <span className={styles.title}>캐릭터 만들기</span>

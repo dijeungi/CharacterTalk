@@ -1,5 +1,5 @@
 /*
-  route: '/characters/new/voice-select'
+  Route: '/characters/new/voice-select'
   Path: app/(routes)/(private)/characters/new/CharactersNew.tsx
   Description:
     - 이 컴포넌트는 캐릭터 만들기 과정에서 사용자가 목소리를 선택할 수 있는 드로어입니다.

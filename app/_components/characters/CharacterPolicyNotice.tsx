@@ -1,5 +1,5 @@
 /*
-  route: '/characters/new'
+  Route: '/characters/new'
   Path: app/(routes)/(private)/characters/new/CharactersNew.tsx
   Description:
     - 이 컴포넌트는 캐릭터 만들기 화면에서 부적절한 캐릭터에 대한 정책을 안내하는 화면입니다.
