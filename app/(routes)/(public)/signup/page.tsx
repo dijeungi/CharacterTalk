@@ -6,7 +6,7 @@
 'use client';
 
 // 스타일
-import styles from '@/_styles/auth/SignUp.module.css';
+import styles from './SignUp.module.css';
 
 // 라이브러리
 import { useState, useRef, useCallback, useReducer, useEffect } from 'react';

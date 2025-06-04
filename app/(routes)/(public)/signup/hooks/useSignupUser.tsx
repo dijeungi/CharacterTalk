@@ -38,10 +38,13 @@ export const useSignupUser = () => {
         title: '회원가입 성공!',
         timer: 1500,
         showConfirmButton: false,
+      }).then(() => {
+        router.push('/');
       });
-      router.push('/');
     },
     onError: (err: Error) => {
+      if (!err.message || typeof window === 'undefined') return;
+
       Toast.fire({
         icon: 'error',
         title: `회원가입 실패: ${err.message}`,

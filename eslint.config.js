@@ -4,7 +4,7 @@ import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import prettierPlugin from 'eslint-plugin-prettier';
-import prettierConfig from 'eslint-config-prettier'; // Prettier 설정 추가
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
   { ignores: ['dist'] }, // 'dist' 폴더는 ESLint 검사를 무시
@@ -31,10 +31,7 @@ export default [
       ...react.configs.recommended.rules, // React 권장 규칙 적용
       ...reactHooks.configs.recommended.rules, // React Hooks 권장 규칙 적용
       'react/jsx-no-target-blank': 'off', // target="_blank" 보안 경고 비활성화
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ], // React Fast Refresh 관련: 컴포넌트만 export하도록 경고
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }], // React Fast Refresh 관련: 컴포넌트만 export하도록 경고
       'no-unused-vars': 'off', // 미사용 변수 경고 비활성화
       'react/prop-types': 'off', // PropTypes 사용 강제 비활성화
       'prettier/prettier': 'error', // Prettier 규칙 위반 시 에러 처리

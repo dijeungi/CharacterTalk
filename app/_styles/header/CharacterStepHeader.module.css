@@ -1,0 +1,39 @@
+.container {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 4rem;
+  border-bottom: 1px solid #ccc;
+  z-index: 1301;
+  background-color: white;
+}
+
+.leftSection,
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.Icon {
+  font-size: 1.75rem;
+  vertical-align: middle;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  position: relative;
+  top: 2px;
+  color: #333;
+  text-decoration: none;
+}
+
+.Drawer_Icon {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  gap: 0.5rem;
+}

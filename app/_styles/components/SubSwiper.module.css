@@ -1,12 +1,16 @@
-.Container {
+.swiperContainer {
   width: 100%;
   position: relative;
   box-sizing: border-box;
-  padding: 1rem 2.5rem 1rem 2.5rem;
+  padding: 1rem 2.5rem;
   overflow: hidden;
 }
 
-.Box {
+.swiperBanner {
+  width: 100%;
+}
+
+.swiperCard {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
@@ -14,42 +18,13 @@
   border: none;
 }
 
-.Image {
+.swiperImage {
   width: 100%;
   height: auto;
   object-fit: contain;
 }
 
-.Pagination {
-  position: absolute;
-  top: 60px;
-  right: 24px;
-  z-index: 10;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-size: 14px;
-  padding: 4px 8px;
-  border-radius: 12px;
-}
-
-.blackSlide {
-  width: 100%;
-  height: 100%;
-  background-color: black;
-}
-
-.blackTitle {
-  font-size: 1.125rem;
-  white-space: pre-wrap;
-  text-align: left;
-  z-index: 3;
-  transform: none;
-  transform-origin: left center;
-  color: white;
-  line-height: 1.4;
-}
-
-.TextOverlay {
+.cardTextOverlay {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -67,13 +42,25 @@
   text-align: center;
 }
 
-.Title {
+.cardTitle {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
-.Subtitle {
+.cardSubtitle {
   font-size: 0.9rem;
   color: #ccc;
+}
+
+.swiperPagination {
+  position: absolute;
+  top: 60px;
+  right: 24px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 12px;
 }

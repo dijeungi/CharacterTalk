@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 30,
+      maxAge: 60 * 30,
     });
     response.cookies.set({
       name: 'refresh_token',

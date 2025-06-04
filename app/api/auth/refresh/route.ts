@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { pool } from '@/lib/PostgreSQL';
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     // 1. 쿠키 존재 여부 검사
     if (!req.cookies.has('refresh_token')) {
@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     // 7. 새 쿠키 설정
-    const response = new NextResponse('accessToken 재발급 완료');
+    const response = NextResponse.json({ accessToken: newAccessToken });
     response.cookies.set({
       name: 'access_token',
       value: newAccessToken,
