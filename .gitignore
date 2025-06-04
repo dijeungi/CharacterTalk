@@ -2,7 +2,7 @@
 .idx/
 
 # dependencies
-/node_modules/
+frontend/node_modules/
 /.pnp/
 /.yarn/*
 !.yarn/patches
@@ -11,7 +11,7 @@
 !.yarn/versions
 
 # build outputs
-/.next/
+frontend/.next/
 /out/
 /build
 
@@ -29,7 +29,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files
-.env
+frontend/.env
 .vercel
 
 # typescript
