@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+torch
+diffusers
+transformers
+safetensors
+python-dotenv
