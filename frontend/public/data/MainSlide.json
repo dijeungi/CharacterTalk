@@ -1,0 +1,101 @@
+[
+  {
+    "src": "/img/MainBanner-1.png",
+    "label": "",
+    "title": "어반 스트라이커",
+    "subtitle": "오로지 인기있는 히어로만이 환영받는 시대\n당신이 이곳에서 살아남을 수 있나요?",
+    "tags": ["#서바이벌", "#히어로", "#텍스트 게임"],
+    "link": "/",
+    "color": "#FF3B30"
+  },
+  {
+    "label": "",
+    "src": "/img/MainBanner-2.png",
+    "title": "아데르",
+    "subtitle": "갑옷에 피를 묻히고 들어온 연회장의 황태자",
+    "tags": ["#황태자", "#폭군"],
+    "link": "/",
+    "color": "#510706"
+  },
+  {
+    "src": "/img/MainBanner-3.png",
+    "label": "",
+    "title": "신수재해대책본부",
+    "subtitle": "12체의 신수를 추적하는\n제7특과부대의 기록",
+    "tags": ["#판타지", "#초능력", "#재앙"],
+    "link": "/",
+    "color": "#EBC777"
+  },
+  {
+    "src": "/img/MainBanner-4.png",
+    "label": "",
+    "title": "실세",
+    "subtitle": "이 곳에서 질서는 없다\n오직 주먹뿐",
+    "tags": ["#느와르", "#학교", "#격투"],
+    "link": "/",
+    "color": "#000000"
+  },
+  {
+    "src": "/img/MainBanner-5.png",
+    "label": "",
+    "title": "샛별 아카데미",
+    "subtitle": "아카데미에 오신 것을 환영합니다.",
+    "tags": ["#마법", "#학교"],
+    "link": "/",
+    "color": "#6A6BAA"
+  },
+  {
+    "src": "/img/MainBanner-6.png",
+    "label": "",
+    "title": "우주 개척자",
+    "subtitle": "우주 생존 시뮬레이션",
+    "tags": ["#우주", "#생존"],
+    "link": "/",
+    "color": "#000000"
+  },
+  {
+    "src": "/img/MainBanner-7.png",
+    "label": "",
+    "title": "진서연",
+    "subtitle": "평생의 소원이었어.\n내 손으로 널 부숴버리는 거.",
+    "tags": ["#조직", "#라이벌"],
+    "link": "/",
+    "color": "#252C41"
+  },
+  {
+    "src": "/img/MainBanner-8.png",
+    "label": "",
+    "title": "제국의 섭정",
+    "subtitle": "왕관을 쥔 자가 반드시 군림하는 것은 아니다.",
+    "tags": ["#정치", "#야망", "#군주제"],
+    "link": "/",
+    "color": "#FFD6BA"
+  },
+  {
+    "src": "/img/MainBanner-9.png",
+    "label": "",
+    "title": "납치범 시유",
+    "subtitle": "얀데레에게 납치당했다\n죽기 전에 설득하자",
+    "tags": ["#얀데레", "#협상", "#심리전"],
+    "link": "/",
+    "color": "#545454"
+  },
+  {
+    "src": "/img/MainBanner-10.png",
+    "label": "",
+    "title": "HERO×VILLAIN",
+    "subtitle": "선택하라\n정의인가? 저항인가?",
+    "tags": ["#히어로", "#빌런", "#선택"],
+    "link": "/",
+    "color": "#FBEFE3"
+  },
+  {
+    "src": "/img/MainBanner-11.png",
+    "label": "",
+    "title": "에실리아",
+    "subtitle": "당신을 장난감으로 여기는 수녀님",
+    "tags": ["#성당", "#장난꾸러기", "#순애"],
+    "link": "/",
+    "color": "#F2D687"
+  }
+]

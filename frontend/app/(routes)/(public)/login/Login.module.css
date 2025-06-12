@@ -1,0 +1,117 @@
+.Container {
+  min-height: 100dvh;
+  border: 1px solid #111;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 1.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.Title {
+  width: 100%;
+  max-width: 25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.titleText {
+  display: flex;
+  flex-direction: column;
+}
+
+.top_title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.sub_title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #111;
+  text-align: left;
+}
+
+.Explanation {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #898989;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  margin-top: 0;
+}
+
+.logoImage {
+  width: 7.5rem;
+  height: 7.5rem;
+}
+
+/* ----------------------------------------- */
+
+.Social_Login {
+  width: 100%;
+  max-width: 320px;
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.Social_Explanation {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #898989;
+}
+
+.Social_Login_Button {
+  margin-bottom: 8px;
+
+  border: 1px solid #d3d3d3;
+
+  border-radius: 10px;
+  color: #222;
+  position: relative;
+
+  font-size: 16px;
+  font-weight: 700;
+  height: 52px;
+  letter-spacing: -0.16px;
+  width: 100%;
+
+  align-items: center;
+  background-color: #fff;
+
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.Social_Login_Description {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #818181;
+  text-decoration: underline;
+  /* text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  animation: glowText 1.8s ease-in-out infinite; */
+}
+
+.Social_Login_Logo {
+  height: 24px;
+  left: 15px;
+  position: absolute;
+  top: 13px;
+  width: 24px;
+}

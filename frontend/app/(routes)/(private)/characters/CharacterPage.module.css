@@ -1,0 +1,52 @@
+.page {
+  padding: 1.5rem 2.5rem 1rem 2.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  color: #000;
+  font-size: 1.5rem;
+  line-height: 100%;
+  font-weight: 600;
+}
+
+.createButton {
+  padding: 8px 16px;
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.createButton:hover {
+  background-color: #333;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.description {
+  font-size: 14px;
+  color: #777;
+}
