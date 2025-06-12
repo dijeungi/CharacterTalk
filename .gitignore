@@ -1,0 +1,36 @@
+# project idx
+.idx/
+
+# ============ FrontEnd ============
+
+frontend/.next
+frontend/.vscode
+frontend/node_modules
+frontend/.env
+
+# ============= Python =============
+
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+
+# ============== order ==============
+
+# 혹시나 모를 위험 방지
+.env
+.venv/
+venv/
+env/
+
+# IDE 및 에디터 설정 파일
+.idea/
+.vscode/
+*.swp
+
+# macOS 시스템 파일
+.DS_Store
+
+# 테스트 및 커버리지 관련 파일
+.pytest_cache/
+.coverage
