@@ -10,10 +10,18 @@ frontend/.env
 
 # ============= Python =============
 
-backend/__pycache__/
-backend/*.pyc
-backend/*.pyo
-backend/*.pyd
+/venv/
+/env/
+/virtualenv/
+/.venv/
+__pycache__/
+media
+*.pyc
+*.pyo
+*.pyd
+
+db.sqlite3
+*.sqlite3
 
 # ============== order ==============
 
@@ -30,7 +38,3 @@ env/
 
 # macOS 시스템 파일
 .DS_Store
-
-# 테스트 및 커버리지 관련 파일
-.pytest_cache/
-.coverage
