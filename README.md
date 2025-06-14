@@ -14,7 +14,7 @@
 
 - Next.js 15 (App Router)
 - TypeScript
-- Python (FastAPI)
+- Python (Django)
 - Module CSS
 
 ## 🚀 실행 방법
