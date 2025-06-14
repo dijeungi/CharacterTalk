@@ -1,7 +1,14 @@
-fastapi
-uvicorn
+# Django & API
+django
+djangorestframework
+
+# AI & Image
 torch
 diffusers
 transformers
 safetensors
+sentencepiece
+Pillow
+
+# Environment
 python-dotenv
