@@ -1,4 +1,4 @@
-.Container {
+.container {
   min-height: 100dvh;
   border: 1px solid #111;
   height: 100%;
@@ -10,7 +10,9 @@
   box-sizing: border-box;
 }
 
-.Title {
+/* title */
+
+.title {
   width: 100%;
   max-width: 25rem;
   display: flex;
@@ -24,7 +26,7 @@
   flex-direction: column;
 }
 
-.top_title {
+.topTitle {
   font-size: 2rem;
   font-weight: 600;
   color: #444;
@@ -32,14 +34,14 @@
   text-align: left;
 }
 
-.sub_title {
+.subTitle {
   font-size: 2.5rem;
   font-weight: 800;
   color: #111;
   text-align: left;
 }
 
-.Explanation {
+.explanation {
   margin-top: 1rem;
   font-size: 1rem;
   color: #898989;
@@ -58,23 +60,23 @@
   height: 7.5rem;
 }
 
-/* ----------------------------------------- */
+/* body */
 
-.Social_Login {
+.social {
   width: 100%;
   max-width: 320px;
   margin: 3rem 0;
   text-align: center;
 }
 
-.Social_Explanation {
+.socialExplanation {
   margin-bottom: 1rem;
   font-size: 1rem;
   text-align: center;
   color: #898989;
 }
 
-.Social_Login_Button {
+.socialLoginBtn {
   margin-bottom: 8px;
 
   border: 1px solid #d3d3d3;
@@ -99,7 +101,7 @@
   vertical-align: middle;
 }
 
-.Social_Login_Description {
+.socialLoginDescription {
   margin-top: 12px;
   font-size: 0.85rem;
   color: #818181;
@@ -108,7 +110,7 @@
   animation: glowText 1.8s ease-in-out infinite; */
 }
 
-.Social_Login_Logo {
+.socialLoginLogo {
   height: 24px;
   left: 15px;
   position: absolute;
