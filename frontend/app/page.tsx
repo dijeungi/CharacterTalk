@@ -17,11 +17,11 @@ import GridSwiper from './_components/main/GridSwiper';
 export default function Home() {
   return (
     <main>
-      {/* app/_components/main/MainSwiper.tsx */}
+      {/* main */}
       <MainSwiper />
-      {/* app/_components/main/SubSwiper.tsx */}
+      {/* sub */}
       <SubSwiper />
-      {/* app/_components/main/GridSwiper.tsx */}
+      {/* body */}
       <GridSwiper />
     </main>
   );
