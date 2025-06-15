@@ -1,0 +1,74 @@
+.drawerContent {
+  text-align: center;
+  height: 80dvh;
+}
+
+.drawerBar {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: #666;
+  margin: 0 auto 1.5rem;
+}
+
+.drawerTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.drawerText {
+  color: #808080;
+  text-align: left;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.textareaWrapper {
+  position: relative;
+}
+
+.textarea {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.fixedBottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  z-index: 100;
+}
+
+.Button {
+  width: 100%;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  background-color: #2e80ff;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.Button:disabled {
+  background-color: #ccc !important;
+  cursor: not-allowed;
+}
+
+.Button:hover {
+  background-color: hsl(221, 83%, 53%);
+}
