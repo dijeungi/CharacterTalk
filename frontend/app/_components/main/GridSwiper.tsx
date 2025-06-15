@@ -13,39 +13,38 @@
 import 'swiper/css';
 
 // css
-import styles from '@/_styles/components/GridSwiper.module.css';
+import styles from './GridSwiper.module.css';
 
-// MainSlider json Data (추후에 수정 및 api 연결 예정)
+// data (추후에 수정 및 api 연결 예정)
 import slideData from '../../../public/data/MainSlide.json';
 
 export default function GridSwiper() {
+  // reset data
   const slides = slideData;
 
   return (
-    <div className={styles.characterSection}>
-      {/* 섹션 제목 */}
-      <div className={styles.sectionTitle}>이것만은 꼭!</div>
-      <div className={styles.sectionSubtitle}>AI에게 추천받은 캐릭터들을 소개합니다.</div>
+    <div className={styles.container}>
+      {/* title */}
+      <div className={styles.title}>이것만은 꼭!</div>
+      <div className={styles.subTitle}>AI에게 추천받은 캐릭터들을 소개합니다.</div>
 
-      {/* 캐릭터 그리드 레이아웃 */}
-      <div className={styles.characterGrid}>
-        {/* 각 캐릭터 카드 반복 렌더링 */}
+      <div className={styles.grid}>
         {slides.map(({ src, title, subtitle, label, tags, color }, i) => (
           // <div key={i} className={styles.characterCard} style={{ border: `3px solid ${color}` }}>
 
-          <div key={i} className={styles.characterCard}>
-            {/* 캐릭터 이미지 */}
-            <img src={src} alt={`slide-${i}`} className={styles.characterImage} />
-            <div className={styles.cardOverlay}>
-              {/* 캐릭터 레이블 */}
-              <div className={styles.characterLabelWrapper}>
-                <p className={styles.characterLabel}>{label}</p>
+          <div key={i} className={styles.card}>
+            {/* img */}
+            <img src={src} alt={`slide-${i}`} className={styles.img} />
+            <div className={styles.overLay}>
+              {/* label */}
+              <div className={styles.labelWrapper}>
+                <p className={styles.label}>{label}</p>
               </div>
-              {/* 캐릭터 정보 */}
-              <div className={styles.characterInfo}>
-                <p className={styles.characterName}>{title}</p>
-                <p className={styles.characterDescription}>
-                  {/* 설명 텍스트 분리 */}
+              {/* info */}
+              <div className={styles.info}>
+                <p className={styles.name}>{title}</p>
+                <p className={styles.description}>
+                  {/* Description */}
                   {subtitle.split('\n').map((line, idx) => (
                     <span key={idx}>
                       {line}
@@ -53,10 +52,10 @@ export default function GridSwiper() {
                     </span>
                   ))}
                 </p>
-                {/* 태그 목록 */}
-                <div className={styles.characterTagList}>
+                {/* tagList */}
+                <div className={styles.tagList}>
                   {tags.map((tag, idx) => (
-                    <p key={idx} className={styles.characterTag}>
+                    <p key={idx} className={styles.tag}>
                       {tag}
                     </p>
                   ))}

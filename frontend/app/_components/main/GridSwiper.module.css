@@ -1,4 +1,4 @@
-.characterSection {
+.container {
   width: 100%;
   position: relative;
   box-sizing: border-box;
@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 
-.sectionTitle {
+.title {
   color: #000;
   font-size: 1.5rem;
   line-height: 100%;
@@ -14,19 +14,19 @@
   margin-bottom: 0.5rem;
 }
 
-.sectionSubtitle {
+.subTitle {
   color: #898989;
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
 
-.characterGrid {
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1rem;
 }
 
-.characterCard {
+.card {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
@@ -36,13 +36,13 @@
   border: none;
 }
 
-.characterImage {
+.img {
   width: 100%;
   height: auto;
   object-fit: cover;
 }
 
-.cardOverlay {
+.overLay {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -59,45 +59,45 @@
   z-index: 2;
 }
 
-.characterLabelWrapper {
+.labelWrapper {
   flex-shrink: 0;
   display: flex;
   align-items: center;
 }
 
-.characterLabel {
+.label {
   color: #fff;
   font-weight: bold;
   font-size: 16px;
 }
 
-.characterInfo {
+.info {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 10px;
 }
 
-.characterName {
+.name {
   color: #fff;
   font-size: 1.5rem;
   line-height: 100%;
   font-weight: 600;
 }
 
-.characterDescription {
+.description {
   color: #ccc;
   font-size: 14px;
 }
 
-.characterTagList {
+.tagList {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.characterTag {
+.tag {
   color: #888;
   font-size: 13px;
 }

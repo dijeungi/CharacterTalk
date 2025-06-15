@@ -9,22 +9,25 @@
 
 'use client';
 
-// Swiper
+// swiper
 import 'swiper/css';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // css
-import styles from '@/_styles/components/MainSwiper.module.css';
+import styles from './MainSwiper.module.css';
 
-// React Hooks
+// default
 import { useMemo, useState } from 'react';
 
-// Slide json Data
+// data
 import slideData from '../../../public/data/MainSlide.json';
 
 export default function MainSwiper() {
+  // 초기 데이터 설정
   const slides = slideData;
+
+  // 상태 초기화
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // 현재 금일 날짜 계산
@@ -36,13 +39,13 @@ export default function MainSwiper() {
   }, []);
 
   return (
-    <div className={styles.swiperContainer}>
-      {/* Title */}
-      <div className={styles.swiperTitle}>
-        투데이 <span className={styles.currentDate}>{today}</span>
+    <div className={styles.container}>
+      {/* title */}
+      <div className={styles.title}>
+        투데이 <span className={styles.todayDate}>{today}</span>
       </div>
 
-      {/* Swiper */}
+      {/* swiper */}
       <Swiper
         loop={true}
         centeredSlides={true}
@@ -50,20 +53,20 @@ export default function MainSwiper() {
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         onSlideChange={swiper => setCurrentIndex(swiper.realIndex)}
         modules={[Autoplay]}
-        className={styles.swiperBanner}
+        className={styles.banner}
       >
         {slides.map(({ src, title, subtitle, label, tags, link, color }, i) => (
           <SwiperSlide key={i} style={{ height: '100%' }}>
-            <div className={styles.swiperCard} style={{ border: `3px solid ${color}` }}>
-              <span className={styles.swiperPagination}>
+            <div className={styles.card} style={{ border: `3px solid ${color}` }}>
+              <span className={styles.pagination}>
                 {currentIndex + 1} / {slides.length}
               </span>
               <img src={src} alt={`slide-${i}`} className={styles.swiperImage} />
-              <div className={styles.cardTextOverlay}>
-                <div className={styles.cardLabelWrapper}>
-                  <p className={styles.cardLabel}>{label}</p>
+              <div className={styles.textOverlay}>
+                <div className={styles.labelWrapper}>
+                  <p className={styles.label}>{label}</p>
                 </div>
-                <div className={styles.cardInfo}>
+                <div className={styles.info}>
                   <p className={styles.cardTitle}>{title}</p>
                   <p className={styles.cardSubtitle}>
                     {subtitle.split('\n').map((line, idx) => (
@@ -73,7 +76,7 @@ export default function MainSwiper() {
                       </span>
                     ))}
                   </p>
-                  <div className={styles.tagWrapper}>
+                  <div className={styles.tag}>
                     {tags.map((tag, idx) => (
                       <p key={idx} className={styles.cardTag}>
                         {tag}

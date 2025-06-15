@@ -1,4 +1,4 @@
-.swiperContainer {
+.container {
   width: 100%;
   position: relative;
   box-sizing: border-box;
@@ -6,11 +6,11 @@
   overflow: hidden;
 }
 
-.swiperBanner {
+.banner {
   width: 100%;
 }
 
-.swiperCard {
+.card {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
@@ -18,13 +18,13 @@
   border: none;
 }
 
-.swiperImage {
+.img {
   width: 100%;
   height: auto;
   object-fit: contain;
 }
 
-.cardTextOverlay {
+.textOverlay {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -42,18 +42,18 @@
   text-align: center;
 }
 
-.cardTitle {
+.title {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
-.cardSubtitle {
+.subtitle {
   font-size: 0.9rem;
   color: #ccc;
 }
 
-.swiperPagination {
+.pagination {
   position: absolute;
   top: 60px;
   right: 24px;

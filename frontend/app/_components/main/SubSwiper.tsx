@@ -9,7 +9,7 @@
 
 'use client';
 
-// React
+// default
 import { useState } from 'react';
 
 // Swiper
@@ -18,20 +18,21 @@ import 'swiper/css/effect-fade';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
 
-// Css
-import styles from '@/_styles/components/SubSwiper.module.css';
+// css
+import styles from './SubSwiper.module.css';
 
-// SubSlide json Data
-import slideData from '@/../public/data/SubSlide.json';
+// data
+import slideData from '../../../public/data/SubSlide.json';
 
 export default function SubBanner() {
+  // 상태 초기화
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <div className={styles.swiperContainer}>
+    <div className={styles.container}>
       {/* Swiper */}
       <Swiper
-        className={styles.swiperBanner}
+        className={styles.banner}
         loop={true}
         effect="fade"
         modules={[Autoplay, EffectFade]}
@@ -40,13 +41,13 @@ export default function SubBanner() {
       >
         {slideData.map(({ src, title, subtitle }, i) => (
           <SwiperSlide key={i}>
-            <div className={styles.swiperCard}>
-              <img src={src} alt={`Slide ${i + 1}`} className={styles.swiperImage} />
-              <div className={styles.cardTextOverlay}>
-                <h3 className={styles.cardTitle}>{title}</h3>
-                <p className={styles.cardSubtitle}>{subtitle}</p>
+            <div className={styles.card}>
+              <img src={src} alt={`Slide ${i + 1}`} className={styles.img} />
+              <div className={styles.textOverlay}>
+                <h3 className={styles.title}>{title}</h3>
+                <p className={styles.subtitle}>{subtitle}</p>
               </div>
-              <span className={styles.swiperPagination}>
+              <span className={styles.pagination}>
                 {currentIndex + 1} / {slideData.length}
               </span>
             </div>
