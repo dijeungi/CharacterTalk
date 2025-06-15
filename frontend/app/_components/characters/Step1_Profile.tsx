@@ -1,26 +1,36 @@
+/*
+  Route: '/characters/new'
+  Path: app/_components/characters/Step1_Profile.tsx
+  Description:
+    -
+*/
+
 'use client';
 
-// React 관련
+// Next
+import Link from 'next/link';
 import { useEffect, useMemo, useState, useRef } from 'react';
 
-// 스타일 관련
-import styles from '/app/(routes)/(private)/characters/new/CharactersNew.module.css';
+// css
+import styles from '/app/(routes)/(private)/characters/new/page.module.css';
 
-// 아이콘 관련
+// Icon Library
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { PiMagicWandDuotone } from 'react-icons/pi';
 import { FaChevronRight } from 'react-icons/fa';
 
-// 컴포넌트 관련
-import CharacterPolicyNotice from './CharacterPolicyNotice';
-import VoiceSelectModal from './VoiceSelectModal';
+// components
+import CharacterPolicyNotice from './Drawer/CharacterPolicyNotice';
+import VoiceSelectModal from './Modal/VoiceSelectModal';
 
 // store
 import { useCharacterStep1Store } from '../../store/characterStep1Store';
+import ProfileImageGeneratorDrawer from './Drawer/ProfileImageGeneratorDrawer';
 
 export default function Step1_Profile() {
   // 상태 초기화
-  const [modalOpen, setModalOpen] = useState(false);
+  const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
+  const [voiceModalOpen, setVoiceModalOpen] = useState(false);
   const [choiceMade, setChoiceMade] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [isNewCreation, setIsNewCreation] = useState(false);
@@ -43,7 +53,16 @@ export default function Step1_Profile() {
 
   // 프로필 이미지 미리보기
   const imagePreview = useMemo(() => {
-    return profileImage ? URL.createObjectURL(profileImage) : null;
+    if (profileImage instanceof File || profileImage instanceof Blob) {
+      // 사용자가 방금 업로드한 경우 (File 객체)
+      return URL.createObjectURL(profileImage);
+    }
+    if (typeof profileImage === 'string') {
+      // localStorage에서 불러온 경우 (Base64 문자열)
+      return profileImage;
+    }
+    // 그 외의 경우
+    return null;
   }, [profileImage]);
 
   // 입력 필드가 모두 채워졌는지 체크
@@ -57,21 +76,24 @@ export default function Step1_Profile() {
     우측 상단 Header에 임시저장이랑 연동하기 위함입니다.
   */
   useEffect(() => {
-    if (name || oneliner || selectedVoice) {
+    if (name || oneliner || selectedVoice || profileImage) {
       setDirty();
     } else {
       resetDirty();
     }
-  }, [name, oneliner, selectedVoice, setDirty, resetDirty]);
+  }, [name, oneliner, selectedVoice, profileImage, setDirty, resetDirty]);
 
   // 프로필 이미지 업로드
   const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      setProfileImage(file);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+      };
     }
   };
-
   // 파일선택 창 열기
   const triggerFileInput = () => {
     if (fileInputRef.current) {
@@ -166,7 +188,11 @@ export default function Step1_Profile() {
                         onChange={handleProfileImageUpload}
                       />
                     </button>
-                    <button className={styles.button}>
+                    <button
+                      className={styles.button}
+                      type="button"
+                      onClick={() => setImageGeneratorDrawerOpen(true)}
+                    >
                       <PiMagicWandDuotone /> 생성
                     </button>
                   </div>
@@ -221,7 +247,7 @@ export default function Step1_Profile() {
               <p className={styles.caption}>캐릭터에게 어울리는 목소리를 선택해 주세요</p>
               <button
                 className={styles.voiceSelectedButton}
-                onClick={() => setModalOpen(true)}
+                onClick={() => setVoiceModalOpen(true)}
                 type="button"
               >
                 {selectedVoice
@@ -242,10 +268,20 @@ export default function Step1_Profile() {
 
             {/* 목소리 선택 모달 */}
             <VoiceSelectModal
-              open={modalOpen}
-              onClose={() => setModalOpen(false)}
+              open={voiceModalOpen}
+              onClose={() => setVoiceModalOpen(false)}
               selectedVoice={selectedVoice}
               setSelectedVoice={setSelectedVoice}
+            />
+
+            {/* Profile Image Components */}
+            <ProfileImageGeneratorDrawer
+              open={imageGeneratorDrawerOpen}
+              onClose={() => setImageGeneratorDrawerOpen(false)}
+              onImageGenerated={imageFile => {
+                setProfileImage(imageFile);
+                setImageGeneratorDrawerOpen(false);
+              }}
             />
           </>
         )}
