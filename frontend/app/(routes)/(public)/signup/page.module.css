@@ -14,7 +14,14 @@
 }
 
 @media (max-width: 480px) {
-  .Container {
+  .SubTitle {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #6d6d6d;
+    margin: 0 0 2.5rem 0;
+  }
+
+  .container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -23,29 +30,22 @@
     box-sizing: border-box;
   }
 
-  .Content {
+  .content {
     flex-grow: 1;
   }
 
-  .Title {
+  .title {
     font-size: 1.7rem;
     font-weight: bold;
     margin: 1rem 0 3rem 0;
   }
 
-  .SubTitle {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #6d6d6d;
-    margin: 0 0 2.5rem 0;
-  }
-
-  .InputGroup {
+  .inputGroup {
     position: relative;
     margin-top: 3rem;
   }
 
-  .ClickLabel {
+  .clickLabel {
     position: absolute;
     top: -20px;
     left: 0;
@@ -56,7 +56,7 @@
     background-color: #fff;
   }
 
-  .Input {
+  .input {
     width: 100%;
     padding: 8px 0;
     font-size: 1.2rem;
@@ -69,14 +69,28 @@
     caret-color: #3b82f6;
   }
 
-  .ResidentWrapper {
+  .email,
+  .fullName {
+    width: 100%;
+    padding: 8px 2.5rem 8px 0;
+    font-size: 1.2rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+    outline: none;
+    transition: border-color 0.2s ease;
+    caret-color: #3b82f6;
+    background-color: transparent;
+  }
+
+  .residentWrapper {
     display: flex;
     align-items: center;
     width: 100%;
     gap: 6px;
   }
 
-  .ResidentInput {
+  .residentInput {
     width: 50%;
     padding: 8px 0;
     font-size: 1.3rem;
@@ -88,19 +102,19 @@
     background-color: transparent;
   }
 
-  .Hyphen {
+  .hyphen {
     flex: 0 0 auto;
     font-size: 1.5rem;
     line-height: 2rem;
   }
 
-  .BackWrapper {
+  .backWrapper {
     display: flex;
     align-items: flex-end;
     width: 50%;
   }
 
-  .ResidentBackInput {
+  .residentBackInput {
     max-width: 20%;
     min-width: 20%;
     /* min-width: 0; */
@@ -116,7 +130,7 @@
     box-sizing: border-box;
   }
 
-  .Masking {
+  .masking {
     flex: 1 1 0%;
     display: flex;
     align-items: center;
@@ -132,7 +146,7 @@
     min-width: 0;
   }
 
-  .DotWrapper {
+  .dotWrapper {
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
@@ -141,37 +155,22 @@
     scale: 1;
   }
 
-  .Dot {
+  .dot {
     flex-shrink: 1;
     min-width: 0;
     margin-right: clamp(4px, 0.4em, 8px);
   }
 
-  .Email,
-  .FullName,
-  .Select {
-    width: 100%;
-    padding: 8px 2.5rem 8px 0;
-    font-size: 1.2rem;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    border-radius: 0;
-    outline: none;
-    transition: border-color 0.2s ease;
-    caret-color: #3b82f6;
-    background-color: transparent;
-  }
-
-  .Select {
+  .select {
     font-size: 1.2rem;
   }
 
-  .ButtonContainer {
+  .buttonContainer {
     margin-top: 3rem;
     text-align: center;
   }
 
-  .Button {
+  .button {
     width: 100%;
     padding: 1rem 0;
     margin: 1rem 0 0rem 0;
@@ -186,22 +185,22 @@
     transition: background-color 0.2s ease;
   }
 
-  .Button:disabled {
+  .button:disabled {
     background-color: #ccc !important;
     cursor: not-allowed;
   }
 
-  .Button:hover {
+  .button:hover {
     background-color: #2563eb;
   }
 
-  .ImageWrapper {
+  .imageWrapper {
     display: flex;
     justify-content: center;
     margin: 7.5rem 0;
   }
 
-  .CompleteImage {
+  .completeImage {
     width: 20rem;
     height: auto;
   }

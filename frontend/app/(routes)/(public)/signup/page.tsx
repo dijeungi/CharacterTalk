@@ -5,15 +5,15 @@
 
 'use client';
 
-// 스타일
-import styles from './SignUp.module.css';
+// css
+import styles from './page.module.css';
 
-// 라이브러리
+// library
 import { useState, useRef, useCallback, useReducer, useEffect } from 'react';
 import { ConfirmationResult } from 'firebase/auth';
 import { useSearchParams } from 'next/navigation';
 
-// 커스텀 훅 / 유틸
+// custom hooks | utils
 import { useFirebaseAuth } from './hooks/useFirebaseAuth';
 import { useSignupUser } from './hooks/useSignupUser';
 import { useTempUser } from './hooks/useTempUser';
@@ -54,7 +54,7 @@ export default function SignUpPage() {
             회원가입을 위해
             <br />
             간단한 정보를 입력해 주세요
-            <p className={styles.SubTitle}>정확한 정보 입력이 필요합니다.</p>
+            <p className={styles.subTitle}>정확한 정보 입력이 필요합니다.</p>
           </>
         );
       case 4:
@@ -63,7 +63,7 @@ export default function SignUpPage() {
             휴대폰에서 확인하신
             <br />
             인증번호를 입력해 주세요
-            <p className={styles.SubTitle}>문자로 받은 인증번호 6자리를 입력하세요.</p>
+            <p className={styles.subTitle}>문자로 받은 인증번호 6자리를 입력하세요.</p>
           </>
         );
       case 5:
@@ -72,7 +72,7 @@ export default function SignUpPage() {
             ~~님,
             <br />
             가입을 축하드립니다 !
-            <p className={styles.SubTitle}>모든 정보가 정확한지 마지막으로 확인해 주세요.</p>
+            <p className={styles.subTitle}>모든 정보가 정확한지 마지막으로 확인해 주세요.</p>
           </>
         );
       default:
@@ -80,6 +80,7 @@ export default function SignUpPage() {
     }
   };
 
+  // URL
   const [form, dispatch] = useReducer(formReducer, initialState);
 
   // OAuth 임시 사용자 정보 가져오기
@@ -88,8 +89,7 @@ export default function SignUpPage() {
 
   const oauthInfo = useTempUser(tempId, dispatch);
 
-  // 상태값들
-  const signupMutation = useSignupUser();
+  // 상태 초기
   const [step, setStep] = useState(1);
   const [code, setCode] = useState('');
   const [verified, setVerified] = useState(false);
@@ -97,15 +97,18 @@ export default function SignUpPage() {
   const residentBackRef = useRef<HTMLInputElement>(null);
   const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null);
 
-  // Firebase 인증 요청 훅
+  // 회원가입 요청 API Custom Hooks
+  const signupMutation = useSignupUser();
+
+  // Firebase 인증 요청
   const { requestSMS } = useFirebaseAuth(setConfirmation, () => setStep(4));
 
-  // 이름 입력 핸들러
+  // 이름 입력
   const handleNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ name: 'fullName', value: e.target.value });
   }, []);
 
-  // 주민등록번호 앞자리 입력 핸들러
+  // 주민등록번호 앞자리 입력
   const handleResidentFrontChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, '').slice(0, 6);
     if (raw.length === 6) {
@@ -116,18 +119,18 @@ export default function SignUpPage() {
     dispatch({ name: 'residentFront', value: raw });
   };
 
-  // 주민등록번호 뒷자리 입력 핸들러
+  // 주민등록번호 뒷자리 입력
   const handleResidentBackChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 1);
     dispatch({ name: 'residentBack', value });
   };
 
-  // 휴대폰 번호 입력 핸들러
+  // 휴대폰 번호 입력
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ name: 'number', value: formatPhone(e.target.value) });
   };
 
-  // 회원가입 요청 핸들러
+  // 회원가입 요청
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!verified) {
@@ -156,7 +159,7 @@ export default function SignUpPage() {
     signupMutation.mutate(payload);
   };
 
-  // 인증번호 요청 핸들러
+  // 인증번호 요청
   const handleRequestSMS = async () => {
     const rawPhone = form.number.replace(/-/g, '');
     const isValid = /^010\d{7,8}$/.test(rawPhone);
@@ -175,7 +178,7 @@ export default function SignUpPage() {
     } catch {}
   };
 
-  // 인증번호 확인 핸들러
+  // 인증번호 확인
   const handleConfirmCode = async () => {
     if (!confirmation) return;
 
@@ -205,17 +208,17 @@ export default function SignUpPage() {
   }, [step]);
 
   return (
-    <div className={styles.Container}>
+    <div className={styles.container}>
       <div id="recaptcha-container" />
 
-      <div className={styles.Content}>
-        <h2 className={styles.Title}>{renderTitle()}</h2>
+      <div className={styles.content}>
+        <h2 className={styles.title}>{renderTitle()}</h2>
 
         {step === 1 && (
-          <div className={styles.InputGroup}>
-            <label className={styles.ClickLabel}>이름</label>
+          <div className={styles.inputGroup}>
+            <label className={styles.clickLabel}>이름</label>
             <input
-              className={styles.Input}
+              className={styles.input}
               type="text"
               name="fullName"
               value={form.fullName}
@@ -228,11 +231,11 @@ export default function SignUpPage() {
 
         {step === 2 && (
           <>
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>주민등록번호</label>
-              <div className={styles.ResidentWrapper}>
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>주민등록번호</label>
+              <div className={styles.residentWrapper}>
                 <input
-                  className={styles.ResidentInput}
+                  className={styles.residentInput}
                   type="number"
                   value={form.residentFront}
                   onChange={handleResidentFrontChange}
@@ -241,10 +244,10 @@ export default function SignUpPage() {
                   required
                   autoFocus
                 />
-                <span className={styles.Hyphen}>-</span>
-                <div className={styles.BackWrapper}>
+                <span className={styles.hyphen}>-</span>
+                <div className={styles.backWrapper}>
                   <input
-                    className={styles.ResidentBackInput}
+                    className={styles.residentBackInput}
                     type="number"
                     value={form.residentBack}
                     onChange={handleResidentBackChange}
@@ -253,10 +256,10 @@ export default function SignUpPage() {
                     required
                     ref={residentBackRef}
                   />
-                  <div className={styles.Masking}>
-                    <div className={styles.DotWrapper}>
+                  <div className={styles.masking}>
+                    <div className={styles.dotWrapper}>
                       {'●●●●●●'.split('').map((char, i) => (
-                        <span key={i} className={styles.Dot}>
+                        <span key={i} className={styles.dot}>
                           {char}
                         </span>
                       ))}
@@ -266,10 +269,10 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>이름</label>
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>이름</label>
               <input
-                className={styles.Input}
+                className={styles.input}
                 type="text"
                 name="fullName"
                 value={form.fullName}
@@ -283,10 +286,10 @@ export default function SignUpPage() {
 
         {step === 3 && (
           <>
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>휴대폰 번호</label>
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>휴대폰 번호</label>
               <input
-                className={styles.Input}
+                className={styles.input}
                 type="text"
                 name="number"
                 value={form.number}
@@ -296,14 +299,14 @@ export default function SignUpPage() {
               />
             </div>
 
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>주민등록번호</label>
-              <div className={styles.ResidentWrapper}>
-                <input className={styles.Input} type="text" value={form.residentFront} readOnly />
-                <span className={styles.Hyphen}>-</span>
-                <div className={styles.BackWrapper}>
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>주민등록번호</label>
+              <div className={styles.residentWrapper}>
+                <input className={styles.input} type="text" value={form.residentFront} readOnly />
+                <span className={styles.hyphen}>-</span>
+                <div className={styles.backWrapper}>
                   <input
-                    className={styles.ResidentBackInput}
+                    className={styles.residentBackInput}
                     type="number"
                     value={form.residentBack}
                     onChange={handleResidentBackChange}
@@ -312,10 +315,10 @@ export default function SignUpPage() {
                     required
                     ref={residentBackRef}
                   />
-                  <div className={styles.Masking}>
-                    <div className={styles.DotWrapper}>
+                  <div className={styles.masking}>
+                    <div className={styles.dotWrapper}>
                       {'●●●●●●'.split('').map((char, i) => (
-                        <span key={i} className={styles.Dot}>
+                        <span key={i} className={styles.dot}>
                           {char}
                         </span>
                       ))}
@@ -325,10 +328,10 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>이름</label>
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>이름</label>
               <input
-                className={styles.Input}
+                className={styles.input}
                 type="text"
                 name="fullName"
                 value={form.fullName}
@@ -339,10 +342,10 @@ export default function SignUpPage() {
         )}
         {step === 4 && (
           <>
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>인증번호</label>
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>인증번호</label>
               <input
-                className={styles.Input}
+                className={styles.input}
                 type="text"
                 value={code}
                 onChange={e => setCode(e.target.value)}
@@ -350,19 +353,19 @@ export default function SignUpPage() {
               />
             </div>
 
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>이름</label>
-              <input className={styles.Input} type="text" value={form.fullName} readOnly />
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>이름</label>
+              <input className={styles.input} type="text" value={form.fullName} readOnly />
             </div>
 
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>주민등록번호</label>
-              <div className={styles.ResidentWrapper}>
-                <input className={styles.Input} type="text" value={form.residentFront} readOnly />
-                <span className={styles.Hyphen}>-</span>
-                <div className={styles.BackWrapper}>
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>주민등록번호</label>
+              <div className={styles.residentWrapper}>
+                <input className={styles.input} type="text" value={form.residentFront} readOnly />
+                <span className={styles.hyphen}>-</span>
+                <div className={styles.backWrapper}>
                   <input
-                    className={styles.ResidentBackInput}
+                    className={styles.residentBackInput}
                     type="number"
                     value={form.residentBack}
                     onChange={handleResidentBackChange}
@@ -371,10 +374,10 @@ export default function SignUpPage() {
                     required
                     ref={residentBackRef}
                   />
-                  <div className={styles.Masking}>
-                    <div className={styles.DotWrapper}>
+                  <div className={styles.masking}>
+                    <div className={styles.dotWrapper}>
                       {'●●●●●●'.split('').map((char, i) => (
-                        <span key={i} className={styles.Dot}>
+                        <span key={i} className={styles.dot}>
                           {char}
                         </span>
                       ))}
@@ -384,14 +387,14 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            <div className={styles.InputGroup}>
-              <label className={styles.ClickLabel}>휴대폰 번호</label>
-              <input className={styles.Input} type="text" value={form.number} readOnly />
+            <div className={styles.inputGroup}>
+              <label className={styles.clickLabel}>휴대폰 번호</label>
+              <input className={styles.input} type="text" value={form.number} readOnly />
             </div>
 
-            <div className={styles.ButtonGroup}>
+            <div className={styles.buttonGroup}>
               <button
-                className={styles.Button}
+                className={styles.button}
                 onClick={handleConfirmCode}
                 disabled={code.length !== 6}
               >
@@ -402,17 +405,17 @@ export default function SignUpPage() {
         )}
         {step === 5 && (
           <>
-            <div className={styles.ImageWrapper}>
+            <div className={styles.imageWrapper}>
               <img
                 src="https://raw.githubusercontent.com/dijeungi/charactertalk/main/public/icon/signup_icon.png"
                 alt="회원가입 아이콘"
-                className={styles.CompleteImage}
+                className={styles.completeImage}
               />
             </div>
 
             {showCompleteButton && (
-              <div className={`${styles.ButtonGroup} ${styles.fadeIn}`}>
-                <button className={styles.Button} onClick={handleSubmit}>
+              <div className={`${styles.buttonGroup} ${styles.fadeIn}`}>
+                <button className={styles.button} onClick={handleSubmit}>
                   회원가입 완료
                 </button>
               </div>
@@ -421,12 +424,12 @@ export default function SignUpPage() {
         )}
       </div>
 
-      <div className={styles.ButtonGroup}>
+      <div className={styles.buttonGroup}>
         {step === 1 || step === 2 ? (
           <button
             type="button"
             onClick={() => setStep(prev => prev + 1)}
-            className={styles.Button}
+            className={styles.button}
             disabled={
               (step === 1 && !form.fullName.trim()) ||
               (step === 2 && (form.residentFront.length !== 6 || form.residentBack.length !== 1))
@@ -436,7 +439,7 @@ export default function SignUpPage() {
           </button>
         ) : step === 3 ? (
           <button
-            className={styles.Button}
+            className={styles.button}
             onClick={handleRequestSMS}
             disabled={
               !form.fullName.trim() ||
