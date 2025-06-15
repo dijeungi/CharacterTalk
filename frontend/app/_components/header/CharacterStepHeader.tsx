@@ -25,15 +25,19 @@ export default function CharacterStepHeader() {
 
   // 로컬스토리지에 JSON 형식으로 임시 저장하는 함수
   const handleSaveToLocalStorage = () => {
-    const tempData = {
-      name,
-      oneliner,
-      selectedVoice,
-      profileImage: profileImage ? URL.createObjectURL(profileImage) : null,
+    // Zustand 스토어에서 현재 상태를 그대로 가져옵니다.
+    const state = useCharacterStep1Store.getState();
+
+    const dataToSave = {
+      name: state.name,
+      oneliner: state.oneliner,
+      selectedVoice: state.selectedVoice,
+      profileImage: state.profileImage,
     };
 
-    localStorage.setItem('tempCharacterData', JSON.stringify(tempData));
-    console.log('[!] 임시 저장 완료');
+    localStorage.setItem('tempCharacterData', JSON.stringify(dataToSave));
+    alert('임시저장 되었습니다.');
+    state.resetDirty();
   };
 
   return (
