@@ -1,34 +1,5 @@
-/* custom Fonts */
+@import 'tailwindcss';
 
-* {
-  box-sizing: border-box;
-  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-}
-
-/* pc버전에서도 휴대폰 사이즈로 고정 */
-.container {
-  width: 480px;
-  margin: 0 auto;
-  height: 100dvh;
-}
-
-.Spinner_Overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.8);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1500;
-}
-
-.swal2-container {
-  z-index: 1500 !important;
-}
-.swal2-toast {
-  z-index: 1500 !important;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

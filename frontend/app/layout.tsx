@@ -9,7 +9,6 @@
 
 'use client';
 
-import './reset.css';
 import './globals.css';
 
 // default
@@ -30,7 +29,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body>
-        <div className="container">
+        <div className="mx-auto h-dvh w-[480px]">
           <ReactQueryProvider>
             <HeaderController />
             {children}
