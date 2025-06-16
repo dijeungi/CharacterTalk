@@ -20,7 +20,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 
 // 스타일
-import styles from '@/_styles/header/MainHeader.module.css';
+import styles from '../../_styles/header/MainHeader.module.css';
 
 // 아이콘
 import { HiOutlineMenu, HiOutlineMenuAlt1 } from 'react-icons/hi';

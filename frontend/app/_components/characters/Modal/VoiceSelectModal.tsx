@@ -13,7 +13,6 @@
 import { SwipeableDrawer } from '@mui/material';
 
 // css
-import styles from '@/(routes)/(private)/characters/new/page.module.css';
 
 export default function VoiceSelectDrawer({
   open,
@@ -33,9 +32,9 @@ export default function VoiceSelectDrawer({
       swipeAreaWidth={20}
       disableSwipeToOpen={false}
     >
-      <div className={styles.drawerContent}>
+      {/* <div className={styles.drawerContent}>
         <div className={styles.drawerBar} />
-      </div>
+      </div> */}
 
       {/* 본문 내용 (목소리 선택 등) */}
     </SwipeableDrawer>

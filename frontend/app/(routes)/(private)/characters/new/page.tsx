@@ -1,7 +1,7 @@
 'use client';
 
 import Step1_Profile from '../../../../_components/characters/Step1_Profile';
-import { LinearProgress, Box } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import { useState } from 'react';
 
 const steps = ['1', '2', '3'];

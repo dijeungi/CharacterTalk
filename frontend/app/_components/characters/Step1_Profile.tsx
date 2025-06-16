@@ -8,16 +8,28 @@
 'use client';
 
 // Next
-import Link from 'next/link';
 import { useEffect, useMemo, useState, useRef } from 'react';
 
 // css
-import styles from '/app/(routes)/(private)/characters/new/page.module.css';
+import styles from './page.module.css';
 
 // Icon Library
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { PiMagicWandDuotone } from 'react-icons/pi';
 import { FaChevronRight } from 'react-icons/fa';
+
+// shadcn/ui
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 // components
 import CharacterPolicyNotice from './Drawer/CharacterPolicyNotice';
@@ -31,18 +43,16 @@ export default function Step1_Profile() {
   // 상태 초기화
   const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
   const [voiceModalOpen, setVoiceModalOpen] = useState(false);
-  const [choiceMade, setChoiceMade] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [isNewCreation, setIsNewCreation] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Zustand 상태관리 (header에 '임시저장' 버튼과 연동을 위함)
+  // Zustand 상태관리
   const {
     name,
     oneliner,
     selectedVoice,
     profileImage,
-    isDirty,
     setName,
     setOneliner,
     setSelectedVoice,
@@ -54,14 +64,11 @@ export default function Step1_Profile() {
   // 프로필 이미지 미리보기
   const imagePreview = useMemo(() => {
     if (profileImage instanceof File || profileImage instanceof Blob) {
-      // 사용자가 방금 업로드한 경우 (File 객체)
       return URL.createObjectURL(profileImage);
     }
     if (typeof profileImage === 'string') {
-      // localStorage에서 불러온 경우 (Base64 문자열)
       return profileImage;
     }
-    // 그 외의 경우
     return null;
   }, [profileImage]);
 
@@ -71,10 +78,6 @@ export default function Step1_Profile() {
     [profileImage, name, oneliner]
   );
 
-  /* 
-    input 입력값을 감지하여 setDirty(zustand 상태관리)를 업데이트 합니다.
-    우측 상단 Header에 임시저장이랑 연동하기 위함입니다.
-  */
   useEffect(() => {
     if (name || oneliner || selectedVoice || profileImage) {
       setDirty();
@@ -94,11 +97,28 @@ export default function Step1_Profile() {
       };
     }
   };
+
   // 파일선택 창 열기
   const triggerFileInput = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
+  };
+
+  // "새로 제작" 핸들러
+  const handleNewCreation = () => {
+    localStorage.removeItem('tempCharacterData');
+    setName('');
+    setOneliner('');
+    setSelectedVoice('');
+    setProfileImage(null);
+    resetDirty();
+    setIsDataLoaded(true);
+  };
+
+  // "이어서 제작" 핸들러
+  const handleContinueCreation = () => {
+    setIsDataLoaded(true);
   };
 
   useEffect(() => {
@@ -111,51 +131,17 @@ export default function Step1_Profile() {
       if (parsedData.profileImage) {
         setProfileImage(parsedData.profileImage);
       }
-      setIsNewCreation(false);
-      setIsDataLoaded(true);
+      setIsAlertOpen(true);
     } else {
-      setIsNewCreation(true);
       setIsDataLoaded(true);
-      setChoiceMade(true);
     }
   }, []);
 
-  // "새로 제작" 핸들러
-  const handleNewCreation = () => {
-    localStorage.removeItem('tempCharacterData');
-    setName('');
-    setOneliner('');
-    setSelectedVoice('');
-    setProfileImage(null);
-    resetDirty();
-    setIsNewCreation(true);
-    setChoiceMade(true);
-  };
-
-  // "이어서 제작" 핸들러
-  const handleContinueCreation = () => {
-    setIsNewCreation(false);
-    setChoiceMade(true);
-    setIsDataLoaded(true);
-  };
-
   return (
-    <section className={styles.wrapper}>
+    <section className={styles.container}>
       <div className={styles.formContent}>
-        {isDataLoaded && !isNewCreation && !choiceMade && (
-          // 로컬스토리지에 데이터가 있을 경우 "이어서 제작" 또는 "새로 제작" 선택
-          <div className={styles.optionButtons}>
-            <button className={styles.optionButton} onClick={handleContinueCreation}>
-              이어서 제작
-            </button>
-            <button className={styles.optionButton} onClick={handleNewCreation}>
-              새로 제작
-            </button>
-          </div>
-        )}
-
-        {/* "새로 제작" 또는 "이어서 제작"을 선택 후 진행 */}
-        {isDataLoaded && choiceMade && (
+        {/* isDataLoaded가 true일 때만 전체 컨텐츠를 렌더링 */}
+        {isDataLoaded && (
           <>
             {/* 프로필 사진 업로드 */}
             <div className={styles.field}>
@@ -165,7 +151,6 @@ export default function Step1_Profile() {
 
               <div className={styles.profileRow}>
                 <div className={styles.imageBox}>
-                  {/* 프로필 이미지 미리보기 */}
                   {imagePreview && (
                     <img src={imagePreview} alt="Profile" className={styles.profileImage} />
                   )}
@@ -177,8 +162,8 @@ export default function Step1_Profile() {
                     <p className={styles.subCaption}>부적절한 이미지는 업로드가 제한됩니다.</p>
                   </div>
                   <div className={styles.buttonRow}>
-                    <button className={styles.button} type="button" onClick={triggerFileInput}>
-                      <MdOutlineFileUpload /> 업로드
+                    <Button variant="outline" type="button" onClick={triggerFileInput}>
+                      <MdOutlineFileUpload className="mr-2 h-4 w-4" /> 업로드
                       <input
                         ref={fileInputRef}
                         id="profile-image-upload"
@@ -187,14 +172,14 @@ export default function Step1_Profile() {
                         style={{ display: 'none' }}
                         onChange={handleProfileImageUpload}
                       />
-                    </button>
-                    <button
-                      className={styles.button}
+                    </Button>
+                    <Button
+                      variant="outline"
                       type="button"
                       onClick={() => setImageGeneratorDrawerOpen(true)}
                     >
-                      <PiMagicWandDuotone /> 생성
-                    </button>
+                      <PiMagicWandDuotone className="mr-2 h-4 w-4" /> 생성
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -256,17 +241,15 @@ export default function Step1_Profile() {
                 <FaChevronRight className={styles.chevronIcon} />
               </button>
             </div>
-            {/* 부적절한 캐릭터 정책 안내 */}
+
             <CharacterPolicyNotice />
 
-            {/* 고정 하단 버튼 */}
             <div className={styles.fixedBottom}>
-              <button className={styles.Button} disabled={!isFormValid}>
+              <Button className={styles.Button} disabled={!isFormValid} size="lg">
                 다음 단계
-              </button>
+              </Button>
             </div>
 
-            {/* 목소리 선택 모달 */}
             <VoiceSelectModal
               open={voiceModalOpen}
               onClose={() => setVoiceModalOpen(false)}
@@ -274,7 +257,6 @@ export default function Step1_Profile() {
               setSelectedVoice={setSelectedVoice}
             />
 
-            {/* Profile Image Components */}
             <ProfileImageGeneratorDrawer
               open={imageGeneratorDrawerOpen}
               onClose={() => setImageGeneratorDrawerOpen(false)}
@@ -286,6 +268,28 @@ export default function Step1_Profile() {
           </>
         )}
       </div>
+
+      {/* 이어서/새로 제작 선택 AlertDialog */}
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>작성 이어하기</AlertDialogTitle>
+            <AlertDialogDescription>
+              임시 저장된 데이터가 있습니다. 이어서 작성하시겠습니까?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline" onClick={handleNewCreation}>
+                새로 제작
+              </Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={handleContinueCreation}>이어서 제작</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 }

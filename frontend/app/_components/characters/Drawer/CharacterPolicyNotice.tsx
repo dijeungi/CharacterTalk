@@ -14,7 +14,7 @@ import { useState } from 'react';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 // css
-import styles from '@/(routes)/(private)/characters/new/page.module.css';
+import styles from './CharacterPolicyNotice.module.css';
 
 export default function CharacterPolicyNotice() {
   const [open, setOpen] = useState(false);
