@@ -9,7 +9,7 @@ interface Step1State {
   setName: (name: string) => void;
   setOneliner: (oneliner: string) => void;
   setSelectedVoice: (voice: string) => void;
-  setProfileImage: (image: File | string | null) => void;
+  setProfileImage: (image: File | string) => void;
   setDirty: () => void;
   resetDirty: () => void;
 }
