@@ -18,14 +18,14 @@ import { useCharacterStep1Store } from '../../store/characterStep1Store';
 
 // 아이콘
 import { MdKeyboardBackspace } from 'react-icons/md';
+import { Toast } from '@/app/_utils/Swal';
 
 export default function CharacterStepHeader() {
-  // store 상태 가져오기
-  const { isDirty, name, oneliner, selectedVoice, profileImage } = useCharacterStep1Store();
+  // store 상태 호출
+  const { isDirty, setDirty, resetDirty } = useCharacterStep1Store();
 
   // 로컬스토리지에 JSON 형식으로 임시 저장하는 함수
   const handleSaveToLocalStorage = () => {
-    // Zustand 스토어에서 현재 상태를 그대로 가져옵니다.
     const state = useCharacterStep1Store.getState();
 
     const dataToSave = {
@@ -36,8 +36,16 @@ export default function CharacterStepHeader() {
     };
 
     localStorage.setItem('tempCharacterData', JSON.stringify(dataToSave));
-    alert('임시저장 되었습니다.');
-    state.resetDirty();
+    Toast.fire({
+      icon: 'success',
+      title: '임시저장 되었습니다.',
+      didOpen: () => {
+        resetDirty();
+      },
+      didClose: () => {
+        setDirty();
+      },
+    });
   };
 
   return (
