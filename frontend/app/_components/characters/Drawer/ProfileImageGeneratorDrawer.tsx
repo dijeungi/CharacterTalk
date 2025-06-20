@@ -46,28 +46,36 @@ export default function ProfileImageGeneratorDrawer({
             sx: {
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
-              padding: '2rem',
               backgroundColor: '#ffffff',
               color: '#000000',
+              paddingTop: '1rem',
+              paddingLeft: '2rem',
+              paddingRight: '2rem',
+              paddingBottom: '2rem',
             },
           },
         }}
       >
         <div className={styles.drawerContent}>
           <div className={styles.drawerBar} />
-          <h2 className={styles.drawerTitle}>AI 프로필 이미지 생성</h2>
-          <p className={styles.drawerText}>
-            캐릭터의 외형, 분위기, 배경 등을 자유롭게 설명해주세요.
-          </p>
-          <div className={styles.textareaWrapper}>
-            <textarea
-              value={prompt}
-              onChange={e => setPrompt(e.target.value)}
-              placeholder="예시: 은하수를 배경으로 한 푸른 머리의 신비로운 소녀"
-              className={styles.textarea}
-              rows={4}
-            />
+          <div className={styles.field}>
+            <label className={styles.label}>
+              프롬프트 <span className={styles.required}>*</span>
+            </label>
+            <p className={styles.drawerText}>
+              캐릭터의 외형, 분위기, 배경 등을 자유롭게 설명해주세요.
+            </p>
+            <div className={styles.textareaWrapper}>
+              <textarea
+                value={prompt}
+                onChange={e => setPrompt(e.target.value)}
+                placeholder="예시: 은하수를 배경으로 한 푸른 머리의 신비로운 소녀"
+                className={styles.textarea}
+                rows={4}
+              />
+            </div>
           </div>
+
           <div className={styles.fixedBottom}>
             <button onClick={handleGenerate} disabled={isLoading} className={styles.Button}>
               {isLoading ? '생성 중...' : '생성하기'}

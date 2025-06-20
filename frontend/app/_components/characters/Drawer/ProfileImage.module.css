@@ -1,5 +1,5 @@
 .drawerContent {
-  text-align: center;
+  text-align: left;
   height: 80dvh;
 }
 
@@ -7,14 +7,26 @@
   width: 40px;
   height: 4px;
   border-radius: 4px;
-  background-color: #666;
+  background-color: #c2c0c1;
   margin: 0 auto 1.5rem;
 }
 
-.drawerTitle {
-  font-size: 1.5rem;
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.label {
   font-weight: bold;
-  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  color: #000;
+}
+
+.required {
+  color: red;
+  margin-left: 0.25rem;
 }
 
 .drawerText {

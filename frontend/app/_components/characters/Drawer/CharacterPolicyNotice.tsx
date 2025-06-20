@@ -39,9 +39,12 @@ export default function CharacterPolicyNotice() {
             sx: {
               borderTopLeftRadius: '1rem',
               borderTopRightRadius: '1rem',
-              padding: '2rem',
               backgroundColor: '#ffffff',
               color: '#000000',
+              paddingTop: '1rem',
+              paddingLeft: '2rem',
+              paddingRight: '2rem',
+              paddingBottom: '2rem',
             },
           },
         }}
