@@ -37,8 +37,8 @@ export default function CharacterPolicyNotice() {
         slotProps={{
           paper: {
             sx: {
-              borderTopLeftRadius: '16px',
-              borderTopRightRadius: '16px',
+              borderTopLeftRadius: '1rem',
+              borderTopRightRadius: '1rem',
               padding: '2rem',
               backgroundColor: '#ffffff',
               color: '#000000',
