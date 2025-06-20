@@ -57,39 +57,33 @@ class AIGenerationService:
         return positive_prompt, negative_prompt
     
     # 합체
-    def generate_image(self, korean_prompt: str, width: int, height: int, num_images: int) -> list[str]:
-        # 번역 및 태그 생성 (동일)
+    def generate_image(self, korean_prompt: str, width: int, height: int) -> str:
+        # 번역
         english_prompt = self.translate_ko_to_en(korean_prompt)
         print(f"[!] 번역된 프롬프트: {english_prompt}")
+        
+        # 2. 태그
         positive_prompt, negative_prompt = self.create_tagged_prompt(english_prompt)
         print(f"최종 생성 프롬프트: {positive_prompt}")
         
-        print(f"이미지 {num_images}장 생성 시작...")
-        
-        # 1. num_images_per_prompt를 사용해 한 번의 호출로 여러 이미지 생성
-        images = self.image_pipeline(
+        # 3. 이미지 생성
+        image = self.image_pipeline(
             prompt=positive_prompt,
             negative_prompt=negative_prompt,
             width=width,
-            height=height,
-            num_images_per_prompt=num_images
-        ).images
+            height=height
+        ).images[0]
         
-        image_urls = []
+        # 4. 이미지 저장 및 URL 반환
         save_dir = os.path.join(settings.MEDIA_ROOT, 'generated_images')
         os.makedirs(save_dir, exist_ok=True)
-
-        # 2. 생성된 이미지 리스트(images)를 순회하며 저장
-        for image in images:
-            filename = f"{uuid.uuid4()}.png"
-            file_path = os.path.join(save_dir, filename)
-            image.save(file_path)
-            
-            image_url = os.path.join(settings.MEDIA_URL, 'generated_images', filename)
-            image_urls.append(image_url)
         
-        print("이미지 생성 완료.")
-        return image_urls
+        filename = f"{uuid.uuid4()}.png"
+        file_path = os.path.join(save_dir, filename)
+        image.save(file_path)
+        
+        # 웹 브라우저에서 접근 가능한 URL 경로를 반환
+        return os.path.join(settings.MEDIA_URL, 'generated_images', filename)
 
 # 장고 앱 전체에서 이 서비스 인스턴스 하나만 사용하도록 미리 생성해 둡니다.
 ai_service = AIGenerationService()
