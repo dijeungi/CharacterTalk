@@ -3,6 +3,7 @@
 import { SwipeableDrawer } from '@mui/material';
 import { useState } from 'react';
 import styles from './ProfileImage.module.css';
+import { Toast } from '@/app/_utils/Swal';
 
 interface ProfileImageGeneratorDrawerProps {
   open: boolean;
@@ -20,7 +21,10 @@ export default function ProfileImageGeneratorDrawer({
 
   const handleGenerate = async () => {
     if (!prompt) {
-      alert('이미지에 대한 설명을 입력해주세요.');
+      Toast.fire({
+        icon: 'warning',
+        title: '이미지에 대한 설명을 입력해주세요.',
+      });
       return;
     }
     setIsLoading(true);

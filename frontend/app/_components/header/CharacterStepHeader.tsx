@@ -10,8 +10,8 @@
 // Next.js
 import Link from 'next/link';
 
-// 스타일
-import styles from '../../_styles/header/CharacterStepHeader.module.css';
+// css
+import styles from './CharacterStepHeader.module.css';
 
 // 상태
 import { useCharacterStep1Store } from '../../store/characterStep1Store';
