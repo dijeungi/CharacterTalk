@@ -1,6 +1,13 @@
 .drawerContent {
-  text-align: left;
-  height: 80dvh;
+  max-height: calc(95vh - 100px);
+  overflow-y: auto;
+  padding-bottom: 6rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.drawerContent::-webkit-scrollbar {
+  display: none;
 }
 
 .drawerBar {
@@ -51,6 +58,11 @@
   line-height: 1.5;
 }
 
+.imageList {
+  display: flex;
+  gap: 12px;
+}
+
 .imageWrapper {
   position: relative;
   display: inline-block;
@@ -87,6 +99,34 @@
   pointer-events: none;
 }
 
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.menuItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 2px 0;
+  font-size: 14px;
+}
+
+.ratio {
+  font-weight: 500;
+  color: #111;
+}
+
+.size {
+  color: #888;
+  font-size: 13px;
+}
+
+.select {
+  background-color: #f9f9f9;
+}
+
 .fixedBottom {
   position: fixed;
   bottom: 0;
@@ -110,6 +150,34 @@
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.numberButton {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.numberButton:hover {
+  background-color: #f0f0f0;
+}
+
+.active {
+  background-color: #2e80ff;
+  color: white;
+  border-color: #2e80ff;
 }
 
 .Button:disabled {
