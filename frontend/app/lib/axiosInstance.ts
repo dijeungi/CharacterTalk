@@ -4,10 +4,11 @@
 */
 
 import axios from 'axios';
+import { API_SERVER_HOST } from '@/app/_apis/config';
 
 // axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: '/',
+  baseURL: `${API_SERVER_HOST}/api`,
   withCredentials: true,
 });
 
