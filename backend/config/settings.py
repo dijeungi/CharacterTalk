@@ -120,3 +120,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 생성된 이미지를 저장하고 웹에서 접근하기 위한 설정입니다.
 MEDIA_URL = '/Users/junho/Desktop/CharacterTalk/backend/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 클라우드 플레어 R2 스토리지 저장 서버 URL
+R2_BUCKET_NAME = os.getenv("R2_BUCKET_NAME")
+R2_ENDPOINT_URL = os.getenv("R2_ENDPOINT_URL")
+R2_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
+R2_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
+R2_PUBLIC_URL = os.getenv("R2_PUBLIC_URL")
