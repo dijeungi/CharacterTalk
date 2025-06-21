@@ -2,6 +2,9 @@
 django
 djangorestframework
 
+# CORS
+django-cors-headers
+
 # AI & Image
 torch
 diffusers
