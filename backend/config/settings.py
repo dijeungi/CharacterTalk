@@ -30,10 +30,12 @@ INSTALLED_APPS = [
     # add
     'rest_framework',
     'api',
+    'corsheaders',
 ]
 
 # Middleware
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -42,6 +44,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # URL
 ROOT_URLCONF = 'config.urls'
@@ -110,5 +118,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Media files (User uploaded files)
 # 생성된 이미지를 저장하고 웹에서 접근하기 위한 설정입니다.
-MEDIA_URL = '/media/'
+MEDIA_URL = '/Users/junho/Desktop/CharacterTalk/backend/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
