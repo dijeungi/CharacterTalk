@@ -13,15 +13,13 @@
   flex-grow: 1;
 }
 
-/* 새로 제작 or 이어서 제작 */
-
 /* Step 1 */
 
 .field {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin: 0.75rem 0;
+  margin: 1.5rem 0;
 }
 
 .label {
