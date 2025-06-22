@@ -22,7 +22,7 @@ export default function CharacterPolicyNotice() {
   return (
     <>
       <div className={styles.helpNotice}>
-        ※ 부적절한 캐릭터는 삭제될 수 있어요
+        ※ 부적절한 비윤리적인 캐릭터는 삭제될 수 있어요
         <button className={styles.helpButton} onClick={() => setOpen(true)}>
           더보기
         </button>
@@ -53,7 +53,7 @@ export default function CharacterPolicyNotice() {
           <div className={styles.drawerBar} />
           <h2 className={styles.drawerTitle}>캐릭터 제작 시 꼭 확인해주세요!</h2>
           <p className={styles.drawerText}>
-            아래 항목에 해당하는 캐릭터는 제작이 제한되거나 삭제될 수 있습니다:
+            아래 항목에 해당하는 캐릭터는 경고 없이 삭제될 수 있습니다.
             <br />
             <br />
             • 노골적인 선정성, 폭력성, 차별/혐오 표현 포함

@@ -36,6 +36,7 @@ export default function CharacterStepHeader() {
     };
 
     localStorage.setItem('tempCharacterData', JSON.stringify(dataToSave));
+
     Toast.fire({
       icon: 'success',
       title: '임시저장 되었습니다.',

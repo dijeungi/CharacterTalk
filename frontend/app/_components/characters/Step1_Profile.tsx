@@ -6,8 +6,6 @@
 */
 
 'use client';
-
-// Next
 import { useEffect, useMemo, useState, useRef } from 'react';
 
 // css
@@ -16,12 +14,11 @@ import styles from './page.module.css';
 // Icon Library
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { PiMagicWandDuotone } from 'react-icons/pi';
-import { FaChevronRight } from 'react-icons/fa';
 
 // components
 import CharacterPolicyNotice from './Drawer/CharacterPolicyNotice';
 import ContinueCreationModal from './Modal/ContinueCreationModal';
-import VoiceSelectModal from './Modal/VoiceSelectModal';
+// import VoiceSelectModal from './Modal/VoiceSelectModal';
 
 // store
 import { useCharacterStep1Store } from '../../store/characterStep1Store';
@@ -31,7 +28,6 @@ export default function Step1_Profile() {
   // 상태 초기화
   const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
   const [continueModalOpen, setContinueModalOpen] = useState(false);
-  const [voiceModalOpen, setVoiceModalOpen] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -177,7 +173,6 @@ export default function Step1_Profile() {
                   </div>
                 </div>
               </div>
-
               {/* 이름 입력 */}
               <div className={styles.field}>
                 <label className={styles.label}>
@@ -200,7 +195,6 @@ export default function Step1_Profile() {
                   <div className={styles.charCount}>{name.length} / 20</div>
                 </div>
               </div>
-
               {/* 한 줄 소개 입력 */}
               <div className={styles.field}>
                 <label className={styles.label}>
@@ -221,7 +215,7 @@ export default function Step1_Profile() {
                 </div>
               </div>
 
-              {/* 목소리 선택 */}
+              {/* 목소리 선택
               <div className={styles.field}>
                 <label className={styles.label}>목소리 선택</label>
                 <p className={styles.caption}>캐릭터에게 어울리는 목소리를 선택해 주세요</p>
@@ -235,22 +229,22 @@ export default function Step1_Profile() {
                     : '캐릭터의 목소리를 선택해주세요.'}
                   <FaChevronRight className={styles.chevronIcon} />
                 </button>
-              </div>
+              </div> */}
 
               <CharacterPolicyNotice />
-
               <div className={styles.fixedBottom}>
                 <button className={styles.Button} disabled={!isFormValid}>
                   다음 단계
                 </button>
               </div>
 
-              <VoiceSelectModal
+              {/* Todo: 추후 기능.. 으로 잠깐  */}
+              {/* <VoiceSelectModal
                 open={voiceModalOpen}
                 onClose={() => setVoiceModalOpen(false)}
                 selectedVoice={selectedVoice}
                 setSelectedVoice={setSelectedVoice}
-              />
+              /> */}
 
               <ProfileImageGeneratorDrawer
                 open={imageGeneratorDrawerOpen}
