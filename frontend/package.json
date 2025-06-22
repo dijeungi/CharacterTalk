@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "docs": "typedoc --options typedoc.json"
-    },
-
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -42,7 +41,6 @@
     "swagger-ui-react": "^5.22.0",
     "sweetalert2": "^11.21.0",
     "swiper": "^11.2.8",
-    "typedoc": "^0.28.5",
     "uuid": "^11.1.0",
     "zustand": "^5.0.5"
   },
