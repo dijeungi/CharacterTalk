@@ -12,6 +12,10 @@ transformers
 safetensors
 sentencepiece
 Pillow
+sacremoses
+
+# 클라우드 플레어 R2 스토리지 관련
+boto3
 
 # Environment
 python-dotenv
