@@ -1,50 +1,173 @@
-/*
-  회원가입 페이지 컴포넌트 (Firebase 인증 기반 + OAuth 임시 사용자 정보 활용)
-  app/(route)/signup/page.tsx
-*/
+/**
+ * @route        /signup
+ * @file         frontend/app/(routes)/(public)/signup/page.tsx
+ * @component    SignUpPage
+ * @desc         소셜 로그인 이후 회원가입 정보를 입력받는 폼 구성 페이지
+ *
+ * @layout       PublicLayout
+ * @access       public
+ * @props        -
+ *
+ * @features
+ *  - 소셜 로그인으로 받은 닉네임 자동 입력
+ *  - 이름, 주민번호, 휴대폰번호, 인증번호 순 입력
+ *  - Firebase 인증 기반 휴대폰 인증
+ *  - Zustand로 사용자 입력 상태 관리
+ *  - 인증 완료 시 서버에 회원가입 요청
+ *
+ * @dependencies
+ *  - Firebase Auth (휴대폰 인증)
+ *  - Zustand (입력 상태 관리)
+ *  - React Toast (사용자 알림)
+ *
+ * @todo
+ *  - 전화번호 중복 확인 기능 추가
+ *
+ * @author       최준호
+ * @since        2025.06.12
+ * @updated      2025.06.23
+ */
 
 'use client';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 // css
 import styles from './page.module.css';
 
-// library
-import { useState, useRef, useCallback, useReducer, useEffect } from 'react';
+// modules
 import { ConfirmationResult } from 'firebase/auth';
-import { useSearchParams } from 'next/navigation';
 
-// custom hooks | utils
-import { useFirebaseAuth } from './hooks/useFirebaseAuth';
-import { useSignupUser } from './hooks/useSignupUser';
-import { useTempUser } from './hooks/useTempUser';
-import { Toast } from '../../../_utils/Swal';
+// custom hooks, utils
+import { useFirebaseAuth } from './_hooks/useFirebaseAuth';
+import { useSignupUser } from './_hooks/useSignupUser';
+import { useTempUser } from './_hooks/useTempUser';
+import { Toast } from '@/app/_utils/Swal';
 
-// 회원가입 폼 초기 상태
-const initialState = {
-  fullName: '',
-  residentFront: '',
-  residentBack: '',
-  number: '',
-  carrier: '',
-};
+// store
+import { useSignupStore } from '@/app/store/signupStore';
 
-// 회원가입 폼 reducer 함수
-function formReducer(state: typeof initialState, action: any) {
-  return { ...state, [action.name]: action.value };
-}
+// Components
+import FullNameInput from './_components/FullNameInput';
+import ResidentInput from './_components/ResidentInput';
+import PhoneInput from './_components/PhoneInput';
+import VerifyCodeInput from './_components/VerifyCodeInput';
 
-// 전화번호 포맷 함수
-const formatPhone = (value: string) => {
-  const raw = value.replace(/\D/g, '');
-  if (raw.length < 4) return raw;
-  if (raw.length < 8) return `${raw.slice(0, 3)}-${raw.slice(3)}`;
-  return `${raw.slice(0, 3)}-${raw.slice(3, 7)}-${raw.slice(7, 11)}`;
-};
-
-// 회원가입 페이지 컴포넌트
 export default function SignUpPage() {
-  // 타이틀 렌더링 함수
+  // 상태 관리
+  const [step, setStep] = useState(1);
+  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null);
+
+  // store
+  const { resetForm } = useSignupStore();
+
+  // Params
+  const searchParams = useSearchParams();
+  const tempId = searchParams.get('tempId');
+
+  // 임시 사용자 정보 불러오기 및 이름 초기화
+  const { email, oauth } = useTempUser(tempId, userData => {
+    if (userData?.nick_name) {
+      useSignupStore.getState().setFormField('fullName', userData.nick_name);
+    }
+  });
+
+  // 회원가입 요청 및 SMS 인증 함수
+  const signupMutation = useSignupUser();
+  const { requestSMS } = useFirebaseAuth(setConfirmation);
+
+  // 컴포넌트 언마운트 시(탈주 시) Store 상태 초기화
+  useEffect(() => {
+    return () => {
+      resetForm();
+    };
+  }, [resetForm]);
+
+  // 핸들러 함수 (자식 컴포넌트에 props로 전달될 로직)
+  const handleNextStep = () => setStep(prev => prev + 1);
+
+  // SMS 인증번호 전송 함수
+  const handleRequestSMS = async () => {
+    const number = useSignupStore.getState().number;
+    const rawPhone = number.replace(/-/g, '');
+    const isValid = /^010\d{7,8}$/.test(rawPhone);
+
+    if (!isValid) {
+      Toast.fire({
+        icon: 'error',
+        title: '유효한 휴대폰 번호를 입력해 주세요.',
+      });
+      return;
+    }
+
+    try {
+      await requestSMS(number);
+      handleNextStep();
+    } catch (error) {
+      console.error('SMS 전송 실패:', error);
+    }
+  };
+
+  // 인증번호 확인 함수
+  const handleConfirmCode = async (code: string) => {
+    if (!confirmation) return;
+
+    try {
+      await confirmation.confirm(code);
+
+      await handleSubmit();
+      setStep(5);
+    } catch (error: any) {
+      Toast.fire({
+        icon: 'error',
+        title: '인증에 실패했습니다. 인증번호를 확인해 주세요.',
+      });
+    }
+  };
+
+  // 주민번호로 생년월일·성별 계산 후 유효성 검증 및 회원가입 payload 생성
+  const handleSubmit = async () => {
+    const form = useSignupStore.getState();
+    const birth = form.residentFront;
+    if (!/^\d{6}$/.test(birth)) {
+      Toast.fire({ icon: 'error', title: '생년월일 6자리를 입력해 주세요.' });
+      return;
+    }
+
+    const yearPrefix = ['3', '4', '7', '8'].includes(form.residentBack) ? '20' : '19';
+    const year = parseInt(`${yearPrefix}${birth.slice(0, 2)}`, 10);
+    const month = parseInt(birth.slice(2, 4), 10);
+    const day = parseInt(birth.slice(4, 6), 10);
+
+    const isValidDate =
+      !isNaN(new Date(`${year}-${month}-${day}`).getTime()) &&
+      month >= 1 &&
+      month <= 12 &&
+      day >= 1 &&
+      day <= 31;
+
+    if (!isValidDate) {
+      Toast.fire({ icon: 'error', title: '올바른 생년월일을 입력해 주세요.' });
+      return;
+    }
+
+    const payload = {
+      email,
+      oauth,
+      fullName: form.fullName,
+      residentFront: form.residentFront,
+      residentBack: form.residentBack,
+      gender: ['1', '3', '5', '7'].includes(form.residentBack) ? 'M' : 'F',
+      birthDate: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
+      number: form.number.replace(/-/g, ''),
+      verified: true,
+    };
+    signupMutation.mutate(payload);
+  };
+
+  // 현재 단계(step)에 따라 상단 안내 문구 메시지 <div> 렌더링
   const renderTitle = () => {
+    const fullName = useSignupStore.getState().fullName;
     switch (step) {
       case 1:
       case 2:
@@ -69,7 +192,7 @@ export default function SignUpPage() {
       case 5:
         return (
           <>
-            ~~님,
+            {fullName}님,
             <br />
             가입을 축하드립니다 !
             <p className={styles.subTitle}>모든 정보가 정확한지 마지막으로 확인해 주세요.</p>
@@ -80,132 +203,66 @@ export default function SignUpPage() {
     }
   };
 
-  // URL
-  const [form, dispatch] = useReducer(formReducer, initialState);
-
-  // OAuth 임시 사용자 정보 가져오기
-  const searchParams = useSearchParams();
-  const tempId = searchParams.get('tempId');
-
-  const oauthInfo = useTempUser(tempId, dispatch);
-
-  // 상태 초기
-  const [step, setStep] = useState(1);
-  const [code, setCode] = useState('');
-  const [verified, setVerified] = useState(false);
-  const [showCompleteButton, setShowCompleteButton] = useState(false);
-  const residentBackRef = useRef<HTMLInputElement>(null);
-  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null);
-
-  // 회원가입 요청 API Custom Hooks
-  const signupMutation = useSignupUser();
-
-  // Firebase 인증 요청
-  const { requestSMS } = useFirebaseAuth(setConfirmation, () => setStep(4));
-
-  // 이름 입력
-  const handleNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ name: 'fullName', value: e.target.value });
-  }, []);
-
-  // 주민등록번호 앞자리 입력
-  const handleResidentFrontChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/\D/g, '').slice(0, 6);
-    if (raw.length === 6) {
-      setTimeout(() => {
-        residentBackRef.current?.focus();
-      }, 0);
-    }
-    dispatch({ name: 'residentFront', value: raw });
-  };
-
-  // 주민등록번호 뒷자리 입력
-  const handleResidentBackChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 1);
-    dispatch({ name: 'residentBack', value });
-  };
-
-  // 휴대폰 번호 입력
-  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ name: 'number', value: formatPhone(e.target.value) });
-  };
-
-  // 회원가입 요청
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!verified) {
-      alert('본인인증을 먼저 완료해 주세요.');
-      return;
-    }
-
-    const birthDate = form.residentFront;
-    const yearPrefix = form.residentBack === '1' || form.residentBack === '2' ? '19' : '20';
-
-    const payload = {
-      email: oauthInfo.email,
-      oauth: oauthInfo.oauth,
-      fullName: form.fullName,
-      gender: form.residentBack === '1' || form.residentBack === '3' ? 'M' : 'F',
-      number: form.number.replace(/-/g, ''),
-      residentFront: form.residentFront,
-      residentBack: form.residentBack,
-      verified,
-      birthDate: `${yearPrefix}${birthDate.slice(0, 2)}-${birthDate.slice(2, 4)}-${birthDate.slice(
-        4,
-        6
-      )}`,
-    };
-
-    signupMutation.mutate(payload);
-  };
-
-  // 인증번호 요청
-  const handleRequestSMS = async () => {
-    const rawPhone = form.number.replace(/-/g, '');
-    const isValid = /^010\d{7,8}$/.test(rawPhone);
-
-    if (!isValid) {
-      Toast.fire({
-        icon: 'error',
-        title: '유효한 휴대폰 번호를 입력해 주세요.',
-      });
-      return;
-    }
-
-    try {
-      await requestSMS(form.number);
-      setStep(4);
-    } catch {}
-  };
-
-  // 인증번호 확인
-  const handleConfirmCode = async () => {
-    if (!confirmation) return;
-
-    try {
-      await confirmation.confirm(code);
-      setVerified(true);
-      Toast.fire({ icon: 'success', title: '인증에 성공했습니다.' });
-      setStep(5);
-    } catch (error: any) {
-      Toast.fire({
-        icon: 'error',
-        title: error.message || '인증에 실패했습니다. 인증번호를 확인해 주세요.',
-      });
+  // 현재 단계(step)에 따라 입력 폼 및 버튼 컴포넌트 동적으로 렌더링
+  const renderStepComponent = () => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <FullNameInput editable />
+            <div className={styles.fixedBottom}>
+              <button
+                className={styles.button}
+                onClick={handleNextStep}
+                disabled={!useSignupStore.getState().fullName.trim()}
+              >
+                다음
+              </button>
+            </div>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <ResidentInput editable />
+            <FullNameInput editable={false} />
+            <div className={styles.fixedBottom}>
+              <button
+                className={styles.button}
+                onClick={handleNextStep}
+                disabled={
+                  useSignupStore.getState().residentFront.length !== 6 ||
+                  useSignupStore.getState().residentBack.length !== 1
+                }
+              >
+                다음
+              </button>
+            </div>
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <PhoneInput onChangeOnly={false} />
+            <ResidentInput editable={false} />
+            <FullNameInput editable={false} />
+            <div className={styles.fixedBottom}>
+              <button
+                className={styles.button}
+                onClick={handleRequestSMS}
+                disabled={useSignupStore.getState().number.replace(/\D/g, '').length !== 11}
+              >
+                휴대폰 번호 인증
+              </button>
+            </div>
+          </>
+        );
+      case 4:
+        return <VerifyCodeInput onConfirm={handleConfirmCode} />;
+      default:
+        return null;
     }
   };
-
-  // step 5 진입 시 버튼 표시 딜레이 처리
-  useEffect(() => {
-    if (step === 5) {
-      const timer = setTimeout(() => {
-        setShowCompleteButton(true);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else {
-      setShowCompleteButton(false);
-    }
-  }, [step]);
 
   return (
     <div className={styles.container}>
@@ -213,244 +270,7 @@ export default function SignUpPage() {
 
       <div className={styles.content}>
         <h2 className={styles.title}>{renderTitle()}</h2>
-
-        {step === 1 && (
-          <div className={styles.inputGroup}>
-            <label className={styles.clickLabel}>이름</label>
-            <input
-              className={styles.input}
-              type="text"
-              name="fullName"
-              value={form.fullName}
-              onChange={handleNameChange}
-              placeholder="이름을 입력해 주세요"
-              required
-            />
-          </div>
-        )}
-
-        {step === 2 && (
-          <>
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>주민등록번호</label>
-              <div className={styles.residentWrapper}>
-                <input
-                  className={styles.residentInput}
-                  type="number"
-                  value={form.residentFront}
-                  onChange={handleResidentFrontChange}
-                  placeholder="앞 6자리"
-                  maxLength={6}
-                  required
-                  autoFocus
-                />
-                <span className={styles.hyphen}>-</span>
-                <div className={styles.backWrapper}>
-                  <input
-                    className={styles.residentBackInput}
-                    type="number"
-                    value={form.residentBack}
-                    onChange={handleResidentBackChange}
-                    placeholder=""
-                    maxLength={1}
-                    required
-                    ref={residentBackRef}
-                  />
-                  <div className={styles.masking}>
-                    <div className={styles.dotWrapper}>
-                      {'●●●●●●'.split('').map((char, i) => (
-                        <span key={i} className={styles.dot}>
-                          {char}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>이름</label>
-              <input
-                className={styles.input}
-                type="text"
-                name="fullName"
-                value={form.fullName}
-                onChange={handleNameChange}
-                placeholder="이름을 입력해 주세요"
-                required
-              />
-            </div>
-          </>
-        )}
-
-        {step === 3 && (
-          <>
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>휴대폰 번호</label>
-              <input
-                className={styles.input}
-                type="text"
-                name="number"
-                value={form.number}
-                onChange={handlePhoneNumberChange}
-                placeholder="예: 010-1234-5678"
-                required
-              />
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>주민등록번호</label>
-              <div className={styles.residentWrapper}>
-                <input className={styles.input} type="text" value={form.residentFront} readOnly />
-                <span className={styles.hyphen}>-</span>
-                <div className={styles.backWrapper}>
-                  <input
-                    className={styles.residentBackInput}
-                    type="number"
-                    value={form.residentBack}
-                    onChange={handleResidentBackChange}
-                    placeholder=""
-                    maxLength={1}
-                    required
-                    ref={residentBackRef}
-                  />
-                  <div className={styles.masking}>
-                    <div className={styles.dotWrapper}>
-                      {'●●●●●●'.split('').map((char, i) => (
-                        <span key={i} className={styles.dot}>
-                          {char}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>이름</label>
-              <input
-                className={styles.input}
-                type="text"
-                name="fullName"
-                value={form.fullName}
-                readOnly
-              />
-            </div>
-          </>
-        )}
-        {step === 4 && (
-          <>
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>인증번호</label>
-              <input
-                className={styles.input}
-                type="text"
-                value={code}
-                onChange={e => setCode(e.target.value)}
-                placeholder="인증번호 6자리"
-              />
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>이름</label>
-              <input className={styles.input} type="text" value={form.fullName} readOnly />
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>주민등록번호</label>
-              <div className={styles.residentWrapper}>
-                <input className={styles.input} type="text" value={form.residentFront} readOnly />
-                <span className={styles.hyphen}>-</span>
-                <div className={styles.backWrapper}>
-                  <input
-                    className={styles.residentBackInput}
-                    type="number"
-                    value={form.residentBack}
-                    onChange={handleResidentBackChange}
-                    placeholder=""
-                    maxLength={1}
-                    required
-                    ref={residentBackRef}
-                  />
-                  <div className={styles.masking}>
-                    <div className={styles.dotWrapper}>
-                      {'●●●●●●'.split('').map((char, i) => (
-                        <span key={i} className={styles.dot}>
-                          {char}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label className={styles.clickLabel}>휴대폰 번호</label>
-              <input className={styles.input} type="text" value={form.number} readOnly />
-            </div>
-
-            <div className={styles.buttonGroup}>
-              <button
-                className={styles.button}
-                onClick={handleConfirmCode}
-                disabled={code.length !== 6}
-              >
-                인증 확인
-              </button>
-            </div>
-          </>
-        )}
-        {step === 5 && (
-          <>
-            <div className={styles.imageWrapper}>
-              <img
-                src="https://raw.githubusercontent.com/dijeungi/charactertalk/main/public/icon/signup_icon.png"
-                alt="회원가입 아이콘"
-                className={styles.completeImage}
-              />
-            </div>
-
-            {showCompleteButton && (
-              <div className={`${styles.buttonGroup} ${styles.fadeIn}`}>
-                <button className={styles.button} onClick={handleSubmit}>
-                  회원가입 완료
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-
-      <div className={styles.buttonGroup}>
-        {step === 1 || step === 2 ? (
-          <button
-            type="button"
-            onClick={() => setStep(prev => prev + 1)}
-            className={styles.button}
-            disabled={
-              (step === 1 && !form.fullName.trim()) ||
-              (step === 2 && (form.residentFront.length !== 6 || form.residentBack.length !== 1))
-            }
-          >
-            다음
-          </button>
-        ) : step === 3 ? (
-          <button
-            className={styles.button}
-            onClick={handleRequestSMS}
-            disabled={
-              !form.fullName.trim() ||
-              form.residentFront.length !== 6 ||
-              form.residentBack.length !== 1 ||
-              form.number.replace(/\D/g, '').length !== 11
-            }
-          >
-            휴대폰 번호 인증
-          </button>
-        ) : null}
+        {renderStepComponent()}
       </div>
     </div>
   );

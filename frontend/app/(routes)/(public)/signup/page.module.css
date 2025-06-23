@@ -9,197 +9,203 @@
   }
 }
 
-@media (max-width: 480px) {
-  .subTitle {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #6d6d6d;
-    margin: 0 0 2.5rem 0;
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100dvh;
+  padding: 2rem;
+  box-sizing: border-box;
+}
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100dvh;
-    padding: 2rem 2rem 2rem 2rem;
-    box-sizing: border-box;
-  }
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 
-  .content {
-    flex-grow: 1;
-  }
+.title {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin: 1rem 0 0rem 0;
+}
 
-  .title {
-    font-size: 1.7rem;
-    font-weight: bold;
-    margin: 1rem 0 3rem 0;
-  }
+.subTitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6d6d6d;
+}
 
-  .inputGroup {
-    position: relative;
-    margin-top: 3rem;
-  }
+.inputGroup {
+  position: relative;
+  margin-top: 3rem;
+}
 
-  .clickLabel {
-    position: absolute;
-    top: -20px;
-    left: 0;
-    font-size: 1rem;
-    color: #a0a9b3;
-    transition: all 0.2s ease;
-    pointer-events: none;
-    background-color: #fff;
-  }
+.clickLabel {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 1rem;
+  color: #a0a9b3;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  background-color: #fff;
+}
 
-  .input {
-    width: 100%;
-    padding: 8px 0;
-    font-size: 1.2rem;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    border-radius: 0;
-    outline: none;
-    background-color: transparent;
-    transition: border-color 0.2s ease;
-    caret-color: #3b82f6;
-  }
+.input {
+  width: 100%;
+  padding: 8px 0;
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  outline: none;
+  background-color: transparent;
+  transition: border-color 0.2s ease;
+  caret-color: #3b82f6;
+}
 
-  .email,
-  .fullName {
-    width: 100%;
-    padding: 8px 2.5rem 8px 0;
-    font-size: 1.2rem;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    border-radius: 0;
-    outline: none;
-    transition: border-color 0.2s ease;
-    caret-color: #3b82f6;
-    background-color: transparent;
-  }
+.email,
+.fullName {
+  width: 100%;
+  padding: 8px 2.5rem 8px 0;
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.2s ease;
+  caret-color: #3b82f6;
+  background-color: transparent;
+}
 
-  .residentWrapper {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 6px;
-  }
+.residentWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 6px;
+}
 
-  .residentInput {
-    width: 50%;
-    padding: 8px 0;
-    font-size: 1.3rem;
-    text-align: left;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    border-radius: 0;
-    outline: none;
-    background-color: transparent;
-  }
+.residentInput {
+  width: 50%;
+  padding: 8px 0;
+  font-size: 1.3rem;
+  text-align: left;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  outline: none;
+  background-color: transparent;
+}
 
-  .hyphen {
-    flex: 0 0 auto;
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
+.hyphen {
+  flex: 0 0 auto;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
 
-  .backWrapper {
-    display: flex;
-    align-items: flex-end;
-    width: 50%;
-  }
+.backWrapper {
+  display: flex;
+  align-items: flex-end;
+  width: 50%;
+}
 
-  .residentBackInput {
-    max-width: 20%;
-    min-width: 20%;
-    /* min-width: 0; */
-    padding: 8px 0;
-    font-size: 1.3rem;
-    text-align: center;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    border-radius: 0;
-    outline: none;
-    background-color: transparent;
-    margin-right: 0px;
-    box-sizing: border-box;
-  }
+.residentBackInput {
+  max-width: 20%;
+  min-width: 20%;
+  /* min-width: 0; */
+  padding: 8px 0;
+  font-size: 1.3rem;
+  text-align: center;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  outline: none;
+  background-color: transparent;
+  margin-right: 0px;
+  box-sizing: border-box;
+}
 
-  .masking {
-    flex: 1 1 0%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 0;
-    font-size: 1.25rem;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    background-color: transparent;
-    color: #999;
-    pointer-events: none;
-    box-sizing: border-box;
-    min-width: 0;
-  }
+.masking {
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  font-size: 1.25rem;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  background-color: transparent;
+  color: #999;
+  pointer-events: none;
+  box-sizing: border-box;
+  min-width: 0;
+}
 
-  .dotWrapper {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    min-width: 0;
-    width: 100%;
-    scale: 1;
-  }
+.dotWrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+  scale: 1;
+}
 
-  .dot {
-    flex-shrink: 1;
-    min-width: 0;
-    margin-right: clamp(4px, 0.4em, 8px);
-  }
+.dot {
+  flex-shrink: 1;
+  min-width: 0;
+  margin-right: clamp(4px, 0.4em, 8px);
+}
 
-  .select {
-    font-size: 1.2rem;
-  }
+.select {
+  font-size: 1.2rem;
+}
 
-  .buttonContainer {
-    margin-top: 3rem;
-    text-align: center;
-  }
+.fixedBottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  z-index: 100;
+}
 
-  .button {
-    width: 100%;
-    padding: 1rem 0;
-    margin: 1rem 0 0rem 0;
-    background-color: #2e80ff;
-    margin-bottom: 1.5rem;
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
+.button {
+  width: 100%;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  background-color: #2e80ff;
+  margin-bottom: 1.5rem;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
 
-  .button:disabled {
-    background-color: #ccc !important;
-    cursor: not-allowed;
-  }
+.button:disabled {
+  background-color: #ccc !important;
+  cursor: not-allowed;
+}
 
-  .button:hover {
-    background-color: #2563eb;
-  }
+.button:hover {
+  background-color: #2563eb;
+}
 
-  .imageWrapper {
-    display: flex;
-    justify-content: center;
-    margin: 7.5rem 0;
-  }
+.imageWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 7.5rem 0;
+}
 
-  .completeImage {
-    width: 20rem;
-    height: auto;
-  }
+.completeImage {
+  width: 20rem;
+  height: auto;
 }
 
 .fadeIn {
