@@ -26,22 +26,26 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchTempUser } from '@/app/_apis/signup/auth';
 
 // types
-import { TempUserData } from '@/types';
+import { TempUserAction, TempUserData } from '@/app/types/signup/index';
 
-export const useTempUser = (tempId: string | null, dispatch: Dispatch<any>) => {
+// 임시 사용자 정보를 불러오고 상태 전달
+export const useTempUser = (tempId: string | null, dispatch: Dispatch<TempUserAction>) => {
+  // React Query로 tempId 기반 사용자 정보 fetch
   const { data, isSuccess } = useQuery<TempUserData, Error>({
     queryKey: ['tempUser', tempId],
     queryFn: () => fetchTempUser(tempId!),
     enabled: !!tempId,
   });
 
+  // 닉네임 정보가 있으면 dispatch로 store 저장
   useEffect(() => {
-    if (isSuccess && data) {
-      if (data.nick_name) {
-        dispatch({ name: 'nickName', value: data.nick_name });
-      }
+    if (isSuccess && data?.nick_name) {
+      dispatch({ name: 'nickName', value: data.nick_name });
     }
   }, [isSuccess, data, dispatch]);
 
-  return { email: data?.email ?? '', oauth: data?.oauth ?? '' };
+  return {
+    email: data?.email ?? '',
+    oauth: data?.oauth ?? '',
+  };
 };
