@@ -45,7 +45,7 @@ import { useTempUser } from './_hooks/useTempUser';
 import { Toast } from '@/app/_utils/Swal';
 
 // store
-import { useSignupStore } from '@/app/store/signupStore';
+import { useSignupStore } from '@/app/store/auth';
 
 // Components
 import FullNameInput from './_components/FullNameInput';

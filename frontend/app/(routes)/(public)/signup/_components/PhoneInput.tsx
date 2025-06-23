@@ -29,7 +29,7 @@
 import styles from '../page.module.css';
 
 // store
-import { useSignupStore } from '@/app/store/signupStore';
+import { useSignupStore } from '@/app/store/auth';
 
 // utils
 import { formatPhone } from '@/app/_utils/formatters';

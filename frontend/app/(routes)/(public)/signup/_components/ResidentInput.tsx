@@ -28,7 +28,7 @@
 import { useRef } from 'react';
 
 // store
-import { useSignupStore } from '@/app/store/signupStore';
+import { useSignupStore } from '@/app/store/auth';
 
 // css
 import styles from '../page.module.css';
