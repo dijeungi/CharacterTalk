@@ -1,1 +1,3 @@
-export const API_SERVER_HOST = process.env.NEXT_PUBLIC_API_URL!;
+// config.ts
+export const NEXT_API_HOST = process.env.NEXT_PUBLIC_NEXT_API_URL!;
+export const PYTHON_API_HOST = process.env.NEXT_PUBLIC_PYTHON_API_URL!;
