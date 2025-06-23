@@ -53,6 +53,9 @@ import ResidentInput from './_components/ResidentInput';
 import PhoneInput from './_components/PhoneInput';
 import VerifyCodeInput from './_components/VerifyCodeInput';
 
+// types
+import { SignupPayload } from '@/app/types/signup';
+
 export default function SignUpPage() {
   // 상태 관리
   const [step, setStep] = useState(1);
@@ -151,7 +154,7 @@ export default function SignUpPage() {
       return;
     }
 
-    const payload = {
+    const payload: SignupPayload = {
       email,
       oauth,
       fullName: form.fullName,
@@ -162,6 +165,7 @@ export default function SignUpPage() {
       number: form.number.replace(/-/g, ''),
       verified: true,
     };
+
     signupMutation.mutate(payload);
   };
 
