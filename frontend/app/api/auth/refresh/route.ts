@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       {
         id: user.code,
         email: user.email,
-        nickname: user.full_name,
+        fullname: user.full_name,
       },
       process.env.JWT_SECRET!,
       { expiresIn: '30m' }

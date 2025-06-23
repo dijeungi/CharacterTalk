@@ -44,7 +44,7 @@ export default function FullNameInput({ editable = true }: FullNameInputProps) {
       <input
         className={styles.input}
         type="text"
-        name="fullName"
+        name="nickName"
         value={fullName}
         onChange={e => setFormField('fullName', e.target.value)}
         placeholder="이름을 입력해 주세요"
