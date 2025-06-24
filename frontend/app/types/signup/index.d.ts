@@ -1,6 +1,6 @@
 /**
  * @types        SignupTypes
- * @file         types/signup/index.d.ts
+ * @file         frontend/app/types/signup/index.d.ts
  * @desc         회원가입 단계에서 사용되는 폼 상태, 요청 페이로드, 컴포넌트 props, 임시 사용자 타입 정의
  *
  * @state
@@ -22,6 +22,12 @@
  * @since        2025.06.20
  * @updated      2025.06.24
  */
+
+// frontend/app/lib/middleware/authMiddleware.ts
+export type JwtPayload = {
+  exp: number; // 만료 시간
+  role?: string; // 사용자 권한
+};
 
 // frontend/app/(routes)/(public)/signup/page.tsx
 export interface SignupPayload {

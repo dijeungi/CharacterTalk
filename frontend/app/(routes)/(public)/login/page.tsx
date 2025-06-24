@@ -5,7 +5,7 @@
  * @desc         카카오/구글 소셜 로그인 기능을 제공하는 로그인 페이지 컴포넌트
  *
  * @layout       PublicLayout
- * @access       public (비로그인 접근 가능)
+ * @access       public
  * @props        없음 (페이지 단위 컴포넌트)
  *
  * @features

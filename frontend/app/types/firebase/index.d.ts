@@ -1,6 +1,6 @@
 /**
  * @types        WindowRecaptchaExtension
- * @file         types/firebase/window.d.ts
+ * @file         frontend/app/types/firebase/index.d.ts
  * @desc         Firebase 휴대폰 인증을 위한 window.recaptchaVerifier 타입 확장
  *
  * @state
