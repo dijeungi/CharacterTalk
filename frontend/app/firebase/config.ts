@@ -1,24 +1,25 @@
 /**
- * @route        /firebase/config
+ * @config       firebaseClient
  * @file         frontend/app/firebase/config.ts
- * @component    -
- * @desc         Firebase 초기화 및 인증 인스턴스 설정
+ * @desc         클라이언트 환경에서 Firebase 앱 및 인증 모듈 초기화
  *
- * @layout       -
- * @access       internal
- * @props        -
+ * @env
+ *  - NEXT_PUBLIC_FIREBASE_API_KEY
+ *  - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+ *  - NEXT_PUBLIC_FIREBASE_PROJECT_ID
+ *  - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+ *  - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+ *  - NEXT_PUBLIC_FIREBASE_APP_ID
  *
- * @features
- *  - Firebase 앱 중복 초기화 방지
- *  - 인증(Auth) 모듈 인스턴스 생성 및 외부 export
+ * @logic
+ *  - 기존 Firebase 앱이 존재하지 않으면 초기화
+ *  - getAuth(app)을 통해 Firebase Auth 인스턴스 생성
  *
- * @dependencies
- *  - firebase/app
- *  - firebase/auth
+ * @usage        클라이언트 측 Firebase 인증 기능 사용 시 import
+ * @dependencies firebase/app, firebase/auth
  *
- * @todo         -
  * @author       최준호
- * @since        2025.06.12
+ * @since        2025.06.20
  * @updated      2025.06.23
  */
 
