@@ -46,7 +46,7 @@ import ProfileImageGeneratorDrawer from './Drawer/ProfileImageGeneratorDrawer';
 // import VoiceSelectModal from './Modal/VoiceSelectModal';
 
 // store
-import { useCharacterStep1Store } from '@/app/_store/characters/index';
+import { useCharacterCreationStore } from '@/app/_store/characters/index';
 
 export default function Step1_Profile() {
   // 상태 초기화
@@ -71,7 +71,7 @@ export default function Step1_Profile() {
     setDirty,
     resetDirty,
     setCurrentStep,
-  } = useCharacterStep1Store();
+  } = useCharacterCreationStore();
 
   useEffect(() => {
     setCurrentStep(1);
