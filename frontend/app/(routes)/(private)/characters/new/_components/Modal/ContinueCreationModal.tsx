@@ -34,9 +34,7 @@ export default function ContinueCreationModal({
   onNew,
   onContinue,
 }: ContinueCreationModalProps) {
-  if (!open) {
-    return null;
-  }
+  if (!open) return null;
 
   return (
     <div className={styles.modalBackdrop}>
