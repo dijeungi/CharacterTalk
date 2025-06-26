@@ -22,11 +22,11 @@ import HeaderController from './_components/header/HeaderController';
 import ReactQueryProvider from './_providers/ReactQueryProvider';
 
 // custom hooks
-import { useAuthRestore } from './_hooks/useAuthRestore';
+import useAuthInitializer from './_hooks/useAuthInitializer';
 
 export default function Layout({ children }: { children: ReactNode }) {
   // useAuthRestore = 사용자 인증 상태를 복원하고, 인증된 상태에 따라 페이지 렌더링을 조정
-  useAuthRestore();
+  useAuthInitializer();
   return (
     <html lang="ko">
       <body>
