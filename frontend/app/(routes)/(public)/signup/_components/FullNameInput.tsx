@@ -31,9 +31,9 @@ import styles from '../page.module.css';
 import { useSignupStore } from '@/app/_store/signup';
 
 // types
-import { SignUpInputProps } from '../_types';
+import { BaseInputProps } from '../_types';
 
-export default function FullNameInput({ editable = true }: SignUpInputProps) {
+export default function FullNameInput({ editable = true }: BaseInputProps) {
   // store
   const fullName = useSignupStore(state => state.fullName);
   const setFormField = useSignupStore(state => state.setFormField);

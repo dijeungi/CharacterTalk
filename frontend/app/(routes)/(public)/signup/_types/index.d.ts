@@ -1,7 +1,10 @@
 // components
-export interface SignUpInputProps {
+export interface BaseInputProps {
   editable?: boolean;
   onChangeOnly?: boolean;
+}
+
+export interface VerifyCodeInputProps extends BaseInputProps {
   onConfirm: (code: string) => void;
 }
 

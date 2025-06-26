@@ -34,9 +34,9 @@ import { useSignupStore } from '@/app/_store/signup/index';
 import styles from '../page.module.css';
 
 // types
-import { SignUpInputProps } from '../_types';
+import { BaseInputProps } from '../_types';
 
-export default function ResidentInput({ editable = true }: SignUpInputProps) {
+export default function ResidentInput({ editable = true }: BaseInputProps) {
   // store
   const residentFront = useSignupStore(state => state.residentFront);
   const residentBack = useSignupStore(state => state.residentBack);

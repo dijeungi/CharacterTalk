@@ -35,9 +35,9 @@ import { useSignupStore } from '@/app/_store/signup/index';
 import { formatPhone } from '@/app/_utils/formatters';
 
 // types
-import { SignUpInputProps } from '../_types';
+import { BaseInputProps } from '../_types';
 
-export default function PhoneInput({ onChangeOnly = false }: SignUpInputProps) {
+export default function PhoneInput({ onChangeOnly = false }: BaseInputProps) {
   // store
   const number = useSignupStore(state => state.number);
   const setFormField = useSignupStore(state => state.setFormField);
