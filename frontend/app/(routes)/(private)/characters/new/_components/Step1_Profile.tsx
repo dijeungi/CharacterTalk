@@ -62,15 +62,20 @@ export default function Step1_Profile() {
   const {
     name,
     oneliner,
-    selectedVoice,
+    // selectedVoice,
     profileImage,
     setName,
     setOneliner,
-    setSelectedVoice,
+    // setSelectedVoice,
     setProfileImage,
     setDirty,
     resetDirty,
+    setCurrentStep,
   } = useCharacterStep1Store();
+
+  useEffect(() => {
+    setCurrentStep(1);
+  }, [setCurrentStep]);
 
   // 프로필 이미지 미리보기
   const imagePreview = useMemo(() => {
@@ -90,12 +95,12 @@ export default function Step1_Profile() {
   );
 
   useEffect(() => {
-    if (name || oneliner || selectedVoice || profileImage) {
+    if (name || oneliner || profileImage) {
       setDirty();
     } else {
       resetDirty();
     }
-  }, [name, oneliner, selectedVoice, profileImage, setDirty, resetDirty]);
+  }, [name, oneliner, profileImage, setDirty, resetDirty]);
 
   // 프로필 이미지 업로드
   const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,7 +126,7 @@ export default function Step1_Profile() {
     localStorage.removeItem('tempCharacterData');
     setName('');
     setOneliner('');
-    setSelectedVoice('');
+    // setSelectedVoice('');
     setProfileImage(null);
     resetDirty();
     setContinueModalOpen(false);
@@ -138,7 +143,7 @@ export default function Step1_Profile() {
       const parsedData = JSON.parse(savedData);
       setName(parsedData.name || '');
       setOneliner(parsedData.oneliner || '');
-      setSelectedVoice(parsedData.selectedVoice || '');
+      // setSelectedVoice(parsedData.selectedVoice || '');
       if (parsedData.profileImage) {
         setProfileImage(parsedData.profileImage);
       }

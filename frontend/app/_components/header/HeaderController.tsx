@@ -17,7 +17,7 @@ import { headerConfig } from '../../_config/headerConfig';
 
 // components
 import MainHeader from './MainHeader';
-import CharacterStepHeader from './CharacterStepHeader';
+import CharacterStepHeader from './character/CharacterStepHeader';
 
 export default function HeaderController() {
   // 현재 경로 가져오기
