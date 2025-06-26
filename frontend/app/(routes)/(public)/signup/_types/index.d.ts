@@ -2,7 +2,7 @@
 export interface SignUpInputProps {
   editable?: boolean;
   onChangeOnly?: boolean;
-  onConfirm?: (code: string) => void;
+  onConfirm: (code: string) => void;
 }
 
 // custom hooks
