@@ -4,7 +4,7 @@
  * @component    ResidentInput
  * @desc         주민등록번호 입력을 처리하는 컴포넌트
  *
- * @layout       사용 안 함
+ * @layout       Signup Layout
  * @access       public
  * @props        editable?: boolean (입력 가능 여부 제어)
  *

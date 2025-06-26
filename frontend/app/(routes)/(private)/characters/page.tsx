@@ -4,7 +4,7 @@
  * @component    CharacterPage
  * @desc         사용자 본인의 캐릭터 목록을 보여주는 페이지
  *
- * @layout       기본 레이아웃 (PublicLayout)
+ * @layout       default
  * @access       private
  * @props        없음
  *

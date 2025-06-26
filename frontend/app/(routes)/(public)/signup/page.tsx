@@ -4,7 +4,7 @@
  * @component    SignUpPage
  * @desc         소셜 로그인 이후 회원가입 정보를 입력받는 폼 구성 페이지
  *
- * @layout       PublicLayout
+ * @layout       default
  * @access       public
  * @props        -
  *

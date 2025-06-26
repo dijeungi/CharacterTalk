@@ -3,7 +3,7 @@
  * @file         frontend/app/(routes)/(private)/characters/new/_components/Modal/ContinueCreationModal.tsx
  * @desc         캐릭터 생성 중단 시 복구 여부를 묻는 모달 컴포넌트
  *
- * @layout       사용 안 함
+ * @layout       characters New Layout
  * @access       private
  * @props
  *  - open: 모달 노출 여부

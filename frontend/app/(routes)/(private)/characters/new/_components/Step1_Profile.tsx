@@ -3,7 +3,7 @@
  * @file         frontend/app/(routes)/(private)/characters/new/_components/Step1_Profile.tsx
  * @desc         캐릭터 생성 1단계: 프로필 이미지, 이름, 한줄소개 입력 폼
  *
- * @layout       사용 안 함
+ * @layout       characters New Layout
  * @access       private
  * @props        없음
  *

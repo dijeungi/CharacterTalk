@@ -4,7 +4,7 @@
  * @component    CharactersNewPage
  * @desc         캐릭터 생성 단계별 입력 폼 페이지
  *
- * @layout       기본 레이아웃
+ * @layout       default
  * @access       private
  * @props        없음
  *

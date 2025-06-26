@@ -3,7 +3,7 @@
  * @file         frontend/app/(routes)/(private)/characters/new/_components/Drawer/ProfileImageGeneratorDrawer.tsx
  * @desc         캐릭터 프로필 이미지를 프롬프트 기반으로 생성하는 이미지 생성기 컴포넌트
  *
- * @layout       사용 안 함
+ * @layout       characters New Layout
  * @access       private
  * @props
  *  - open: 드로어 열림 상태

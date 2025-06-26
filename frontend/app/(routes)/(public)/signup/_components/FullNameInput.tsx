@@ -4,7 +4,7 @@
  * @component    FullNameInput
  * @desc         이름 입력 필드 컴포넌트 (회원가입 단계에서 사용)
  *
- * @layout       사용 안 함
+ * @layout       Signup Layout
  * @access       public
  * @props        editable?: boolean - 입력 가능 여부 제어
  *

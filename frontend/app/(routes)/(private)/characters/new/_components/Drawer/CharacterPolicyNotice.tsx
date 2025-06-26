@@ -3,7 +3,7 @@
  * @file         frontend/app/(routes)/(private)/characters/new/_components/Drawer/CharacterPolicyNotice.tsx
  * @desc         캐릭터 제작 가이드 및 유의사항 안내 컴포넌트
  *
- * @layout       사용 안 함
+ * @layout       characters New Layout
  * @access       private
  * @props        없음
  *

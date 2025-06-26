@@ -4,7 +4,7 @@
  * @component    PhoneInput
  * @desc         회원가입 단계에서 휴대폰 번호 입력받는 인풋 컴포넌트
  *
- * @layout       사용 안 함
+ * @layout       Signup Layout
  * @access       public
  * @props        onChangeOnly?: boolean (입력 제한 여부)
  *
