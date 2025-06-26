@@ -41,6 +41,8 @@ import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 // utils
 import { Toast } from '@/app/_utils/Swal';
+
+// api
 import { requestGenerateCharacterImage } from '@/app/_apis/character';
 
 export default function ProfileImageGeneratorDrawer({
