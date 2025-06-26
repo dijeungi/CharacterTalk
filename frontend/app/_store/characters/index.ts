@@ -1,5 +1,5 @@
 /**
- * @store        useCharacterStep1Store
+ * @store        useCharacterCreation
  * @file         frontend/app/store/characters/index.ts
  * @desc         캐릭터 생성 1단계 상태 관리 (이름, 한줄소개, 보이스, 이미지 등 입력값 및 변경 여부 상태 포함)
  *
@@ -28,20 +28,59 @@
 
 // store
 import { create } from 'zustand';
+import { CharacterCreationState } from './types';
 
-export const useCharacterStep1Store = create<CharacterCreationState>(set => ({
+export const useCharacterCreationStore = create<CharacterCreationState>(set => ({
+  // Step1
   name: '',
   oneliner: '',
-  // selectedVoice: null,
   profileImage: null,
+
+  // Step2
+  promptDetail: '',
+  exampleDialogs: [],
+
+  // 공통
   isDirty: false,
   currentStep: 1,
 
+  // Step1 actions
   setName: name => set({ name, isDirty: true }),
   setOneliner: oneliner => set({ oneliner, isDirty: true }),
-  // setSelectedVoice: (voice) => set({ selectedVoice: voice, isDirty: true }),
   setProfileImage: image => set({ profileImage: image, isDirty: true }),
+
+  // Step2 actions
+  setPromptDetail: text => set({ promptDetail: text, isDirty: true }),
+  addExampleDialog: dialog =>
+    set(state => ({
+      exampleDialogs: [...state.exampleDialogs, dialog],
+      isDirty: true,
+    })),
+  updateExampleDialog: (index, dialog) =>
+    set(state => {
+      const copy = [...state.exampleDialogs];
+      copy[index] = dialog;
+      return { exampleDialogs: copy, isDirty: true };
+    }),
+  removeExampleDialog: index =>
+    set(state => ({
+      exampleDialogs: state.exampleDialogs.filter((_, i) => i !== index),
+      isDirty: true,
+    })),
+
+  // 공통 actions
   setDirty: () => set({ isDirty: true }),
   resetDirty: () => set({ isDirty: false }),
-  setCurrentStep: (step: number) => set({ currentStep: step }), // 액션 구현
+  setCurrentStep: step => set({ currentStep: step }),
+
+  resetAll: () =>
+    set({
+      name: '',
+      oneliner: '',
+      profileImage: null,
+      promptDetail: '',
+      exampleDialogs: [],
+      isDirty: false,
+      currentStep: 1,
+    }),
 }));
