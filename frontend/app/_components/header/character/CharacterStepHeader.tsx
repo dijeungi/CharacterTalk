@@ -14,53 +14,54 @@ import Link from 'next/link';
 import styles from './CharacterStepHeader.module.css';
 
 // 상태
-import { useCharacterStep1Store } from '@/app/_store/characters';
+import { useCharacterCreationStore } from '@/app/_store/characters';
 
 // lib
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { Toast } from '@/app/_utils/Swal';
 
+// DB
+import { saveDraftToDB, saveImageToDB } from '@/app/_utils/indexedDBUtils';
+
 export default function CharacterStepHeader() {
   // store 상태 호출
-  const { isDirty, currentStep, setDirty, resetDirty } = useCharacterStep1Store();
+  const { isDirty, currentStep, setDirty, resetDirty } = useCharacterCreationStore();
 
   // step별 header Title
   const getHeaderTitle = (step: number) => {
     switch (step) {
       case 1:
-        return '캐릭터 만들기 (1/3)';
+        return '프로필 인적사항';
       case 2:
-        return '캐릭터 상세 설정 (2/3)';
+        return '기본 프롬프트 설정';
       case 3:
-        return '캐릭터 완성 (3/3)';
+        return '고급 설정';
       default:
         return '캐릭터 만들기';
     }
   };
 
-  // 로컬스토리지에 JSON 형식으로 임시 저장하는 함수
-  const handleSaveToLocalStorage = () => {
-    const state = useCharacterStep1Store.getState();
+  const handleSaveToIndexedDB = async () => {
+    const state = useCharacterCreationStore.getState();
 
-    const dataToSave = {
+    await saveDraftToDB({
       name: state.name,
       oneliner: state.oneliner,
-      // selectedVoice: state.selectedVoice,
-      profileImage: state.profileImage,
-    };
+      title: state.title,
+      promptDetail: state.promptDetail,
+      exampleDialogs: state.exampleDialogs,
+    });
 
-    localStorage.setItem('tempCharacterData', JSON.stringify(dataToSave));
+    if (state.profileImage instanceof File) {
+      await saveImageToDB('profileImage', state.profileImage);
+    }
 
     Toast.fire({
       icon: 'success',
       title: '임시저장 되었습니다.',
-      didOpen: () => {
-        resetDirty();
-      },
-      didClose: () => {
-        setDirty();
-      },
     });
+
+    resetDirty();
   };
 
   return (
@@ -82,7 +83,7 @@ export default function CharacterStepHeader() {
           <button
             className={styles.Title_Button}
             disabled={!isDirty}
-            onClick={handleSaveToLocalStorage}
+            onClick={handleSaveToIndexedDB}
           >
             임시저장
           </button>

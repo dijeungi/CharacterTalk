@@ -48,7 +48,15 @@ import ProfileImageGeneratorDrawer from './Drawer/ProfileImageGeneratorDrawer';
 // store
 import { useCharacterCreationStore } from '@/app/_store/characters/index';
 
-export default function Step1_Profile() {
+// utils
+import {
+  deleteDraftFromDB,
+  deleteImageFromDB,
+  getDraftFromDB,
+  getImageFromDB,
+} from '@/app/_utils/indexedDBUtils';
+
+export default function Step1_Profile({ onNext }: Step1Props) {
   // 상태 초기화
   const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
   const [continueModalOpen, setContinueModalOpen] = useState(false);
@@ -59,19 +67,16 @@ export default function Step1_Profile() {
     - Zustand 상태관리
     - CharacterCreate.d.ts > characterStep1Store.ts > Step1_Profile.tsx 타입 선언 전달
   */
-  const {
-    name,
-    oneliner,
-    // selectedVoice,
-    profileImage,
-    setName,
-    setOneliner,
-    // setSelectedVoice,
-    setProfileImage,
-    setDirty,
-    resetDirty,
-    setCurrentStep,
-  } = useCharacterCreationStore();
+  const name = useCharacterCreationStore(state => state.name);
+  const oneliner = useCharacterCreationStore(state => state.oneliner);
+  const profileImage = useCharacterCreationStore(state => state.profileImage);
+
+  const setName = useCharacterCreationStore(state => state.setName);
+  const setOneliner = useCharacterCreationStore(state => state.setOneliner);
+  const setProfileImage = useCharacterCreationStore(state => state.setProfileImage);
+  const setDirty = useCharacterCreationStore(state => state.setDirty);
+  const resetDirty = useCharacterCreationStore(state => state.resetDirty);
+  const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
 
   useEffect(() => {
     setCurrentStep(1);
@@ -104,13 +109,9 @@ export default function Step1_Profile() {
 
   // 프로필 이미지 업로드
   const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
+    const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setProfileImage(reader.result as string);
-      };
+      setProfileImage(file);
     }
   };
 
@@ -122,11 +123,12 @@ export default function Step1_Profile() {
   };
 
   // 새로 제작
-  const handleNewCreation = () => {
-    localStorage.removeItem('tempCharacterData');
+  const handleNewCreation = async () => {
+    await deleteDraftFromDB();
+    await deleteImageFromDB('profileImage');
+
     setName('');
     setOneliner('');
-    // setSelectedVoice('');
     setProfileImage(null);
     resetDirty();
     setContinueModalOpen(false);
@@ -138,20 +140,20 @@ export default function Step1_Profile() {
   };
 
   useEffect(() => {
-    const savedData = localStorage.getItem('tempCharacterData');
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setName(parsedData.name || '');
-      setOneliner(parsedData.oneliner || '');
-      // setSelectedVoice(parsedData.selectedVoice || '');
-      if (parsedData.profileImage) {
-        setProfileImage(parsedData.profileImage);
+    const restore = async () => {
+      const saved = await getDraftFromDB();
+      const imageURL = await getImageFromDB('profileImage');
+
+      if (saved) {
+        setName(saved.name || '');
+        setOneliner(saved.oneliner || '');
+        setProfileImage(imageURL || null);
+        setContinueModalOpen(true);
       }
+
       setIsDataLoaded(true);
-      setContinueModalOpen(true);
-    } else {
-      setIsDataLoaded(true);
-    }
+    };
+    restore();
   }, []);
 
   return (
@@ -262,7 +264,7 @@ export default function Step1_Profile() {
 
               <CharacterPolicyNotice />
               <div className={styles.fixedBottom}>
-                <button className={styles.Button} disabled={!isFormValid}>
+                <button className={styles.Button} onClick={onNext} disabled={!isFormValid}>
                   다음 단계
                 </button>
               </div>
