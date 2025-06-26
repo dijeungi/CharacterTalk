@@ -28,15 +28,15 @@
 import { useRef } from 'react';
 
 // store
-import { useSignupStore } from '@/app/store/auth';
+import { useSignupStore } from '@/app/_store/signup/index';
 
 // css
 import styles from '../page.module.css';
 
 // types
-import { ResidentInputProps } from '@/app/types/signup';
+import { SignUpInputProps } from '../_types';
 
-export default function ResidentInput({ editable = true }: ResidentInputProps) {
+export default function ResidentInput({ editable = true }: SignUpInputProps) {
   // store
   const residentFront = useSignupStore(state => state.residentFront);
   const residentBack = useSignupStore(state => state.residentBack);

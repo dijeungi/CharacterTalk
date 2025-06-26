@@ -28,9 +28,9 @@ import { useState } from 'react';
 import styles from '../page.module.css';
 
 // types
-import { VerifyCodeInputProps } from '@/app/types/signup';
+import { SignUpInputProps } from '../_types';
 
-export default function VerifyCodeInput({ onConfirm }: VerifyCodeInputProps) {
+export default function VerifyCodeInput({ onConfirm }: SignUpInputProps) {
   const [code, setCode] = useState('');
 
   // 인증번호 6글자 인식

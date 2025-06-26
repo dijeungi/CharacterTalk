@@ -25,7 +25,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 
 // components
-import { postSignup } from '@/app/_apis/signup/auth';
+import { postSignup } from '@/app/_apis/signup';
 
 // utils
 import { Toast } from '@/app/_utils/Swal';

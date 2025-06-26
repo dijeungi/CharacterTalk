@@ -45,7 +45,7 @@ import { useTempUser } from './_hooks/useTempUser';
 import { Toast } from '@/app/_utils/Swal';
 
 // store
-import { useSignupStore } from '@/app/store/auth';
+import { useSignupStore } from '@/app/_store/signup/index';
 
 // Components
 import FullNameInput from './_components/FullNameInput';
@@ -54,7 +54,7 @@ import PhoneInput from './_components/PhoneInput';
 import VerifyCodeInput from './_components/VerifyCodeInput';
 
 // types
-import { SignupPayload } from '@/app/types/signup';
+import { SignupPayload } from './_types/index';
 
 export default function SignUpPage() {
   // 상태 관리

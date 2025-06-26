@@ -42,11 +42,11 @@ import { PiMagicWandDuotone } from 'react-icons/pi';
 // components
 import CharacterPolicyNotice from './Drawer/CharacterPolicyNotice';
 import ContinueCreationModal from './Modal/ContinueCreationModal';
+import ProfileImageGeneratorDrawer from './Drawer/ProfileImageGeneratorDrawer';
 // import VoiceSelectModal from './Modal/VoiceSelectModal';
 
 // store
-import { useCharacterStep1Store } from '@/app/store/characters';
-import ProfileImageGeneratorDrawer from './Drawer/ProfileImageGeneratorDrawer';
+import { useCharacterStep1Store } from '@/app/_store/characters/index';
 
 export default function Step1_Profile() {
   // 상태 초기화
@@ -74,7 +74,7 @@ export default function Step1_Profile() {
 
   // 프로필 이미지 미리보기
   const imagePreview = useMemo(() => {
-    if (profileImage instanceof File || profileImage instanceof Blob) {
+    if (profileImage instanceof File) {
       return URL.createObjectURL(profileImage);
     }
     if (typeof profileImage === 'string') {

@@ -29,9 +29,6 @@
 // css
 import styles from './ContinueCreationModal.module.css';
 
-// types
-import { ContinueCreationModalProps } from '@/app/types/characters/components/index';
-
 export default function ContinueCreationModal({
   open,
   onNew,

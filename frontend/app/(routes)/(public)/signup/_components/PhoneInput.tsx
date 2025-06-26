@@ -29,15 +29,15 @@
 import styles from '../page.module.css';
 
 // store
-import { useSignupStore } from '@/app/store/auth';
+import { useSignupStore } from '@/app/_store/signup/index';
 
 // utils
 import { formatPhone } from '@/app/_utils/formatters';
 
 // types
-import { PhoneInputProps } from '@/app/types/signup';
+import { SignUpInputProps } from '../_types';
 
-export default function PhoneInput({ onChangeOnly = false }: PhoneInputProps) {
+export default function PhoneInput({ onChangeOnly = false }: SignUpInputProps) {
   // store
   const number = useSignupStore(state => state.number);
   const setFormField = useSignupStore(state => state.setFormField);

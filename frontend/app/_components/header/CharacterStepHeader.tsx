@@ -14,9 +14,9 @@ import Link from 'next/link';
 import styles from './CharacterStepHeader.module.css';
 
 // 상태
-import { useCharacterStep1Store } from '../../store/characterStep1Store';
+import { useCharacterStep1Store } from '@/app/_store/characters';
 
-// 아이콘
+// lib
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { Toast } from '@/app/_utils/Swal';
 

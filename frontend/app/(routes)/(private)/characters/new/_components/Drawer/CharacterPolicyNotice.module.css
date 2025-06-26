@@ -1,0 +1,72 @@
+.helpNotice {
+  font-size: 0.9rem;
+  color: #444;
+  margin: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.helpButton {
+  background: none;
+  border: none;
+  color: #2e80ff;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.drawerContent {
+  text-align: center;
+}
+
+.chevronIcon {
+  position: absolute;
+  right: 1rem;
+  color: #999;
+  pointer-events: none;
+}
+
+.drawerBar {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: #c2c0c1;
+  margin: 0 auto 1.5rem;
+}
+
+.drawerTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.drawerText {
+  color: #808080;
+  text-align: left;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.Button {
+  width: 100%;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  background-color: #2e80ff;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.Button:disabled {
+  background-color: #ccc !important;
+  cursor: not-allowed;
+}
+
+.Button:hover {
+  background-color: hsl(221, 83%, 53%);
+}

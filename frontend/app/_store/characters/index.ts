@@ -29,9 +29,6 @@
 // store
 import { create } from 'zustand';
 
-// types
-import { CharacterStep1Store } from '@/app/types/characters';
-
 export const useCharacterStep1Store = create<CharacterStep1Store>(set => ({
   name: '',
   oneliner: '',

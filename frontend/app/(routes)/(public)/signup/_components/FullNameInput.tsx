@@ -28,12 +28,12 @@
 import styles from '../page.module.css';
 
 // store
-import { useSignupStore } from '@/app/store/auth';
+import { useSignupStore } from '@/app/_store/signup';
 
 // types
-import { FullNameInputProps } from '@/app/types/signup';
+import { SignUpInputProps } from '../_types';
 
-export default function FullNameInput({ editable = true }: FullNameInputProps) {
+export default function FullNameInput({ editable = true }: SignUpInputProps) {
   // store
   const fullName = useSignupStore(state => state.fullName);
   const setFormField = useSignupStore(state => state.setFormField);
@@ -44,7 +44,7 @@ export default function FullNameInput({ editable = true }: FullNameInputProps) {
       <input
         className={styles.input}
         type="text"
-        name="nickName"
+        name="fullName"
         value={fullName}
         onChange={e => setFormField('fullName', e.target.value)}
         placeholder="이름을 입력해 주세요"

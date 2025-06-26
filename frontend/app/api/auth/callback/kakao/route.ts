@@ -83,7 +83,7 @@ export async function GET(req: NextRequest) {
     }
 
     // 기존 로그인
-    const accessToken = jwt.sign({ id: user.code }, process.env.JWT_SECRET!, { expiresIn: '30m' });
+    const accessToken = jwt.sign({ id: user.code }, process.env.JWT_SECRET!, { expiresIn: '10s' });
 
     const refreshToken = jwt.sign({ id: user.code }, process.env.JWT_REFRESH_SECRET!, {
       expiresIn: '7d',

@@ -23,10 +23,7 @@ import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 // api
-import { fetchTempUser } from '@/app/_apis/signup/auth';
-
-// types
-import { TempUserData } from '@/app/types/signup/index';
+import { fetchTempUser } from '@/app/_apis/signup';
 
 // 임시 사용자 정보를 불러오고 상태 전달
 export const useTempUser = (

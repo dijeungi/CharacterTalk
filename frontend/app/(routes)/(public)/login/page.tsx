@@ -32,7 +32,7 @@ import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
 // library
-import { Toast } from '../../../_utils/Swal';
+import { Toast } from '@/app/_utils/Swal';
 
 export default function LoginPage() {
   // Kakao Login btn

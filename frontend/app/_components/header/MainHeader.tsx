@@ -4,6 +4,7 @@
   Description:
     - 이 페이지는 상단 네비게이션 바와 MUI 드로어 메뉴를 구현한 헤더 컴포넌트입니다.
     - 메뉴 아이콘을 클릭하면 왼쪽에서 슬라이드되는 드로어 메뉴가 열리고 닫히며, 메뉴에는 홈, 추천, 랭킹, 캐릭터 제작 등 여러 기능을 제공합니다.
+    - Zustand를 연동하여 로그인 상태에 따라 UI가 동적으로 변경됩니다.
 */
 
 'use client';
@@ -11,13 +12,16 @@
 // React
 import { useEffect, useState } from 'react';
 
-// Next.js
+// modules
 import Link from 'next/link';
 import NextLink from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 // React Query
 import { useQueryClient } from '@tanstack/react-query';
+
+// Zustand
+import { useAuthStore } from '@/app/_store/auth/index';
 
 // css
 import styles from './MainHeader.module.css';
@@ -30,17 +34,18 @@ import { CiSquarePlus } from 'react-icons/ci';
 import { HiOutlineChatAlt2 } from 'react-icons/hi';
 import { PiRanking } from 'react-icons/pi';
 import { HiOutlineFire } from 'react-icons/hi2';
+import { FiLogIn, FiLogOut } from 'react-icons/fi';
 
 // MUI
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 
 // 유틸
 import { Toast } from '../../_utils/Swal';
-import axiosInstance from '../../lib/axiosInstance';
+import axiosInstance from '../../lib/axiosNext';
 
 export default function MainHeader() {
   // 상태
@@ -52,10 +57,13 @@ export default function MainHeader() {
   // React Query 클라이언트
   const queryClient = useQueryClient();
 
+  // store
+  const { isLoggedIn, logout: logoutFromStore } = useAuthStore();
+
   // 로그아웃 핸들러
   const handleLogout = async () => {
     try {
-      await axiosInstance.post('/api/auth/refresh/logout');
+      await axiosInstance.post('/auth/refresh/logout');
       Toast.fire({
         icon: 'success',
         title: '로그아웃 완료',
@@ -63,6 +71,7 @@ export default function MainHeader() {
         showConfirmButton: false,
       });
       queryClient.invalidateQueries({ queryKey: ['user'] });
+      logoutFromStore();
       router.push('/');
     } catch (err) {
       Toast.fire({
@@ -85,9 +94,9 @@ export default function MainHeader() {
         <div className={styles.leftSection}>
           <IconButton onClick={() => setOpen(prev => !prev)}>
             {open ? (
-              <HiOutlineMenuAlt1 className={styles.menuIcon} /> // 닫히고
+              <HiOutlineMenuAlt1 className={styles.menuIcon} />
             ) : (
-              <HiOutlineMenu className={styles.menuIcon} /> // 열리고
+              <HiOutlineMenu className={styles.menuIcon} />
             )}
           </IconButton>
         </div>
@@ -99,11 +108,21 @@ export default function MainHeader() {
           </Link>
         </div>
 
+        {/* --- ⭐️ 수정된 아이콘 변경 부분 --- */}
         <div className={styles.rightSection}>
-          <Link href="/login">
-            <GoPerson className={styles.Icon} />
-          </Link>
+          {isLoggedIn ? (
+            // 로그인 후: 로그아웃 아이콘 버튼
+            <IconButton onClick={handleLogout} aria-label="logout">
+              <FiLogOut className={styles.Icon} />
+            </IconButton>
+          ) : (
+            // 로그인 전: 로그인 페이지로 이동하는 아이콘 링크
+            <Link href="/login">
+              <GoPerson className={styles.Icon} />
+            </Link>
+          )}
         </div>
+        {/* --- ⭐️ 수정된 아이콘 변경 부분 끝 --- */}
       </header>
 
       {/* MUI Drawer */}
@@ -124,8 +143,7 @@ export default function MainHeader() {
         }}
       >
         <List sx={{ borderBottom: '1px solid #ccc' }}>
-          {/* 홈 */}
-          <ListItem component={NextLink} href="/">
+          <ListItemButton component={NextLink} href="/">
             <ListItemText
               primary={
                 <span className={styles.Drawer_Icon}>
@@ -133,10 +151,8 @@ export default function MainHeader() {
                 </span>
               }
             />
-          </ListItem>
-
-          {/* 추천 */}
-          <ListItem component={NextLink} href="/">
+          </ListItemButton>
+          <ListItemButton component={NextLink} href="/">
             <ListItemText
               primary={
                 <span className={styles.Drawer_Icon}>
@@ -145,10 +161,8 @@ export default function MainHeader() {
                 </span>
               }
             />
-          </ListItem>
-
-          {/* 랭킹 */}
-          <ListItem component={NextLink} href="/ranking">
+          </ListItemButton>
+          <ListItemButton component={NextLink} href="/ranking">
             <ListItemText
               primary={
                 <span className={styles.Drawer_Icon}>
@@ -157,11 +171,11 @@ export default function MainHeader() {
                 </span>
               }
             />
-          </ListItem>
+          </ListItemButton>
         </List>
 
         <List sx={{ borderBottom: '1px solid #ccc' }}>
-          <ListItem component={NextLink} href="/characters">
+          <ListItemButton component={NextLink} href="/characters">
             <ListItemText
               primary={
                 <span className={styles.Drawer_Icon}>
@@ -170,9 +184,8 @@ export default function MainHeader() {
                 </span>
               }
             />
-          </ListItem>
-
-          <ListItem>
+          </ListItemButton>
+          <ListItemButton>
             <ListItemText
               primary={
                 <span className={styles.Drawer_Icon}>
@@ -181,22 +194,48 @@ export default function MainHeader() {
                 </span>
               }
             />
-          </ListItem>
+          </ListItemButton>
         </List>
 
-        <List>
-          {/* 마이페이지 */}
-          <ListItem component={NextLink} href="/my">
-            <ListItemText
-              primary={
-                <span className={styles.Drawer_Icon}>
-                  <GoPerson />
-                  마이페이지
-                </span>
-              }
-            />
-          </ListItem>
-        </List>
+        {isLoggedIn ? (
+          // 로그인 되었을 때: 마이페이지, 로그아웃 메뉴 표시
+          <List>
+            <ListItemButton component={NextLink} href="/my">
+              <ListItemText
+                primary={
+                  <span className={styles.Drawer_Icon}>
+                    <GoPerson />
+                    마이페이지
+                  </span>
+                }
+              />
+            </ListItemButton>
+            <ListItemButton onClick={handleLogout}>
+              <ListItemText
+                primary={
+                  <span className={styles.Drawer_Icon}>
+                    <FiLogOut />
+                    로그아웃
+                  </span>
+                }
+              />
+            </ListItemButton>
+          </List>
+        ) : (
+          // 로그아웃 되었을 때: 로그인 메뉴 표시
+          <List>
+            <ListItemButton component={NextLink} href="/login">
+              <ListItemText
+                primary={
+                  <span className={styles.Drawer_Icon}>
+                    <FiLogIn />
+                    로그인
+                  </span>
+                }
+              />
+            </ListItemButton>
+          </List>
+        )}
       </Drawer>
     </>
   );
