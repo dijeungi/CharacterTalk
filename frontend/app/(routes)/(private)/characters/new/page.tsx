@@ -22,7 +22,7 @@
  *
  * @author       최준호
  * @since        2025.06.12
- * @updated      2025.06.22
+ * @updated      2025.06.24
  */
 
 'use client';
@@ -30,6 +30,7 @@ import { useState } from 'react';
 
 // components
 import Step1_Profile from './_components/Step1_Profile';
+import Step2_Personality from './_components/Step2_Personality';
 
 // library
 import { LinearProgress } from '@mui/material';
@@ -48,11 +49,10 @@ export default function CharactersNewPage() {
         sx={{
           height: '4px',
           borderRadius: 0,
-          margin: 0,
-          padding: 0,
         }}
       />
-      {activeStep === 0 && <Step1_Profile />}
+      {activeStep === 0 && <Step1_Profile onNext={() => setActiveStep(1)} />}
+      {activeStep === 1 && <Step2_Personality />}
     </>
   );
 }
