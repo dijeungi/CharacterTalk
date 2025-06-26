@@ -29,16 +29,19 @@
 // store
 import { create } from 'zustand';
 
-export const useCharacterStep1Store = create<CharacterStep1Store>(set => ({
+export const useCharacterStep1Store = create<CharacterCreationState>(set => ({
   name: '',
   oneliner: '',
-  selectedVoice: '',
+  // selectedVoice: null,
   profileImage: null,
   isDirty: false,
-  setName: name => set({ name }),
-  setOneliner: oneliner => set({ oneliner }),
-  setSelectedVoice: selectedVoice => set({ selectedVoice }),
-  setProfileImage: image => set({ profileImage: image }),
+  currentStep: 1,
+
+  setName: name => set({ name, isDirty: true }),
+  setOneliner: oneliner => set({ oneliner, isDirty: true }),
+  // setSelectedVoice: (voice) => set({ selectedVoice: voice, isDirty: true }),
+  setProfileImage: image => set({ profileImage: image, isDirty: true }),
   setDirty: () => set({ isDirty: true }),
   resetDirty: () => set({ isDirty: false }),
+  setCurrentStep: (step: number) => set({ currentStep: step }), // 액션 구현
 }));
