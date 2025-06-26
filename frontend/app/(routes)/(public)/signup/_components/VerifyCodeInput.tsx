@@ -4,7 +4,7 @@
  * @component    VerifyCodeInput
  * @desc         휴대폰 인증번호 입력 및 확인 처리 컴포넌트
  *
- * @layout       SignupLayout
+ * @layout       Signup Layout
  * @access       public
  * @props        onConfirm(code: string): void (인증 확인 콜백 함수)
  *
