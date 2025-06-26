@@ -28,9 +28,6 @@ import { NextRequest, NextResponse } from 'next/server';
 // config
 import { protectedRoutes } from './config';
 
-// types
-import { JwtPayload } from '@/app/types/signup';
-
 export function authMiddleware(request: NextRequest) {
   // 리퀘스트 URL
   const { pathname } = request.nextUrl;
