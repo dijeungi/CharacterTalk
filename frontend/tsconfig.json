@@ -28,7 +28,8 @@
     "/.next/types/**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",
-    "types/**/*.d.ts"
+    "types/**/*.d.ts",
+    "app/_store/characters/characters.ㅅㄴㅁ"
   ],
   "exclude": ["frontend/node_modules"]
 }
