@@ -1,10 +1,13 @@
-export interface CharacterCreationState {
+// frontend/app/_store/characters/types.ts
+
+interface CharacterCreationState {
   // Step1
   name: string;
   oneliner: string;
   profileImage: File | string | null;
 
   // Step2
+  title: string;
   promptDetail: string;
   exampleDialogs: { user: string; ai: string }[];
 
@@ -17,6 +20,7 @@ export interface CharacterCreationState {
   setOneliner: (oneliner: string) => void;
   setProfileImage: (image: File | string | null) => void;
 
+  setTitle: (title: string) => void;
   setPromptDetail: (text: string) => void;
   addExampleDialog: (dialog: { user: string; ai: string }) => void;
   updateExampleDialog: (index: number, dialog: { user: string; ai: string }) => void;

@@ -1,5 +1,5 @@
 /**
- * @store        useCharacterCreation
+ * @store        useCharacterCreationStore
  * @file         frontend/app/store/characters/index.ts
  * @desc         캐릭터 생성 1단계 상태 관리 (이름, 한줄소개, 보이스, 이미지 등 입력값 및 변경 여부 상태 포함)
  *
@@ -28,7 +28,6 @@
 
 // store
 import { create } from 'zustand';
-import { CharacterCreationState } from './types';
 
 export const useCharacterCreationStore = create<CharacterCreationState>(set => ({
   // Step1
@@ -37,6 +36,7 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
   profileImage: null,
 
   // Step2
+  title: '',
   promptDetail: '',
   exampleDialogs: [],
 
@@ -50,6 +50,7 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
   setProfileImage: image => set({ profileImage: image, isDirty: true }),
 
   // Step2 actions
+  setTitle: title => set({ title, isDirty: true }),
   setPromptDetail: text => set({ promptDetail: text, isDirty: true }),
   addExampleDialog: dialog =>
     set(state => ({
