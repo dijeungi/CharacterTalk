@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 
 // lib
-import { HiChevronUp } from 'react-icons/hi2';
+import { HiChevronDown } from 'react-icons/hi2';
 
 // store
 import { useCharacterCreationStore } from '@/app/_store/characters';
@@ -117,7 +117,7 @@ export default function Step2_Personality() {
         <button className={styles.toggleButton} onClick={() => setShowAdvanced(prev => !prev)}>
           <div className={styles.toggleLabel}>고급 설정</div>
           <div className={`${styles.chevron} ${showAdvanced ? styles.open : ''}`}>
-            <HiChevronUp />
+            <HiChevronDown />
           </div>
         </button>
 
