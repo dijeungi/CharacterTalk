@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     code BIGSERIAL PRIMARY KEY,                          -- 고유 식별자
     oauth VARCHAR(50),                                   -- 가입 형태 (예: google, kakao)
     email VARCHAR(50) UNIQUE NOT NULL,                   -- 이메일
-    full_name VARCHAR(50) NOT NULL,                      -- 이름
+    name VARCHAR(50) NOT NULL,                           -- 이름
     rrn_front CHAR(6) NOT NULL,                          -- 주민등록번호 앞자리 (생년월일)
     rrn_back CHAR(1) NOT NULL,                           -- 주민등록번호 뒷자리 첫 글자
     gender CHAR(1),                                      -- 성별 (M/F 등)
