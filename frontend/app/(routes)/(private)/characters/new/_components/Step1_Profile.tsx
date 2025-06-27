@@ -159,7 +159,7 @@ export default function Step1_Profile({ onNext }: Step1Props) {
   return (
     <>
       <section className={styles.container}>
-        <div className={styles.formContent}>
+        <div className={styles.wrapper}>
           {/* isDataLoaded가 true일 때만 전체 컨텐츠를 렌더링 */}
           {isDataLoaded && (
             <>

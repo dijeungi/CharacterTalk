@@ -66,22 +66,24 @@ export default function Step2_Personality() {
           <p className={styles.caption}>‘사용자:’, ‘AI:’ 형식으로 대화를 작성해 주세요.</p>
 
           {exampleDialogs.map((dialog, i) => (
-            <div key={i} className={styles.field}>
-              <input
-                type="text"
-                className={styles.input}
-                placeholder="사용자: 예시 질문 입력"
-                value={dialog.user}
-                onChange={e => updateExampleDialog(i, { ...dialog, user: e.target.value })}
-              />
-              <input
-                type="text"
-                className={styles.input}
-                placeholder="AI: 예시 응답 입력"
-                value={dialog.ai}
-                onChange={e => updateExampleDialog(i, { ...dialog, ai: e.target.value })}
-              />
-              <button className={styles.button} onClick={() => removeExampleDialog(i)}>
+            <div key={i} className={styles.exampleDialogContainer}>
+              <div className={styles.exampleDialogField}>
+                <input
+                  type="text"
+                  className={styles.exampleDialogInput}
+                  placeholder="사용자: 예시 질문 입력"
+                  value={dialog.user}
+                  onChange={e => updateExampleDialog(i, { ...dialog, user: e.target.value })}
+                />
+                <input
+                  type="text"
+                  className={styles.exampleDialogInput}
+                  placeholder="AI: 예시 응답 입력"
+                  value={dialog.ai}
+                  onChange={e => updateExampleDialog(i, { ...dialog, ai: e.target.value })}
+                />
+              </div>
+              <button className={styles.removeButton} onClick={() => removeExampleDialog(i)}>
                 삭제
               </button>
             </div>

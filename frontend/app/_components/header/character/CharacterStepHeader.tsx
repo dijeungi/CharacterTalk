@@ -22,10 +22,14 @@ import { Toast } from '@/app/_utils/Swal';
 
 // DB
 import { saveDraftToDB, saveImageToDB } from '@/app/_utils/indexedDBUtils';
+import { LinearProgress } from '@mui/material';
 
 export default function CharacterStepHeader() {
   // store 상태 호출
   const { isDirty, currentStep, setDirty, resetDirty } = useCharacterCreationStore();
+
+  // bar 계산
+  const progress = (currentStep / 3) * 100;
 
   // step별 header Title
   const getHeaderTitle = (step: number) => {
@@ -41,6 +45,7 @@ export default function CharacterStepHeader() {
     }
   };
 
+  // 임시저장 Btn - IndexedDB 저장
   const handleSaveToIndexedDB = async () => {
     const state = useCharacterCreationStore.getState();
 
@@ -88,6 +93,19 @@ export default function CharacterStepHeader() {
             임시저장
           </button>
         </div>
+
+        <LinearProgress
+          variant="determinate"
+          value={progress}
+          sx={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '4px',
+            borderRadius: 0,
+          }}
+        />
       </header>
     </>
   );
