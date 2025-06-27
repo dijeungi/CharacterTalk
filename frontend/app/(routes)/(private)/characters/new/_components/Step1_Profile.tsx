@@ -139,6 +139,7 @@ export default function Step1_Profile({ onNext }: Step1Props) {
     setContinueModalOpen(false);
   };
 
+  // IndexedDB에 저장된 데이터 가져오기
   useEffect(() => {
     const restore = async () => {
       const saved = await getDraftFromDB();
