@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // css
 import styles from './page.module.css';
@@ -11,7 +11,7 @@ import { HiChevronUp } from 'react-icons/hi2';
 import { useCharacterCreationStore } from '@/app/_store/characters';
 
 // hooks
-import { useCheckUserStatus } from '@/app/_hooks/useCheckUserStatus';
+import { useCheckUserStatus } from '@/app/_hooks/auth';
 
 export default function Step2_Personality() {
   // 상태
@@ -29,6 +29,12 @@ export default function Step2_Personality() {
   const addExampleDialog = useCharacterCreationStore(state => state.addExampleDialog);
   const updateExampleDialog = useCharacterCreationStore(state => state.updateExampleDialog);
   const removeExampleDialog = useCharacterCreationStore(state => state.removeExampleDialog);
+
+  const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
+
+  useEffect(() => {
+    setCurrentStep(2);
+  }, [setCurrentStep]);
 
   return (
     <section className={styles.container}>
