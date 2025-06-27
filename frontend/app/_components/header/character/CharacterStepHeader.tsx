@@ -8,7 +8,7 @@
 'use client';
 
 // Next.js
-import Link from 'next/link';
+import { useState } from 'react';
 
 // css
 import styles from './CharacterStepHeader.module.css';
@@ -16,17 +16,23 @@ import styles from './CharacterStepHeader.module.css';
 // 상태
 import { useCharacterCreationStore } from '@/app/_store/characters';
 
+// components
+import UnsavedChangesModal from '../../../(routes)/(private)/characters/new/_components/Modal/UnsavedChangesModal';
+
 // lib
-import { MdKeyboardBackspace } from 'react-icons/md';
 import { Toast } from '@/app/_utils/Swal';
+import { LinearProgress } from '@mui/material';
+import { MdKeyboardBackspace } from 'react-icons/md';
 
 // DB
 import { saveDraftToDB, saveImageToDB } from '@/app/_utils/indexedDBUtils';
-import { LinearProgress } from '@mui/material';
 
 export default function CharacterStepHeader() {
   // store 상태 호출
-  const { isDirty, currentStep, setDirty, resetDirty } = useCharacterCreationStore();
+  const { isDirty, currentStep, resetDirty } = useCharacterCreationStore();
+
+  // 모달 상태
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // bar 계산
   const progress = (currentStep / 3) * 100;
@@ -69,14 +75,35 @@ export default function CharacterStepHeader() {
     resetDirty();
   };
 
+  // 뒤로가기 버튼 모달 창
+  const handleBackClick = () => {
+    if (isDirty) {
+      setIsModalOpen(true);
+    } else {
+      // 임시 저장 안 해도 뒤로 가기 실행
+      window.history.back();
+    }
+  };
+
+  // 모달 닫기
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // 나가기 클릭 시 뒤로 가기
+  const handleExit = () => {
+    setIsModalOpen(false);
+    window.history.back();
+  };
+
   return (
     <>
       <header className={styles.Container}>
         {/* 왼쪽 섹션 - 뒤로 가기 버튼 및 제목 */}
         <div className={styles.Left_Section}>
-          <Link href="/characters">
+          <button onClick={handleBackClick} className={styles.IconButton}>
             <MdKeyboardBackspace className={styles.Icon} />
-          </Link>
+          </button>
         </div>
 
         <div className={styles.Center_Section}>
@@ -107,6 +134,8 @@ export default function CharacterStepHeader() {
           }}
         />
       </header>
+      {/* 모달 컴포넌트 */}
+      {isModalOpen && <UnsavedChangesModal onClose={closeModal} onExit={handleExit} />}
     </>
   );
 }
