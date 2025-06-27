@@ -12,7 +12,7 @@
 .modal {
   background: #fff;
   border-radius: 12px;
-  padding: 32px;
+  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
   max-width: 420px;
   width: 70%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -69,7 +69,7 @@
   font-weight: 500;
   font-size: 14px;
   color: white;
-  background-color: black;
+  background-color: #007aff;
   border: none;
   border-radius: 6px;
   transition: background-color 0.2s;
