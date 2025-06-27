@@ -37,8 +37,8 @@ export default function CharactersNewPage() {
 
   return (
     <>
-      {activeStep === 0 && <Step1_Profile onNext={() => setActiveStep(1)} />}
-      {activeStep === 1 && <Step2_Personality />}
+      {activeStep === 0 && <Step1_Profile onNext={() => setActiveStep(1)} fromStep2 />}
+      {activeStep === 1 && <Step2_Personality onPrev={() => setActiveStep(0)} />}
     </>
   );
 }

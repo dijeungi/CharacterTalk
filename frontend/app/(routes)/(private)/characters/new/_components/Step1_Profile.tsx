@@ -56,7 +56,10 @@ import {
   getImageFromDB,
 } from '@/app/_utils/indexedDBUtils';
 
-export default function Step1_Profile({ onNext }: Step1Props) {
+export default function Step1_Profile({
+  onNext,
+  fromStep2 = false,
+}: Step1Props & { fromStep2?: boolean }) {
   // 상태 초기화
   const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
   const [continueModalOpen, setContinueModalOpen] = useState(false);
@@ -149,9 +152,10 @@ export default function Step1_Profile({ onNext }: Step1Props) {
         setName(saved.name || '');
         setOneliner(saved.oneliner || '');
         setProfileImage(imageURL || null);
-        setContinueModalOpen(true);
+        if (saved && !fromStep2) {
+          setContinueModalOpen(true);
+        }
       }
-
       setIsDataLoaded(true);
     };
     restore();
@@ -265,7 +269,12 @@ export default function Step1_Profile({ onNext }: Step1Props) {
 
               <CharacterPolicyNotice />
               <div className={styles.fixedBottom}>
-                <button className={styles.Button} onClick={onNext} disabled={!isFormValid}>
+                <button
+                  className={styles.Button}
+                  onClick={onNext}
+                  disabled={!isFormValid}
+                  style={{ width: '100%' }}
+                >
                   다음 단계
                 </button>
               </div>

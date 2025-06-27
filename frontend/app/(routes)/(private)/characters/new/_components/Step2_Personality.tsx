@@ -14,7 +14,7 @@ import { useCharacterCreationStore } from '@/app/_store/characters';
 import { useCheckUserStatus } from '@/app/_hooks/auth';
 import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
 
-export default function Step2_Personality() {
+export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
   // 상태
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -193,10 +193,11 @@ export default function Step2_Personality() {
       </div>
 
       {/* 하단 버튼 영역 */}
-      <div className={styles.fixedBottom}>
-        <div className={styles.stepButtonContainer}>
-          <button className={styles.Button}>다음</button>
-        </div>
+      <div className={styles.stepButtonContainer}>
+        <button className={styles.Button} onClick={onPrev}>
+          이전 단계
+        </button>
+        <button className={styles.Button}>다음 단계</button>
       </div>
     </section>
   );
