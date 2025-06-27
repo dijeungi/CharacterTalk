@@ -12,7 +12,7 @@ import { create } from 'zustand';
 
 // 회원가입 추가정보 - 초기 상태
 const initialState: SignupFormState = {
-  fullName: '',
+  name: '',
   residentFront: '',
   residentBack: '',
   number: '',

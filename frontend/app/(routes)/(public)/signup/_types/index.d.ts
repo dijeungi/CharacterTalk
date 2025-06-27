@@ -12,14 +12,14 @@ export interface VerifyCodeInputProps extends BaseInputProps {
 interface TempUserData {
   email: string;
   oauth: string;
-  nick_name: string;
+  name: string;
 }
 
 // pages
 export interface SignupPayload {
   email: string;
   oauth: string;
-  fullName: string;
+  name: string;
   gender: 'M' | 'F';
   number: string;
   residentFront: string;

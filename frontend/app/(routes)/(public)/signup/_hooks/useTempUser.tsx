@@ -39,10 +39,10 @@ export const useTempUser = (
 
   // 닉네임 정보가 있으면 dispatch로 store 저장
   useEffect(() => {
-    if (isSuccess && data?.nick_name) {
+    if (isSuccess && data?.full_name) {
       onSuccess?.(data);
     }
-  }, [isSuccess, data?.nick_name]);
+  }, [isSuccess, data?.full_name]);
 
   return {
     email: data?.email ?? '',

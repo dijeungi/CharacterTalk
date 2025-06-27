@@ -22,7 +22,10 @@ export async function GET(req: NextRequest) {
       {
         isLoggedIn: true,
         reason: null,
-        user: { id: decoded.id },
+        user: {
+          id: decoded.id,
+          name: decoded.name,
+        },
       },
       { status: 200 }
     );

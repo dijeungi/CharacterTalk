@@ -35,7 +35,7 @@ import { BaseInputProps } from '../_types';
 
 export default function FullNameInput({ editable = true }: BaseInputProps) {
   // store
-  const fullName = useSignupStore(state => state.fullName);
+  const name = useSignupStore(state => state.name);
   const setFormField = useSignupStore(state => state.setFormField);
 
   return (
@@ -44,9 +44,9 @@ export default function FullNameInput({ editable = true }: BaseInputProps) {
       <input
         className={styles.input}
         type="text"
-        name="fullName"
-        value={fullName}
-        onChange={e => setFormField('fullName', e.target.value)}
+        name="name"
+        value={name}
+        onChange={e => setFormField('name', e.target.value)}
         placeholder="이름을 입력해 주세요"
         required
         readOnly={!editable}

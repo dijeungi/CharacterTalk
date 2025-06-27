@@ -1,12 +1,12 @@
 interface TempUserData {
   email: string;
   oauth: string;
-  nick_name: string;
+  name: string;
 }
 
 interface User {
   id: string;
-  nickname: string;
+  name: string;
   role: string;
 }
 
@@ -19,7 +19,7 @@ interface AuthState {
 interface SignupRequest {
   email: string;
   oauth: string;
-  fullName: string;
+  name: string;
   gender: string;
   number: string;
   residentFront: string;

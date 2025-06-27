@@ -73,7 +73,7 @@ export async function GET(req: NextRequest) {
         `temp_user:${tempId}`,
         JSON.stringify({
           email: kakaoUser.kakao_account.email,
-          nick_name: kakaoUser.properties?.nickname,
+          name: kakaoUser.properties?.nickname,
           oauth: 'kakao',
         }),
         'EX',
@@ -83,11 +83,17 @@ export async function GET(req: NextRequest) {
     }
 
     // 기존 로그인
-    const accessToken = jwt.sign({ id: user.code }, process.env.JWT_SECRET!, { expiresIn: '10s' });
-
-    const refreshToken = jwt.sign({ id: user.code }, process.env.JWT_REFRESH_SECRET!, {
-      expiresIn: '7d',
+    const accessToken = jwt.sign({ id: user.code, name: user.name }, process.env.JWT_SECRET!, {
+      expiresIn: '30m',
     });
+
+    const refreshToken = jwt.sign(
+      { id: user.code, name: user.name },
+      process.env.JWT_REFRESH_SECRET!,
+      {
+        expiresIn: '30m',
+      }
+    );
 
     // 마지막 로그인 관련 데이터 DB 최신화
     await pool.query(

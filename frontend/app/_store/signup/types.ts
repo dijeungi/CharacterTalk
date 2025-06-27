@@ -1,5 +1,5 @@
 interface SignupFormState {
-  fullName: string;
+  name: string;
   residentFront: string;
   residentBack: string;
   number: string;

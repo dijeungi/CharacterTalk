@@ -70,8 +70,8 @@ export default function SignUpPage() {
 
   // 임시 사용자 정보 불러오기 및 이름 초기화
   const { email, oauth } = useTempUser(tempId, userData => {
-    if (userData?.nick_name) {
-      useSignupStore.getState().setFormField('fullName', userData.nick_name);
+    if (userData?.name) {
+      useSignupStore.getState().setFormField('name', userData.name);
     }
   });
 
@@ -157,7 +157,7 @@ export default function SignUpPage() {
     const payload: SignupPayload = {
       email,
       oauth,
-      fullName: form.fullName,
+      name: form.name,
       residentFront: form.residentFront,
       residentBack: form.residentBack,
       gender: ['1', '3', '5', '7'].includes(form.residentBack) ? 'M' : 'F',
@@ -171,7 +171,7 @@ export default function SignUpPage() {
 
   // 현재 단계(step)에 따라 상단 안내 문구 메시지 <div> 렌더링
   const renderTitle = () => {
-    const fullName = useSignupStore.getState().fullName;
+    const name = useSignupStore.getState().name;
     switch (step) {
       case 1:
       case 2:
@@ -196,7 +196,7 @@ export default function SignUpPage() {
       case 5:
         return (
           <>
-            {fullName}님,
+            {name}님,
             <br />
             가입을 축하드립니다 !
             <p className={styles.subTitle}>모든 정보가 정확한지 마지막으로 확인해 주세요.</p>
@@ -218,7 +218,7 @@ export default function SignUpPage() {
               <button
                 className={styles.button}
                 onClick={handleNextStep}
-                disabled={!useSignupStore.getState().fullName.trim()}
+                disabled={!useSignupStore.getState().name.trim()}
               >
                 다음
               </button>

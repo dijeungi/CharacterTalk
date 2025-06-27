@@ -5,21 +5,12 @@ import { pool } from '../../../lib/PostgreSQL';
 
 export async function POST(req: NextRequest) {
   try {
-    const {
-      email,
-      oauth,
-      fullName,
-      gender,
-      number,
-      residentFront,
-      residentBack,
-      verified,
-      birthDate,
-    } = await req.json();
+    const { email, oauth, name, gender, number, residentFront, residentBack, verified, birthDate } =
+      await req.json();
 
     if (
       !email ||
-      !fullName ||
+      !name ||
       !gender ||
       !number ||
       !residentFront ||
@@ -39,7 +30,7 @@ export async function POST(req: NextRequest) {
     // 회원 데이터 저장
     await pool.query(
       `INSERT INTO users (
-        oauth, email, gender, full_name, number,
+        oauth, email, gender, name, number,
         rrn_front, rrn_back, birth_date, verified,
         admin, status, is_deleted
       ) VALUES (
@@ -51,7 +42,7 @@ export async function POST(req: NextRequest) {
         oauth,
         email,
         gender,
-        fullName,
+        name,
         number,
         residentFront,
         residentBack,
