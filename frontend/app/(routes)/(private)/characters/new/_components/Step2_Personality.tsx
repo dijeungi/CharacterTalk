@@ -12,12 +12,16 @@ import { useCharacterCreationStore } from '@/app/_store/characters';
 
 // hooks
 import { useCheckUserStatus } from '@/app/_hooks/auth';
+import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
 
 export default function Step2_Personality() {
   // 상태
   const [showAdvanced, setShowAdvanced] = useState(false);
+
   const { data } = useCheckUserStatus();
   const userName = data?.user?.name || '사용자';
+
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   // store
   const title = useCharacterCreationStore(state => state.title);
@@ -35,6 +39,37 @@ export default function Step2_Personality() {
   useEffect(() => {
     setCurrentStep(2);
   }, [setCurrentStep]);
+
+  // 임시저장 데이터 불러오기
+  useEffect(() => {
+    const restore = async () => {
+      const saved = await getDraftFromDB();
+      if (!saved) return;
+
+      const store = useCharacterCreationStore.getState();
+
+      // Step2의 데이터를 복원
+      store.setTitle(saved.title || '');
+      store.setPromptDetail(saved.promptDetail || '');
+
+      if (Array.isArray(saved.exampleDialogs) && saved.exampleDialogs.length > 0) {
+        // 예시 대화가 이미 존재하지 않으면 추가
+        saved.exampleDialogs.forEach((dialog: { user: string; ai: string }) => {
+          if (!store.exampleDialogs.some(d => d.user === dialog.user && d.ai === dialog.ai)) {
+            store.addExampleDialog(dialog);
+          }
+        });
+      }
+
+      setIsDataLoaded(true);
+    };
+
+    restore();
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(exampleDialogs);
+  // }, [exampleDialogs]);
 
   return (
     <section className={styles.container}>
@@ -120,7 +155,7 @@ export default function Step2_Personality() {
                         : '주말에 뭐 할 거야?'
                     }
                     value={dialog.user}
-                    onChange={e => updateExampleDialog(i, { ...dialog, user: e.target.value })}
+                    onChange={e => updateExampleDialog(i, { user: e.target.value, ai: dialog.ai })}
                   />
                 </div>
 
@@ -137,11 +172,14 @@ export default function Step2_Personality() {
                         : '비밀이야~ 너랑 얘기하면서 정할래!'
                     }
                     value={dialog.ai}
-                    onChange={e => updateExampleDialog(i, { ...dialog, ai: e.target.value })}
+                    onChange={e =>
+                      updateExampleDialog(i, { user: dialog.user, ai: e.target.value })
+                    }
                   />
                 </div>
               </div>
             ))}
+
             {exampleDialogs.length < 3 && (
               <button
                 className={styles.button}
