@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 검증 완료 시 - 새로운 AccessToken & RefreshToken을 발급
-    const newAccessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET!, { expiresIn: '10s' });
+    const newAccessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET!, { expiresIn: '30m' });
     const newRefreshToken = jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET!, {
       expiresIn: '7d',
     });
