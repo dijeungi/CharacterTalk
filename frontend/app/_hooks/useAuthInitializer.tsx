@@ -17,10 +17,13 @@
  */
 
 'use client';
-
 import { useEffect, useState } from 'react';
+
+// store
 import { useAuthStore } from '@/app/_store/auth';
-import { checkUserStatus, refreshAuthToken } from '../_apis/signup';
+
+// api
+import { checkUserStatus, refreshAuthToken } from '../_apis/user';
 
 export default function AuthInitializer() {
   const { login, logout } = useAuthStore();
