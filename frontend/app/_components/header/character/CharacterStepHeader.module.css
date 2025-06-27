@@ -21,6 +21,13 @@
   justify-content: center;
 }
 
+.IconButton {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
 .centerSection {
   flex: 2;
   display: flex;

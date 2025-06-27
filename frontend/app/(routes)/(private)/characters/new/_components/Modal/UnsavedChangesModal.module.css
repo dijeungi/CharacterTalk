@@ -1,0 +1,86 @@
+/* UnsavedChangesModal.module.css */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 420px;
+  width: 70%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.description {
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.cancelButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 16px;
+  flex: 1;
+  min-width: max-content;
+  font-weight: 500;
+  font-size: 14px;
+  color: white;
+  background-color: #d8d7d2;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.confirmButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 16px;
+  flex: 1;
+  min-width: max-content;
+  font-weight: 500;
+  font-size: 14px;
+  color: white;
+  background-color: black;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.cancelButton,
+.confirmButton {
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
