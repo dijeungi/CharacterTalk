@@ -1,12 +1,24 @@
 'use client';
+import { useState } from 'react';
 
 // css
 import styles from './page.module.css';
 
+// lib
+import { HiChevronUp } from 'react-icons/hi2';
+
 // store
 import { useCharacterCreationStore } from '@/app/_store/characters';
 
+// hooks
+import { useCheckUserStatus } from '@/app/_hooks/useCheckUserStatus';
+
 export default function Step2_Personality() {
+  // 상태
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const { data } = useCheckUserStatus();
+  const userName = data?.user?.name || '사용자';
+
   // store
   const title = useCharacterCreationStore(state => state.title);
   const promptDetail = useCharacterCreationStore(state => state.promptDetail);
@@ -60,44 +72,80 @@ export default function Step2_Personality() {
           </div>
         </div>
 
+        {/* 고급 설정 토글 */}
+        <button className={styles.toggleButton} onClick={() => setShowAdvanced(prev => !prev)}>
+          <div className={styles.toggleLabel}>고급 설정</div>
+          <div className={`${styles.chevron} ${showAdvanced ? styles.open : ''}`}>
+            <HiChevronUp />
+          </div>
+        </button>
+
         {/* 예시 대화 */}
-        <div className={styles.field}>
-          <label className={styles.label}>예시 대화 (최대 3개)</label>
-          <p className={styles.caption}>‘사용자:’, ‘AI:’ 형식으로 대화를 작성해 주세요.</p>
-
-          {exampleDialogs.map((dialog, i) => (
-            <div key={i} className={styles.exampleDialogContainer}>
-              <div className={styles.exampleDialogField}>
-                <input
-                  type="text"
-                  className={styles.exampleDialogInput}
-                  placeholder="사용자: 예시 질문 입력"
-                  value={dialog.user}
-                  onChange={e => updateExampleDialog(i, { ...dialog, user: e.target.value })}
-                />
-                <input
-                  type="text"
-                  className={styles.exampleDialogInput}
-                  placeholder="AI: 예시 응답 입력"
-                  value={dialog.ai}
-                  onChange={e => updateExampleDialog(i, { ...dialog, ai: e.target.value })}
-                />
-              </div>
-              <button className={styles.removeButton} onClick={() => removeExampleDialog(i)}>
-                삭제
-              </button>
+        {showAdvanced && (
+          <div className={styles.advancedSection}>
+            <div className={styles.field}>
+              <label className={styles.label}>예시 대화</label>
+              <p className={styles.caption}>
+                예시 대화를 입력해서 캐릭터에 완성도를 높여보세요.
+                <br />
+                예시는 최대 3개까지 등록하실 수 있습니다.
+              </p>
             </div>
-          ))}
 
-          {exampleDialogs.length < 3 && (
-            <button
-              className={styles.button}
-              onClick={() => addExampleDialog({ user: '', ai: '' })}
-            >
-              + 예시 대화 추가
-            </button>
-          )}
-        </div>
+            {exampleDialogs.map((dialog, i) => (
+              <div key={i} className={styles.exampleDialogContainer}>
+                <div className={styles.dialogHeader}>
+                  <span className={styles.dialogTitle}>예시 {i + 1}</span>
+                  <button className={styles.removeButton} onClick={() => removeExampleDialog(i)}>
+                    삭제
+                  </button>
+                </div>
+
+                <div className={styles.dialogField}>
+                  <label className={styles.dialogLabel}>{userName}</label>
+                  <input
+                    type="text"
+                    className={styles.exampleDialogInput}
+                    placeholder={
+                      i === 0
+                        ? '오늘 기분 어때?'
+                        : i === 1
+                        ? '뭐하고 있었어?'
+                        : '주말에 뭐 할 거야?'
+                    }
+                    value={dialog.user}
+                    onChange={e => updateExampleDialog(i, { ...dialog, user: e.target.value })}
+                  />
+                </div>
+
+                <div className={styles.dialogField}>
+                  <label className={styles.dialogLabel}>Ai 캐릭터</label>
+                  <input
+                    type="text"
+                    className={styles.exampleDialogInput}
+                    placeholder={
+                      i === 0
+                        ? '나야 항상 기분 좋지! 너는?'
+                        : i === 1
+                        ? '그냥 좀 쉬고 있었지. 넌?'
+                        : '비밀이야~ 너랑 얘기하면서 정할래!'
+                    }
+                    value={dialog.ai}
+                    onChange={e => updateExampleDialog(i, { ...dialog, ai: e.target.value })}
+                  />
+                </div>
+              </div>
+            ))}
+            {exampleDialogs.length < 3 && (
+              <button
+                className={styles.button}
+                onClick={() => addExampleDialog({ user: '', ai: '' })}
+              >
+                + 예시 대화 추가
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* 하단 버튼 영역 */}
