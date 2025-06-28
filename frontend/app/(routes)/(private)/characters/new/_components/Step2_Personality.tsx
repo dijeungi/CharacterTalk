@@ -27,12 +27,17 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
   const title = useCharacterCreationStore(state => state.title);
   const promptDetail = useCharacterCreationStore(state => state.promptDetail);
   const exampleDialogs = useCharacterCreationStore(state => state.exampleDialogs);
+  const speech = useCharacterCreationStore(state => state.speech);
+  const behaviorConstraint = useCharacterCreationStore(state => state.behaviorConstraint);
 
   const setTitle = useCharacterCreationStore(state => state.setTitle);
   const setPromptDetail = useCharacterCreationStore(state => state.setPromptDetail);
   const addExampleDialog = useCharacterCreationStore(state => state.addExampleDialog);
   const updateExampleDialog = useCharacterCreationStore(state => state.updateExampleDialog);
   const removeExampleDialog = useCharacterCreationStore(state => state.removeExampleDialog);
+
+  const setSpeech = useCharacterCreationStore(state => state.setSpeech);
+  const setBehaviorConstraint = useCharacterCreationStore(state => state.setBehaviorConstraint);
 
   const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
 
@@ -51,6 +56,8 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
       // Step2의 데이터를 복원
       store.setTitle(saved.title || '');
       store.setPromptDetail(saved.promptDetail || '');
+      store.setSpeech(saved.speech || '');
+      store.setBehaviorConstraint(saved.behaviorConstraint || '');
 
       if (Array.isArray(saved.exampleDialogs) && saved.exampleDialogs.length > 0) {
         // 예시 대화가 이미 존재하지 않으면 추가
@@ -66,10 +73,6 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
 
     restore();
   }, []);
-
-  // useEffect(() => {
-  //   console.log(exampleDialogs);
-  // }, [exampleDialogs]);
 
   return (
     <section className={styles.container}>
@@ -113,13 +116,50 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
           </div>
         </div>
 
+        {/* 말투 스타일 선택 */}
+        <div className={styles.field}>
+          <label className={styles.label}>
+            말투 스타일 <span className={styles.required}>*</span>
+          </label>
+          <p className={styles.caption}>캐릭터의 어조와 말투 스타일을 선택해 주세요.</p>
+          <select
+            className={styles.select}
+            value={speech}
+            onChange={e => setSpeech(e.target.value as SpeechStyle)}
+          >
+            <option value="">선택 안 함</option>
+            <option value="formal-polite">존댓말 / 정중함</option>
+            <option value="casual-friendly">반말 / 친근함</option>
+            <option value="direct-blunt">직설적 / 쿨한 말투</option>
+            <option value="cheerful">명랑하고 밝은 말투</option>
+            <option value="tsundere">츤데레 스타일</option>
+          </select>
+        </div>
+
+        {/* 행동 제약 조건 입력 */}
+        <div className={styles.field}>
+          <label className={styles.label}>행동 제약 조건</label>
+          <p className={styles.caption}>
+            캐릭터가 반드시 지켜야 할 제약 사항이 있다면 입력해 주세요.
+          </p>
+          <textarea
+            className={styles.textarea}
+            rows={3}
+            value={behaviorConstraint}
+            onChange={e => setBehaviorConstraint(e.target.value)}
+            placeholder="예시) 욕설 절대 금지. 사용자가 감정적으로 대할 때도 침착하게 대응."
+          />
+        </div>
+
         {/* 고급 설정 토글 */}
-        <button className={styles.toggleButton} onClick={() => setShowAdvanced(prev => !prev)}>
-          <div className={styles.toggleLabel}>고급 설정</div>
-          <div className={`${styles.chevron} ${showAdvanced ? styles.open : ''}`}>
-            <HiChevronDown />
-          </div>
-        </button>
+        <div className={styles.field}>
+          <button className={styles.toggleButton} onClick={() => setShowAdvanced(prev => !prev)}>
+            <div className={styles.toggleLabel}>고급 설정</div>
+            <div className={`${styles.chevron} ${showAdvanced ? styles.open : ''}`}>
+              <HiChevronDown />
+            </div>
+          </button>
+        </div>
 
         {/* 예시 대화 */}
         {showAdvanced && (
@@ -131,6 +171,14 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
                 <br />
                 예시는 최대 3개까지 등록하실 수 있습니다.
               </p>
+              {exampleDialogs.length < 3 && (
+                <button
+                  className={styles.button}
+                  onClick={() => addExampleDialog({ user: '', ai: '' })}
+                >
+                  + 예시 대화 추가
+                </button>
+              )}
             </div>
 
             {exampleDialogs.map((dialog, i) => (
@@ -179,15 +227,6 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
                 </div>
               </div>
             ))}
-
-            {exampleDialogs.length < 3 && (
-              <button
-                className={styles.button}
-                onClick={() => addExampleDialog({ user: '', ai: '' })}
-              >
-                + 예시 대화 추가
-              </button>
-            )}
           </div>
         )}
       </div>

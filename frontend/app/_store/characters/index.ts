@@ -39,6 +39,8 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
   title: '',
   promptDetail: '',
   exampleDialogs: [],
+  speech: '',
+  behaviorConstraint: '',
 
   // 공통
   isDirty: false,
@@ -68,6 +70,8 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
       exampleDialogs: state.exampleDialogs.filter((_, i) => i !== index),
       isDirty: true,
     })),
+  setSpeech: style => set({ speech: style, isDirty: true }),
+  setBehaviorConstraint: text => set({ behaviorConstraint: text, isDirty: true }),
 
   // 공통 actions
   setDirty: () => set({ isDirty: true }),
@@ -81,6 +85,8 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
       profileImage: null,
       promptDetail: '',
       exampleDialogs: [],
+      speech: '',
+      behaviorConstraint: '',
       isDirty: false,
       currentStep: 1,
     }),

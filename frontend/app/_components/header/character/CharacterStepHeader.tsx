@@ -23,6 +23,8 @@ import UnsavedChangesModal from '../../../(routes)/(private)/characters/new/_com
 import { Toast } from '@/app/_utils/Swal';
 import { LinearProgress } from '@mui/material';
 import { MdKeyboardBackspace } from 'react-icons/md';
+import { CgProfile } from 'react-icons/cg';
+import { IoMdPaper } from 'react-icons/io';
 
 // DB
 import { saveDraftToDB, saveImageToDB } from '@/app/_utils/indexedDBUtils';
@@ -41,11 +43,26 @@ export default function CharacterStepHeader() {
   const getHeaderTitle = (step: number) => {
     switch (step) {
       case 1:
-        return '프로필 인적사항';
+        return (
+          <>
+            <CgProfile style={{ marginRight: '0.5rem' }} />
+            프로필 인적사항
+          </>
+        );
       case 2:
-        return '기본 프롬프트 설정';
+        return (
+          <>
+            <IoMdPaper style={{ marginRight: '0.5rem' }} />
+            기본 프롬프트 설정
+          </>
+        );
       case 3:
-        return '고급 설정';
+        return (
+          <>
+            {/* <FaCogs style={{ marginRight: '0.5rem' }} /> */}
+            고급 설정
+          </>
+        );
       default:
         return '캐릭터 만들기';
     }
@@ -61,6 +78,8 @@ export default function CharacterStepHeader() {
       title: state.title,
       promptDetail: state.promptDetail,
       exampleDialogs: state.exampleDialogs,
+      speech: state.speech,
+      behaviorConstraint: state.behaviorConstraint,
     });
 
     if (state.profileImage instanceof File) {
@@ -129,7 +148,7 @@ export default function CharacterStepHeader() {
             bottom: 0,
             left: 0,
             width: '100%',
-            height: '4px',
+            height: '5px',
             borderRadius: 0,
           }}
         />

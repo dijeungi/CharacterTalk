@@ -10,6 +10,8 @@ interface CharacterCreationState {
   title: string;
   promptDetail: string;
   exampleDialogs: { user: string; ai: string }[];
+  speech: SpeechStyle;
+  behaviorConstraint: string;
 
   // 공통
   isDirty: boolean;
@@ -25,9 +27,20 @@ interface CharacterCreationState {
   addExampleDialog: (dialog: { user: string; ai: string }) => void;
   updateExampleDialog: (index: number, dialog: { user: string; ai: string }) => void;
   removeExampleDialog: (index: number) => void;
+  setSpeech: (style: SpeechStyle) => void;
+  setBehaviorConstraint: (text: string) => void;
 
   setDirty: () => void;
   resetDirty: () => void;
   setCurrentStep: (step: number) => void;
   resetAll: () => void;
 }
+
+// 말투 스타일 타입 정의
+type SpeechStyle =
+  | 'formal-polite' // 존댓말 / 정중함
+  | 'casual-friendly' // 반말 / 친근함
+  | 'direct-blunt' // 직설적 / 쿨한 말투
+  | 'cheerful' // 명랑하고 밝은 말투
+  | 'tsundere' // 츤데레 스타일
+  | ''; // 선택 안 함
