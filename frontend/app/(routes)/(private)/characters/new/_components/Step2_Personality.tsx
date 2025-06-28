@@ -126,18 +126,21 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
             말투 스타일 <span className={styles.required}>*</span>
           </label>
           <p className={styles.caption}>캐릭터의 어조와 말투 스타일을 선택해 주세요.</p>
-          <select
-            className={styles.select}
-            value={speech}
-            onChange={e => setSpeech(e.target.value as SpeechStyle)}
-          >
-            <option value="">선택 안 함</option>
-            <option value="formal-polite">존댓말 / 정중함</option>
-            <option value="casual-friendly">반말 / 친근함</option>
-            <option value="direct-blunt">직설적 / 쿨한 말투</option>
-            <option value="cheerful">명랑하고 밝은 말투</option>
-            <option value="tsundere">츤데레 스타일</option>
-          </select>
+          <div className={styles.selectWrapper}>
+            <select
+              className={styles.select}
+              value={speech}
+              onChange={e => setSpeech(e.target.value as SpeechStyle)}
+            >
+              <option value="">선택 안 함</option>
+              <option value="formal-polite">존댓말 / 정중함</option>
+              <option value="casual-friendly">반말 / 친근함</option>
+              <option value="direct-blunt">직설적 / 쿨한 말투</option>
+              <option value="cheerful">명랑하고 밝은 말투</option>
+              <option value="tsundere">츤데레 스타일</option>
+            </select>
+            <HiChevronDown className={styles.selectIcon} />
+          </div>
         </div>
 
         {/* 행동 제약 조건 입력 */}

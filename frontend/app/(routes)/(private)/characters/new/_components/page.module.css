@@ -324,3 +324,21 @@
   transform: rotate(180deg);
   line-height: 1;
 }
+
+.selectWrapper {
+  position: relative;
+}
+
+.select {
+  width: 100%;
+  padding-right: 2rem;
+  appearance: none;
+}
+
+.selectIcon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
