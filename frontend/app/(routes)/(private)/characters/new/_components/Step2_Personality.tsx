@@ -41,6 +41,10 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
 
   const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
 
+  // 다음단계 버튼 활성화 상태
+  const isFormValid = title.trim() !== '' && promptDetail.trim() !== '' && speech.trim() !== '';
+
+  // progressBar 상태 업데이트
   useEffect(() => {
     setCurrentStep(2);
   }, [setCurrentStep]);
@@ -236,7 +240,9 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
         <button className={styles.Button} onClick={onPrev}>
           이전 단계
         </button>
-        <button className={styles.Button}>다음 단계</button>
+        <button className={styles.Button} disabled={!isFormValid}>
+          다음 단계
+        </button>
       </div>
     </section>
   );
