@@ -34,11 +34,19 @@ import Step2_Personality from './_components/Step2_Personality';
 
 export default function CharactersNewPage() {
   const [activeStep, setActiveStep] = useState(0);
+  const [fromStep2, setFromStep2] = useState(false);
 
   return (
     <>
-      {activeStep === 0 && <Step1_Profile onNext={() => setActiveStep(1)} fromStep2 />}
-      {activeStep === 1 && <Step2_Personality onPrev={() => setActiveStep(0)} />}
+      {activeStep === 0 && <Step1_Profile onNext={() => setActiveStep(1)} fromStep2={fromStep2} />}
+      {activeStep === 1 && (
+        <Step2_Personality
+          onPrev={() => {
+            setFromStep2(true);
+            setActiveStep(0);
+          }}
+        />
+      )}
     </>
   );
 }

@@ -152,7 +152,9 @@ export default function Step1_Profile({
         setName(saved.name || '');
         setOneliner(saved.oneliner || '');
         setProfileImage(imageURL || null);
-        setContinueModalOpen(true);
+        if (!fromStep2) {
+          setContinueModalOpen(true);
+        }
       }
       setIsDataLoaded(true);
     };
