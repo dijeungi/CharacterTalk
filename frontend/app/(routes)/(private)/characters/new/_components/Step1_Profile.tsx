@@ -187,7 +187,11 @@ export default function Step1_Profile({
                       <p className={styles.subCaption}>부적절한 이미지는 업로드가 제한됩니다.</p>
                     </div>
                     <div className={styles.buttonRow}>
-                      <button className={styles.button} type="button" onClick={triggerFileInput}>
+                      <button
+                        className={styles.profileButton}
+                        type="button"
+                        onClick={triggerFileInput}
+                      >
                         <MdOutlineFileUpload /> 업로드
                         <input
                           ref={fileInputRef}
@@ -199,7 +203,7 @@ export default function Step1_Profile({
                         />
                       </button>
                       <button
-                        className={styles.button}
+                        className={styles.profileButton}
                         type="button"
                         onClick={() => setImageGeneratorDrawerOpen(true)}
                       >
@@ -268,16 +272,6 @@ export default function Step1_Profile({
               </div> */}
 
               <CharacterPolicyNotice />
-              <div className={styles.fixedBottom}>
-                <button
-                  className={styles.Button}
-                  onClick={onNext}
-                  disabled={!isFormValid}
-                  style={{ width: '100%' }}
-                >
-                  다음 단계
-                </button>
-              </div>
 
               {/* Todo: 추후 기능.. 으로 잠깐  */}
               {/* <VoiceSelectModal
@@ -299,6 +293,16 @@ export default function Step1_Profile({
           )}
         </div>
       </section>
+      <div className={styles.step1ButtonContainer}>
+        <button
+          className={styles.Button}
+          onClick={onNext}
+          disabled={!isFormValid}
+          style={{ width: '100%' }}
+        >
+          다음 단계
+        </button>
+      </div>
       <ContinueCreationModal
         open={continueModalOpen}
         onNew={handleNewCreation}
