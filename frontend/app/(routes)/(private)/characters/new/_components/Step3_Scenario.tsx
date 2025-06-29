@@ -15,14 +15,6 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
 
   const isValid = title && greeting && situation;
 
-  // store
-  const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
-
-  // progressBar 상태 업데이트
-  useEffect(() => {
-    setCurrentStep(3);
-  }, [setCurrentStep]);
-
   return (
     <>
       <section className={styles.container}>

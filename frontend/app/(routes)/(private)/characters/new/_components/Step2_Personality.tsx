@@ -39,15 +39,8 @@ export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
   const setSpeech = useCharacterCreationStore(state => state.setSpeech);
   const setBehaviorConstraint = useCharacterCreationStore(state => state.setBehaviorConstraint);
 
-  const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
-
   // 다음단계 버튼 활성화 상태
   const isFormValid = title.trim() !== '' && promptDetail.trim() !== '' && speech.trim() !== '';
-
-  // progressBar 상태 업데이트
-  useEffect(() => {
-    setCurrentStep(2);
-  }, [setCurrentStep]);
 
   // 임시저장 데이터 불러오기
   useEffect(() => {

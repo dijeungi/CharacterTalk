@@ -76,11 +76,6 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   const setProfileImage = useCharacterCreationStore(state => state.setProfileImage);
   const setDirty = useCharacterCreationStore(state => state.setDirty);
   const resetDirty = useCharacterCreationStore(state => state.resetDirty);
-  const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
-
-  useEffect(() => {
-    setCurrentStep(1);
-  }, [setCurrentStep]);
 
   // 프로필 이미지 미리보기
   const imagePreview = useMemo(() => {

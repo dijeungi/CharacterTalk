@@ -26,16 +26,25 @@
  */
 
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // components
 import Step1_Profile from './_components/Step1_Profile';
 import Step2_Personality from './_components/Step2_Personality';
 import Step3_Scenario from './_components/Step3_Scenario';
 
+// store
+import { useCharacterCreationStore } from '@/app/_store/characters';
+
 export default function CharactersNewPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [fromStep2, setFromStep2] = useState(false);
+  const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
+
+  // prosBar Update
+  useEffect(() => {
+    setCurrentStep(activeStep + 1);
+  }, [activeStep, setCurrentStep]);
 
   return (
     <>
