@@ -31,6 +31,7 @@ import { useState } from 'react';
 // components
 import Step1_Profile from './_components/Step1_Profile';
 import Step2_Personality from './_components/Step2_Personality';
+import Step3_Scenario from './_components/Step3_Scenario';
 
 export default function CharactersNewPage() {
   const [activeStep, setActiveStep] = useState(0);
@@ -44,6 +45,15 @@ export default function CharactersNewPage() {
           onPrev={() => {
             setFromStep2(true);
             setActiveStep(0);
+          }}
+          onNext={() => setActiveStep(2)}
+        />
+      )}
+      {activeStep === 2 && (
+        <Step3_Scenario
+          onPrev={() => setActiveStep(1)}
+          onNext={() => {
+            // Todo: 추후 연결
           }}
         />
       )}
