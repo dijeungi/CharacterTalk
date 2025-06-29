@@ -1,7 +1,11 @@
 'use client';
+import { useEffect, useState } from 'react';
 
-import { useState } from 'react';
+// css
 import styles from './page.module.css';
+
+// store
+import { useCharacterCreationStore } from '@/app/_store/characters';
 
 export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
   const [title, setTitle] = useState('');
@@ -10,6 +14,14 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
   const [suggestions, setSuggestions] = useState(['', '', '']);
 
   const isValid = title && greeting && situation;
+
+  // store
+  const setCurrentStep = useCharacterCreationStore(state => state.setCurrentStep);
+
+  // progressBar 상태 업데이트
+  useEffect(() => {
+    setCurrentStep(3);
+  }, [setCurrentStep]);
 
   return (
     <>
@@ -58,16 +70,18 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
               className={styles.textarea}
               value={situation}
               onChange={e => setSituation(e.target.value)}
-              placeholder="배경, 세계관, 캐릭터 관계 등을 자유롭게 작성해 주세요."
+              placeholder="예: 당신은 왕국을 지키는 기사, 나는 새로 부임한 왕이에요. 오늘은 첫 임무를 전달하는 날이에요."
               rows={4}
             />
           </div>
 
           {/* 추천 답변 꾸밈 */}
           <div className={styles.field}>
-            <label className={styles.label}>추천 답변 (최대 3개)</label>
+            <label className={styles.label}>추천 답변</label>
             <p className={styles.caption}>
-              사용자가 쉽게 시작할 수 있도록 캐릭터에게 보낼 수 있는 예시 답변을 작성해 주세요.
+              사용자가 쉽게 시작할 수 있도록 예시 답변을 작성해 주세요.
+              <br />
+              예시는 최대 3개까지 등록하실 수 있습니다.
             </p>
             {suggestions.map((s, i) => (
               <div key={i} className={styles.inputWrapper}>
@@ -75,11 +89,13 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
                   className={styles.input}
                   value={s}
                   onChange={e => {
-                    const updated = [...suggestions];
-                    updated[i] = e.target.value;
-                    setSuggestions(updated);
+                    const copy = [...suggestions];
+                    copy[i] = e.target.value;
+                    setSuggestions(copy);
                   }}
-                  placeholder={`예 ${i + 1}: 좋아, 가보자!`}
+                  placeholder={
+                    i === 0 ? '오늘 기분 어때?' : i === 1 ? '뭐하고 있었어?' : '주말에 뭐 할 거야?'
+                  }
                 />
               </div>
             ))}
