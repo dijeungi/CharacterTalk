@@ -1,5 +1,16 @@
 interface Step1Props {
   onNext: () => void;
+  fromStep2?: boolean;
+}
+
+interface Step2Props {
+  onPrev: () => void;
+  onNext: () => void;
+}
+
+interface Step3Props {
+  onPrev: () => void;
+  onNext: () => void;
 }
 
 // frontend/app/(routes)/(private)/characters/new/_components/Modal/UnsavedChangesModal.tsx

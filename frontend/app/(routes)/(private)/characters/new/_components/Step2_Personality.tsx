@@ -14,7 +14,7 @@ import { useCharacterCreationStore } from '@/app/_store/characters';
 import { useCheckUserStatus } from '@/app/_hooks/auth';
 import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
 
-export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
+export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
   // 상태
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -105,7 +105,7 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
           {/* 상세 설명 */}
           <div className={styles.field}>
             <label className={styles.label}>
-              캐릭터 설명 <span className={styles.required}>*</span>
+              캐릭터 설명 및 정보 <span className={styles.required}>*</span>
             </label>
             <p className={styles.caption}>
               상황, 성격, 말투, 관계, 세계관 등을 포함해 캐릭터를 자세히 설명해 주세요.
@@ -241,17 +241,17 @@ export default function Step2_Personality({ onPrev }: { onPrev: () => void }) {
               ))}
             </div>
           )}
+          {/* 하단 버튼 영역 */}
+        </div>
+        <div className={styles.step2ButtonContainer}>
+          <button className={styles.Button} onClick={onPrev}>
+            이전 단계
+          </button>
+          <button className={styles.Button} onClick={onNext} disabled={!isFormValid}>
+            다음 단계
+          </button>
         </div>
       </section>
-      {/* 하단 버튼 영역 */}
-      <div className={styles.step2ButtonContainer}>
-        <button className={styles.Button} onClick={onPrev}>
-          이전 단계
-        </button>
-        <button className={styles.Button} disabled={!isFormValid}>
-          다음 단계
-        </button>
-      </div>
     </>
   );
 }

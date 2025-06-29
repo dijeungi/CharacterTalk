@@ -56,10 +56,7 @@ import {
   getImageFromDB,
 } from '@/app/_utils/indexedDBUtils';
 
-export default function Step1_Profile({
-  onNext,
-  fromStep2 = false,
-}: Step1Props & { fromStep2?: boolean }) {
+export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   // 상태 초기화
   const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
   const [continueModalOpen, setContinueModalOpen] = useState(false);
@@ -292,17 +289,17 @@ export default function Step1_Profile({
             </>
           )}
         </div>
+        <div className={styles.step1ButtonContainer}>
+          <button
+            className={styles.Button}
+            onClick={onNext}
+            disabled={!isFormValid}
+            style={{ width: '100%' }}
+          >
+            다음 단계
+          </button>
+        </div>
       </section>
-      <div className={styles.step1ButtonContainer}>
-        <button
-          className={styles.Button}
-          onClick={onNext}
-          disabled={!isFormValid}
-          style={{ width: '100%' }}
-        >
-          다음 단계
-        </button>
-      </div>
       <ContinueCreationModal
         open={continueModalOpen}
         onNew={handleNewCreation}

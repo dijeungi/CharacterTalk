@@ -1,0 +1,99 @@
+'use client';
+
+import { useState } from 'react';
+import styles from './page.module.css';
+
+export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
+  const [title, setTitle] = useState('');
+  const [greeting, setGreeting] = useState('');
+  const [situation, setSituation] = useState('');
+  const [suggestions, setSuggestions] = useState(['', '', '']);
+
+  const isValid = title && greeting && situation;
+
+  return (
+    <>
+      <section className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={styles.field}>
+            <label className={styles.label}>
+              시작 설정 제목 <span className={styles.required}>*</span>
+            </label>
+            <p className={styles.caption}>캐릭터 시나리오의 주제를 간단히 표현해 주세요.</p>
+            <textarea
+              className={styles.textarea}
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              placeholder="예: 모험의 시작, 첫 출근날 등"
+              rows={2}
+            />
+          </div>
+
+          {/* 첫 인사말 */}
+          <div className={styles.field}>
+            <label className={styles.label}>
+              첫 인사말 <span className={styles.required}>*</span>
+            </label>
+            <p className={styles.caption}>
+              캐릭터가 사용자를 처음 만났을 때 하는 대사를 작성해주세요.
+            </p>
+            <textarea
+              className={styles.textarea}
+              value={greeting}
+              onChange={e => setGreeting(e.target.value)}
+              placeholder="예: 안녕! 오늘 하루는 어땠어?"
+              rows={3}
+            />
+          </div>
+
+          {/* 시작 상황 설명 */}
+          <div className={styles.field}>
+            <label className={styles.label}>
+              시작 상황 설명 <span className={styles.required}>*</span>
+            </label>
+            <p className={styles.caption}>
+              대화가 시작되는 배경이나 세계관, 캐릭터와 사용자의 관계를 구체적으로 설명해 주세요.
+            </p>
+            <textarea
+              className={styles.textarea}
+              value={situation}
+              onChange={e => setSituation(e.target.value)}
+              placeholder="배경, 세계관, 캐릭터 관계 등을 자유롭게 작성해 주세요."
+              rows={4}
+            />
+          </div>
+
+          {/* 추천 답변 꾸밈 */}
+          <div className={styles.field}>
+            <label className={styles.label}>추천 답변 (최대 3개)</label>
+            <p className={styles.caption}>
+              사용자가 쉽게 시작할 수 있도록 캐릭터에게 보낼 수 있는 예시 답변을 작성해 주세요.
+            </p>
+            {suggestions.map((s, i) => (
+              <div key={i} className={styles.inputWrapper}>
+                <input
+                  className={styles.input}
+                  value={s}
+                  onChange={e => {
+                    const updated = [...suggestions];
+                    updated[i] = e.target.value;
+                    setSuggestions(updated);
+                  }}
+                  placeholder={`예 ${i + 1}: 좋아, 가보자!`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className={styles.step2ButtonContainer}>
+          <button className={styles.Button} onClick={onPrev}>
+            이전 단계
+          </button>
+          <button className={styles.Button} onClick={onNext} disabled={!isValid}>
+            다음 단계
+          </button>
+        </div>
+      </section>
+    </>
+  );
+}
