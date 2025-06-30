@@ -1,4 +1,4 @@
-import { auth } from '@/app/firebase/config';
+import { auth } from '@/app/_firebase/config';
 /**
  * @lib          authMiddleware
  * @file         frontend/app/lib/middleware/authMiddleware.ts
@@ -44,11 +44,19 @@ export function authMiddleware(request: NextRequest) {
   if (!isProtected) return NextResponse.next();
 
   // accessToken이 없을 경우 > 로그인 페이지로 이동 & 쿼리 파라미터(reason) 추가
+  // if (!token) {
+  //   const url = request.nextUrl.clone();
+  //   url.pathname = '/login';
+  //   url.searchParams.set('reason', 'unauthorized');
+  //   return NextResponse.redirect(url);
+  // }
   if (!token) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('reason', 'unauthorized');
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(
+      new URL(
+        `/login?reason=unauthorized&next=${encodeURIComponent(request.nextUrl.pathname)}`,
+        request.url
+      )
+    );
   }
 
   try {
@@ -56,20 +64,46 @@ export function authMiddleware(request: NextRequest) {
     const isExpired = decoded.exp * 1000 < Date.now();
 
     // accessToken이 만료되었을 경우
+    // if (isExpired) {
+    //   const url = request.nextUrl.clone();
+    //   url.pathname = '/login';
+    //   url.searchParams.set('reason', 'expired');
+    //   return NextResponse.redirect(url);
+    // }
+
+    // if (isExpired) {
+    //   return NextResponse.redirect(new URL('/login?reason=expired', request.url));
+    // }
+
     if (isExpired) {
-      const url = request.nextUrl.clone();
-      url.pathname = '/login';
-      url.searchParams.set('reason', 'expired');
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(
+        new URL(
+          `/login?reason=expired&next=${encodeURIComponent(request.nextUrl.pathname)}`,
+          request.url
+        )
+      );
     }
 
     // 관리자 권한이 없을 경우
     const role = decoded.role ?? 'user';
+    // if (pathname.startsWith('/admin') && role !== 'admin') {
+    //   const url = request.nextUrl.clone();
+    //   url.pathname = '/login';
+    //   url.searchParams.set('reason', 'forbidden');
+    //   return NextResponse.redirect(url);
+    // }
+
+    // if (pathname.startsWith('/admin') && role !== 'admin') {
+    //   return NextResponse.redirect(new URL('/login?reason=forbidden', request.url));
+    // }
+
     if (pathname.startsWith('/admin') && role !== 'admin') {
-      const url = request.nextUrl.clone();
-      url.pathname = '/login';
-      url.searchParams.set('reason', 'forbidden');
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(
+        new URL(
+          `/login?reason=forbidden&next=${encodeURIComponent(request.nextUrl.pathname)}`,
+          request.url
+        )
+      );
     }
 
     return NextResponse.next();
