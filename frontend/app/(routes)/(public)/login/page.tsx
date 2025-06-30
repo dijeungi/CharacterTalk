@@ -35,18 +35,22 @@ import styles from './page.module.css';
 import { Toast } from '@/app/_utils/Swal';
 
 export default function LoginPage() {
+  // URL 쿼리 파라미터를 읽어옵니다.
+  const params = useSearchParams();
+  const reason = params.get('reason');
+  const next = params.get('next');
+
   // Kakao Login btn
   const handleKakaoLogin = () => {
-    const kakaoAuthUrl = `${process.env.NEXT_PUBLIC_KAUTH_HOST}/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}&response_type=code`;
+    // 'next' 값을 state 파라미터에 담아 카카오에 전달합니다.
+    // 'state'는 CSRF 공격을 방지하고 로그인 후 리다이렉션 경로 등을 전달하는 데 사용됩니다.
+    const state = next ? encodeURIComponent(next) : '';
+    const kakaoAuthUrl = `${process.env.NEXT_PUBLIC_KAUTH_HOST}/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}&response_type=code&state=${state}`;
     window.location.href = kakaoAuthUrl;
   };
 
   // 추후 추가 예정
   const handleGoogleLogin = () => {};
-
-  // login 리다이렉트 중 URL 쿼리에서 reason 값 추출
-  const params = useSearchParams();
-  const reason = params.get('reason');
 
   useEffect(() => {
     if (['unauthorized', 'expired', 'forbidden'].includes(reason ?? '')) {

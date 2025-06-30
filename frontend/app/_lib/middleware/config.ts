@@ -16,7 +16,4 @@
  */
 
 // 보호 라우트 (로그인 필요)
-export const protectedRoutes = ['/characters', '/mypage'];
-
-// 미들웨어 매칭 경로 (동적 라우팅 포함)
-export const matcher = ['/characters', '/mypage'];
+export const protectedRoutes = ['/characters', '/characters/(.*)', '/mypage'];

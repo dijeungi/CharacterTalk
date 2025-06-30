@@ -31,6 +31,10 @@ import redis from '@/app/_lib/Redis';
 export async function GET(req: NextRequest) {
   try {
     const code = req.nextUrl.searchParams.get('code');
+
+    const state = req.nextUrl.searchParams.get('state');
+    const redirectPath = state ? decodeURIComponent(state) : '/';
+
     if (!code) return new NextResponse('Authorization code 없음', { status: 400 });
 
     // 1. 카카오에서 accessToken 요청
@@ -102,7 +106,7 @@ export async function GET(req: NextRequest) {
     );
 
     // 쿠키에 저장
-    const response = NextResponse.redirect(`${req.nextUrl.origin}?login=success`);
+    const response = NextResponse.redirect(new URL(redirectPath, req.nextUrl.origin));
     response.cookies.set({
       name: 'access_token',
       value: accessToken,
