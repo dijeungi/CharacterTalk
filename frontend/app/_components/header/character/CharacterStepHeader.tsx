@@ -25,6 +25,7 @@ import { LinearProgress } from '@mui/material';
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { CgProfile } from 'react-icons/cg';
 import { IoMdPaper } from 'react-icons/io';
+import { GoShieldCheck } from 'react-icons/go';
 
 // DB
 import { saveDraftToDB, saveImageToDB } from '@/app/_utils/indexedDBUtils';
@@ -45,22 +46,22 @@ export default function CharacterStepHeader() {
       case 1:
         return (
           <>
-            <CgProfile style={{ marginRight: '0.5rem' }} />
-            프로필 인적사항
+            <CgProfile style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }} />
+            프로필 설정
           </>
         );
       case 2:
         return (
           <>
-            <IoMdPaper style={{ marginRight: '0.5rem' }} />
-            기본 프롬프트 설정
+            <IoMdPaper style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }} />
+            성격 및 기본 정보
           </>
         );
       case 3:
         return (
           <>
-            {/* <FaCogs style={{ marginRight: '0.5rem' }} /> */}
-            고급 설정
+            <GoShieldCheck style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }} />
+            시작 설정
           </>
         );
       default:
@@ -73,13 +74,20 @@ export default function CharacterStepHeader() {
     const state = useCharacterCreationStore.getState();
 
     await saveDraftToDB({
+      // step 1
       name: state.name,
       oneliner: state.oneliner,
+      // step 2
       title: state.title,
       promptDetail: state.promptDetail,
       exampleDialogs: state.exampleDialogs,
       speech: state.speech,
       behaviorConstraint: state.behaviorConstraint,
+      // step 3
+      scenarioTitle: state.scenarioTitle,
+      scenarioGreeting: state.scenarioGreeting,
+      scenarioSituation: state.scenarioSituation,
+      scenarioSuggestions: state.scenarioSuggestions,
     });
 
     if (state.profileImage instanceof File) {
