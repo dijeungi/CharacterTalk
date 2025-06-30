@@ -59,12 +59,7 @@ export default function CharactersNewPage() {
         />
       )}
       {activeStep === 2 && (
-        <Step3_Scenario
-          onPrev={() => setActiveStep(1)}
-          onNext={() => {
-            // Todo: 추후 연결
-          }}
-        />
+        <Step3_Scenario onPrev={() => setActiveStep(1)} onNext={() => setActiveStep(3)} />
       )}
     </>
   );
