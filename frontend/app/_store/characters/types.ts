@@ -13,6 +13,12 @@ interface CharacterCreationState {
   speech: SpeechStyle;
   behaviorConstraint: string;
 
+  // Step3
+  scenarioTitle: string;
+  scenarioGreeting: string;
+  scenarioSituation: string;
+  scenarioSuggestions: string[];
+
   // 공통
   isDirty: boolean;
   currentStep: number;
@@ -29,6 +35,11 @@ interface CharacterCreationState {
   removeExampleDialog: (index: number) => void;
   setSpeech: (style: SpeechStyle) => void;
   setBehaviorConstraint: (text: string) => void;
+
+  setScenarioTitle: (title: string) => void;
+  setScenarioGreeting: (greeting: string) => void;
+  setScenarioSituation: (situation: string) => void;
+  updateScenarioSuggestion: (index: number, text: string) => void;
 
   setDirty: () => void;
   resetDirty: () => void;
