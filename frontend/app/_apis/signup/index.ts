@@ -1,6 +1,6 @@
 // frontend/app/_apis/auth.ts
 
-import axiosInstance from '@/app/lib/axiosNext';
+import axiosInstance from '@/app/_lib/axiosNext';
 
 // 회원가입 요청
 export const postSignup = async (userData: SignupRequest) => {

@@ -44,8 +44,8 @@ import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 
 // 유틸
-import { Toast } from '../../_utils/Swal';
-import axiosInstance from '../../lib/axiosNext';
+import { Toast } from '@/app/_utils/Swal';
+import axiosInstance from '@/app/_lib/axiosNext';
 
 export default function MainHeader() {
   // 상태

@@ -24,7 +24,7 @@ import { useEffect } from 'react';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 
 // config
-import { auth } from '@/app/firebase/config';
+import { auth } from '@/app/_firebase/config';
 
 // hooks & utils
 import { Toast } from '@/app/_utils/Swal';

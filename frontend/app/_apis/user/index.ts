@@ -1,6 +1,6 @@
 // frontend/app/_apis/user/index.ts
 
-import axiosInstance from '@/app/lib/axiosNext';
+import axiosInstance from '@/app/_lib/axiosNext';
 
 // 현재 로그인 상태 확인
 export const checkUserStatus = async (): Promise<AuthState> => {

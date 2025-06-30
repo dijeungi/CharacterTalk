@@ -1,4 +1,4 @@
-import axiosInstance from '@/app/lib/axiosNext';
+import axiosInstance from '@/app/_lib/axiosNext';
 
 export const requestGenerateCharacterImage = async (payload: GenerateImageRequest) => {
   const res = await axiosInstance.post('/generate/', payload);

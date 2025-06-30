@@ -1,8 +1,8 @@
 // frontend/middleware.ts
 
 import { NextRequest } from 'next/server';
-import { authMiddleware } from './app/lib/middleware/authMiddleware';
-import { matcher } from './app/lib/middleware/config';
+import { authMiddleware } from './app/_lib/middleware/authMiddleware';
+import { matcher } from './app/_lib/middleware/config';
 
 export const config = {
   matcher,

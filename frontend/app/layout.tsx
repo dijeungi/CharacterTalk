@@ -9,8 +9,8 @@
 
 'use client';
 
-import './reset.css';
-import './globals.css';
+import '@/app/_styles/reset.css';
+import '@/app/_styles/globals.css';
 
 // default
 import { ReactNode } from 'react';
