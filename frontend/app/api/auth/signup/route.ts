@@ -1,7 +1,7 @@
 // frontend/app/api/auth/signup/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import { pool } from '../../../lib/PostgreSQL';
+import { pool } from '@/app/_lib/PostgreSQL';
 
 export async function POST(req: NextRequest) {
   try {

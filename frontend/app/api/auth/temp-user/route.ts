@@ -1,7 +1,7 @@
 // app/api/temp-user/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import redis from '../../../lib/Redis';
+import redis from '@/app/_lib/Redis';
 
 export async function GET(req: NextRequest) {
   const tempId = req.nextUrl.searchParams.get('tempId');

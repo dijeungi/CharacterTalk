@@ -22,11 +22,11 @@
  *         description: 서버 오류
  */
 
-import { pool } from '../../../../lib/PostgreSQL';
+import { pool } from '@/app/_lib/PostgreSQL';
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
-import redis from '../../../../lib/Redis';
+import redis from '@/app/_lib/Redis';
 
 export async function GET(req: NextRequest) {
   try {
@@ -84,14 +84,14 @@ export async function GET(req: NextRequest) {
 
     // 기존 로그인
     const accessToken = jwt.sign({ id: user.code, name: user.name }, process.env.JWT_SECRET!, {
-      expiresIn: '30m',
+      expiresIn: '10s',
     });
 
     const refreshToken = jwt.sign(
       { id: user.code, name: user.name },
       process.env.JWT_REFRESH_SECRET!,
       {
-        expiresIn: '30m',
+        expiresIn: '10s',
       }
     );
 

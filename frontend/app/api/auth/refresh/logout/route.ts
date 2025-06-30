@@ -14,7 +14,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { pool } from '../../../../lib/PostgreSQL';
+import { pool } from '@/app/_lib/PostgreSQL';
 import jwt from 'jsonwebtoken';
 
 export async function POST(req: NextRequest) {
