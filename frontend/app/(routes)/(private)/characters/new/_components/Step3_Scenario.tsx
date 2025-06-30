@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 // css
 import styles from './page.module.css';
@@ -7,13 +7,45 @@ import styles from './page.module.css';
 // store
 import { useCharacterCreationStore } from '@/app/_store/characters';
 
-export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
-  const [title, setTitle] = useState('');
-  const [greeting, setGreeting] = useState('');
-  const [situation, setSituation] = useState('');
-  const [suggestions, setSuggestions] = useState(['', '', '']);
+// custom hooks
+import { useStep3 } from '../_hooks/useStep3';
 
-  const isValid = title && greeting && situation;
+// DB
+import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
+
+export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
+  // store
+  const {
+    scenarioTitle: title,
+    scenarioGreeting: greeting,
+    scenarioSituation: situation,
+    scenarioSuggestions: suggestions,
+    setScenarioTitle: setTitle,
+    setScenarioGreeting: setGreeting,
+    setScenarioSituation: setSituation,
+    updateScenarioSuggestion: updateSuggestion,
+    isFormValid: isValid,
+  } = useStep3();
+
+  useEffect(() => {
+    const restore = async () => {
+      const saved = await getDraftFromDB();
+      if (!saved) return;
+
+      const store = useCharacterCreationStore.getState();
+      store.setScenarioTitle(saved.scenarioTitle || '');
+      store.setScenarioGreeting(saved.scenarioGreeting || '');
+      store.setScenarioSituation(saved.scenarioSituation || '');
+
+      if (Array.isArray(saved.scenarioSuggestions)) {
+        saved.scenarioSuggestions.forEach((s: string, i: number) => {
+          store.updateScenarioSuggestion(i, s);
+        });
+      }
+    };
+
+    restore();
+  }, []);
 
   return (
     <>
@@ -24,13 +56,17 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
               시작 설정 제목 <span className={styles.required}>*</span>
             </label>
             <p className={styles.caption}>캐릭터 시나리오의 주제를 간단히 표현해 주세요.</p>
-            <textarea
-              className={styles.textarea}
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              placeholder="예: 모험의 시작, 첫 출근날 등"
-              rows={2}
-            />
+            <div className={styles.inputWrapper}>
+              <textarea
+                className={styles.input}
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                placeholder="예: 모험의 시작, 첫 출근날 등"
+                maxLength={12}
+                rows={1}
+              />
+              <div className={styles.charCount}>{title.length} / 12</div>
+            </div>
           </div>
 
           {/* 첫 인사말 */}
@@ -41,13 +77,17 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
             <p className={styles.caption}>
               캐릭터가 사용자를 처음 만났을 때 하는 대사를 작성해주세요.
             </p>
-            <textarea
-              className={styles.textarea}
-              value={greeting}
-              onChange={e => setGreeting(e.target.value)}
-              placeholder="예: 안녕! 오늘 하루는 어땠어?"
-              rows={3}
-            />
+            <div className={styles.textareaWrapper}>
+              <textarea
+                className={styles.textarea}
+                value={greeting}
+                onChange={e => setGreeting(e.target.value)}
+                placeholder="예: 안녕! 오늘 하루는 어땠어?"
+                maxLength={500}
+                rows={2}
+              />
+              <div className={styles.textareaCharCount}>{greeting.length} / 500</div>
+            </div>
           </div>
 
           {/* 시작 상황 설명 */}
@@ -58,13 +98,17 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
             <p className={styles.caption}>
               대화가 시작되는 배경이나 세계관, 캐릭터와 사용자의 관계를 구체적으로 설명해 주세요.
             </p>
-            <textarea
-              className={styles.textarea}
-              value={situation}
-              onChange={e => setSituation(e.target.value)}
-              placeholder="예: 당신은 왕국을 지키는 기사, 나는 새로 부임한 왕이에요. 오늘은 첫 임무를 전달하는 날이에요."
-              rows={4}
-            />
+            <div className={styles.textareaWrapper}>
+              <textarea
+                className={styles.textarea}
+                value={situation}
+                onChange={e => setSituation(e.target.value)}
+                placeholder="예: 당신은 왕국을 지키는 기사, 나는 새로 부임한 왕이에요. 오늘은 첫 임무를 전달하는 날이에요."
+                maxLength={1000}
+                rows={4}
+              />
+              <div className={styles.textareaCharCount}>{situation.length} / 1000</div>
+            </div>
           </div>
 
           {/* 추천 답변 꾸밈 */}
@@ -80,11 +124,7 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
                 <input
                   className={styles.input}
                   value={s}
-                  onChange={e => {
-                    const copy = [...suggestions];
-                    copy[i] = e.target.value;
-                    setSuggestions(copy);
-                  }}
+                  onChange={e => updateSuggestion(i, e.target.value)}
                   placeholder={
                     i === 0 ? '오늘 기분 어때?' : i === 1 ? '뭐하고 있었어?' : '주말에 뭐 할 거야?'
                   }

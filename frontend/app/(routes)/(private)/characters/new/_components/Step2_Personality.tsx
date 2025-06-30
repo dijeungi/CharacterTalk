@@ -13,34 +13,31 @@ import { useCharacterCreationStore } from '@/app/_store/characters';
 // hooks
 import { useCheckUserStatus } from '@/app/_hooks/auth';
 import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
+import { useStep2 } from '../_hooks/useStep2';
 
 export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
   // 상태
-  const [showAdvanced, setShowAdvanced] = useState(false);
-
   const { data } = useCheckUserStatus();
   const userName = data?.user?.name || '사용자';
-
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   // store
-  const title = useCharacterCreationStore(state => state.title);
-  const promptDetail = useCharacterCreationStore(state => state.promptDetail);
-  const exampleDialogs = useCharacterCreationStore(state => state.exampleDialogs);
-  const speech = useCharacterCreationStore(state => state.speech);
-  const behaviorConstraint = useCharacterCreationStore(state => state.behaviorConstraint);
-
-  const setTitle = useCharacterCreationStore(state => state.setTitle);
-  const setPromptDetail = useCharacterCreationStore(state => state.setPromptDetail);
-  const addExampleDialog = useCharacterCreationStore(state => state.addExampleDialog);
-  const updateExampleDialog = useCharacterCreationStore(state => state.updateExampleDialog);
-  const removeExampleDialog = useCharacterCreationStore(state => state.removeExampleDialog);
-
-  const setSpeech = useCharacterCreationStore(state => state.setSpeech);
-  const setBehaviorConstraint = useCharacterCreationStore(state => state.setBehaviorConstraint);
-
-  // 다음단계 버튼 활성화 상태
-  const isFormValid = title.trim() !== '' && promptDetail.trim() !== '' && speech.trim() !== '';
+  const {
+    title,
+    promptDetail,
+    speech,
+    behaviorConstraint,
+    exampleDialogs,
+    setTitle,
+    setPromptDetail,
+    setSpeech,
+    setBehaviorConstraint,
+    addExampleDialog,
+    updateExampleDialog,
+    removeExampleDialog,
+    isFormValid,
+  } = useStep2();
 
   // 임시저장 데이터 불러오기
   useEffect(() => {
@@ -145,13 +142,17 @@ export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
             <p className={styles.caption}>
               캐릭터가 반드시 지켜야 할 제약 사항이 있다면 입력해 주세요.
             </p>
-            <textarea
-              className={styles.textarea}
-              rows={3}
-              value={behaviorConstraint}
-              onChange={e => setBehaviorConstraint(e.target.value)}
-              placeholder="예시) 욕설 절대 금지. 사용자가 감정적으로 대할 때도 침착하게 대응."
-            />
+            <div className={styles.textareaWrapper}>
+              <textarea
+                className={styles.textarea}
+                rows={3}
+                value={behaviorConstraint}
+                onChange={e => setBehaviorConstraint(e.target.value)}
+                placeholder="예시) 욕설 절대 금지. 사용자가 감정적으로 대할 때도 침착하게 대응."
+                maxLength={500}
+              />
+              <div className={styles.textareaCharCount}>{behaviorConstraint.length} / 500</div>
+            </div>
           </div>
 
           {/* 고급 설정 토글 */}

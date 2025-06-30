@@ -45,9 +45,6 @@ import ContinueCreationModal from './Modal/ContinueCreationModal';
 import ProfileImageGeneratorDrawer from './Drawer/ProfileImageGeneratorDrawer';
 // import VoiceSelectModal from './Modal/VoiceSelectModal';
 
-// store
-import { useCharacterCreationStore } from '@/app/_store/characters/index';
-
 // utils
 import {
   deleteDraftFromDB,
@@ -56,6 +53,9 @@ import {
   getImageFromDB,
 } from '@/app/_utils/indexedDBUtils';
 
+// hooks
+import { useStep1 } from '../_hooks/useStep1';
+
 export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   // 상태 초기화
   const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
@@ -63,19 +63,17 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  /*
-    - Zustand 상태관리
-    - CharacterCreate.d.ts > characterStep1Store.ts > Step1_Profile.tsx 타입 선언 전달
-  */
-  const name = useCharacterCreationStore(state => state.name);
-  const oneliner = useCharacterCreationStore(state => state.oneliner);
-  const profileImage = useCharacterCreationStore(state => state.profileImage);
-
-  const setName = useCharacterCreationStore(state => state.setName);
-  const setOneliner = useCharacterCreationStore(state => state.setOneliner);
-  const setProfileImage = useCharacterCreationStore(state => state.setProfileImage);
-  const setDirty = useCharacterCreationStore(state => state.setDirty);
-  const resetDirty = useCharacterCreationStore(state => state.resetDirty);
+  // store
+  const {
+    name,
+    oneliner,
+    profileImage,
+    setName,
+    setOneliner,
+    setProfileImage,
+    isFormValid,
+    resetDirty,
+  } = useStep1();
 
   // 프로필 이미지 미리보기
   const imagePreview = useMemo(() => {
@@ -87,20 +85,6 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
     }
     return null;
   }, [profileImage]);
-
-  // 입력 필드가 모두 채워졌는지 체크
-  const isFormValid = useMemo(
-    () => profileImage && name && oneliner,
-    [profileImage, name, oneliner]
-  );
-
-  useEffect(() => {
-    if (name || oneliner || profileImage) {
-      setDirty();
-    } else {
-      resetDirty();
-    }
-  }, [name, oneliner, profileImage, setDirty, resetDirty]);
 
   // 프로필 이미지 업로드
   const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
