@@ -42,16 +42,22 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
   speech: '',
   behaviorConstraint: '',
 
+  // Step3
+  scenarioTitle: '기본 설정',
+  scenarioGreeting: '',
+  scenarioSituation: '',
+  scenarioSuggestions: ['', '', ''],
+
   // 공통
   isDirty: false,
   currentStep: 1,
 
-  // Step1 actions
+  // Step 1
   setName: name => set({ name, isDirty: true }),
   setOneliner: oneliner => set({ oneliner, isDirty: true }),
   setProfileImage: image => set({ profileImage: image, isDirty: true }),
 
-  // Step2 actions
+  // Step 2
   setTitle: title => set({ title, isDirty: true }),
   setPromptDetail: text => set({ promptDetail: text, isDirty: true }),
   addExampleDialog: dialog =>
@@ -72,6 +78,17 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
     })),
   setSpeech: style => set({ speech: style, isDirty: true }),
   setBehaviorConstraint: text => set({ behaviorConstraint: text, isDirty: true }),
+
+  // Step 3
+  setScenarioTitle: (title: string) => set({ scenarioTitle: title }),
+  setScenarioGreeting: (greeting: string) => set({ scenarioGreeting: greeting }),
+  setScenarioSituation: (situation: string) => set({ scenarioSituation: situation }),
+  updateScenarioSuggestion: (index: number, text: string) =>
+    set(state => {
+      const updated = [...state.scenarioSuggestions];
+      updated[index] = text;
+      return { scenarioSuggestions: updated };
+    }),
 
   // 공통 actions
   setDirty: () => set({ isDirty: true }),
