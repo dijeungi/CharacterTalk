@@ -73,13 +73,13 @@ export async function GET(req: NextRequest) {
       { code: user.code, name: user.name, role: user.role },
       process.env.JWT_SECRET!,
       {
-        expiresIn: '10s',
+        expiresIn: '30m',
       }
     );
 
     // RefreshToken 발급
     const refreshToken = jwt.sign({ code: user.code }, process.env.JWT_REFRESH_SECRET!, {
-      expiresIn: '10s',
+      expiresIn: '7d',
     });
 
     // 마지막 로그인 관련 데이터 DB 최신화
