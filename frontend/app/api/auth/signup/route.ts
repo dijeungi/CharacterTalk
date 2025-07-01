@@ -5,58 +5,44 @@ import { pool } from '@/app/_lib/PostgreSQL';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, oauth, name, gender, number, residentFront, residentBack, verified, birthDate } =
-      await req.json();
+    const { email, oauth, name, gender, number, verified, birthDate } = await req.json();
 
-    if (
-      !email ||
-      !name ||
-      !gender ||
-      !number ||
-      !residentFront ||
-      !residentBack ||
-      !birthDate ||
-      verified !== true
-    ) {
-      return NextResponse.json({ message: '필수 값 누락 또는 미인증' }, { status: 400 });
+    if (!email || !name || !gender || !number || !birthDate || verified !== true) {
+      return NextResponse.json(
+        { message: '필수 값이 누락되었거나 본인인증이 완료되지 않았습니다.' },
+        { status: 400 }
+      );
     }
 
     // 이메일 중복 체크
     const existingUser = await pool.query('SELECT code FROM users WHERE email = $1', [email]);
     if (existingUser.rows.length > 0) {
-      return NextResponse.json({ message: '이미 존재하는 이메일입니다.' }, { status: 409 });
+      return NextResponse.json({ message: '이미 가입된 이메일입니다.' }, { status: 409 });
     }
 
     // 회원 데이터 저장
     await pool.query(
       `INSERT INTO users (
-        oauth, email, gender, name, number,
-        rrn_front, rrn_back, birth_date, verified,
-        admin, status, is_deleted
+        oauth_provider, email, name, phone_number,
+        birth_date, gender, is_verified, role
       ) VALUES (
-        $1, $2, $3, $4, $5,
-        $6, $7, $8, $9,
-        $10, $11, $12
+        $1, $2, $3, $4, $5, $6, $7, $8
       )`,
       [
-        oauth,
-        email,
-        gender,
-        name,
-        number,
-        residentFront,
-        residentBack,
-        birthDate,
-        true,
-        false,
-        'active',
-        false,
+        oauth, // $1: oauth_provider
+        email, // $2: email
+        name, // $3: name
+        number, // $4: phone_number
+        birthDate, // $5: birth_date
+        gender, // $6: gender
+        verified, // $7: is_verified
+        'user', // $8: role (기본값 'user'로 설정)
       ]
     );
 
-    return NextResponse.json({ message: '회원가입 성공' }, { status: 200 });
+    return NextResponse.json({ message: '회원가입에 성공했습니다.' }, { status: 201 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: '서버 오류' }, { status: 500 });
+    console.error('회원가입 API 오류:', error);
+    return NextResponse.json({ message: '서버 내부 오류가 발생했습니다.' }, { status: 500 });
   }
 }
