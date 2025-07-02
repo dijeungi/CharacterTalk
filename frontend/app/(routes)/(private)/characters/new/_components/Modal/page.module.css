@@ -1,5 +1,5 @@
 /* UnsavedChangesModal.module.css */
-.overlay {
+.container {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -9,7 +9,7 @@
   z-index: 2;
 }
 
-.modal {
+.content {
   background: #fff;
   border-radius: 12px;
   padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -38,7 +38,8 @@
   gap: 6px;
 }
 
-.cancelButton {
+.cancelButton,
+.restartButton {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -73,14 +74,5 @@
   border: none;
   border-radius: 6px;
   transition: background-color 0.2s;
-  cursor: pointer;
-}
-
-.cancelButton,
-.confirmButton {
-  border-radius: 8px;
-  padding: 12px 32px;
-  font-size: 16px;
-  font-weight: 500;
   cursor: pointer;
 }
