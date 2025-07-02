@@ -77,6 +77,7 @@ export default function CharacterStepHeader() {
       // step 1
       name: state.name,
       oneliner: state.oneliner,
+      mbti: state.mbti,
       // step 2
       title: state.title,
       promptDetail: state.promptDetail,

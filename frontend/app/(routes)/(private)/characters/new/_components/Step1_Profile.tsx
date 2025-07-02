@@ -38,6 +38,7 @@ import styles from './page.module.css';
 // Library
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { PiMagicWandDuotone } from 'react-icons/pi';
+import { HiChevronDown } from 'react-icons/hi2';
 
 // components
 import CharacterPolicyNotice from './Drawer/CharacterPolicyNotice';
@@ -68,9 +69,11 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
     name,
     oneliner,
     profileImage,
+    mbti,
     setName,
     setOneliner,
     setProfileImage,
+    setMbti,
     isFormValid,
     resetDirty,
   } = useStep1();
@@ -228,6 +231,40 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
                     rows={3}
                   />
                   <div className={styles.textareaCharCount}>{oneliner.length} / 300</div>
+                </div>
+              </div>
+
+              {/* mbti */}
+              <div className={styles.field}>
+                <label className={styles.label}>
+                  MBTI <span className={styles.required}>*</span>
+                </label>
+                <p className={styles.caption}>캐릭터의 성격을 나타내는 MBTI를 선택해 주세요.</p>
+                <div className={styles.selectWrapper}>
+                  <select
+                    className={styles.select}
+                    value={mbti}
+                    onChange={e => setMbti(e.target.value as MBTI)} // MBTI를 설정하는 함수 호출
+                  >
+                    <option value="">선택 안 함</option>
+                    <option value="ISTJ">ISTJ</option>
+                    <option value="ISFJ">ISFJ</option>
+                    <option value="INFJ">INFJ</option>
+                    <option value="INTJ">INTJ</option>
+                    <option value="ISTP">ISTP</option>
+                    <option value="ISFP">ISFP</option>
+                    <option value="INFP">INFP</option>
+                    <option value="INTP">INTP</option>
+                    <option value="ESTP">ESTP</option>
+                    <option value="ESFP">ESFP</option>
+                    <option value="ENFP">ENFP</option>
+                    <option value="ENTP">ENTP</option>
+                    <option value="ESTJ">ESTJ</option>
+                    <option value="ESFJ">ESFJ</option>
+                    <option value="ENFJ">ENFJ</option>
+                    <option value="ENTJ">ENTJ</option>
+                  </select>
+                  <HiChevronDown className={styles.selectIcon} />
                 </div>
               </div>
 

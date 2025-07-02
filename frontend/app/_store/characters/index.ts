@@ -34,6 +34,7 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
   name: '',
   oneliner: '',
   profileImage: null,
+  mbti: '',
 
   // Step2
   title: '',
@@ -56,6 +57,7 @@ export const useCharacterCreationStore = create<CharacterCreationState>(set => (
   setName: name => set({ name, isDirty: true }),
   setOneliner: oneliner => set({ oneliner, isDirty: true }),
   setProfileImage: image => set({ profileImage: image, isDirty: true }),
+  setMbti: mbti => set({ mbti, isDirty: true }),
 
   // Step 2
   setTitle: title => set({ title, isDirty: true }),

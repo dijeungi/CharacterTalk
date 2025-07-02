@@ -5,6 +5,7 @@ interface CharacterCreationState {
   name: string;
   oneliner: string;
   profileImage: File | string | null;
+  mbti: MBTI | '';
 
   // Step2
   title: string;
@@ -27,6 +28,7 @@ interface CharacterCreationState {
   setName: (name: string) => void;
   setOneliner: (oneliner: string) => void;
   setProfileImage: (image: File | string | null) => void;
+  setMbti: (mbti: MBTI) => void;
 
   setTitle: (title: string) => void;
   setPromptDetail: (text: string) => void;
@@ -46,6 +48,25 @@ interface CharacterCreationState {
   setCurrentStep: (step: number) => void;
   resetAll: () => void;
 }
+
+// MBTI 타입 정의 (16개 성격 유형)
+type MBTI =
+  | 'ISTJ'
+  | 'ISFJ'
+  | 'INFJ'
+  | 'INTJ'
+  | 'ISTP'
+  | 'ISFP'
+  | 'INFP'
+  | 'INTP'
+  | 'ESTP'
+  | 'ESFP'
+  | 'ENFP'
+  | 'ENTP'
+  | 'ESTJ'
+  | 'ESFJ'
+  | 'ENFJ'
+  | 'ENTJ';
 
 // 말투 스타일 타입 정의
 type SpeechStyle =
