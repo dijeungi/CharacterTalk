@@ -1,8 +1,11 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // css
 import styles from './page.module.css';
+
+// lib
+import { HiChevronDown } from 'react-icons/hi2';
 
 // store
 import { useCharacterCreationStore } from '@/app/_store/characters';
@@ -14,6 +17,7 @@ import { useStep3 } from '../_hooks/useStep3';
 import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
 
 export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
   // store
   const {
     scenarioTitle: title,
@@ -111,27 +115,46 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
             </div>
           </div>
 
-          {/* 추천 답변 꾸밈 */}
+          {/* 고급 설정 토글 */}
           <div className={styles.field}>
-            <label className={styles.label}>추천 답변</label>
-            <p className={styles.caption}>
-              사용자가 쉽게 시작할 수 있도록 예시 답변을 작성해 주세요.
-              <br />
-              예시는 최대 3개까지 등록하실 수 있습니다.
-            </p>
-            {suggestions.map((s, i) => (
-              <div key={i} className={styles.inputWrapper}>
-                <input
-                  className={styles.input}
-                  value={s}
-                  onChange={e => updateSuggestion(i, e.target.value)}
-                  placeholder={
-                    i === 0 ? '오늘 기분 어때?' : i === 1 ? '뭐하고 있었어?' : '주말에 뭐 할 거야?'
-                  }
-                />
+            <button className={styles.toggleButton} onClick={() => setShowAdvanced(prev => !prev)}>
+              <div className={styles.toggleLabel}>고급 설정</div>
+              <div className={`${styles.chevron} ${showAdvanced ? styles.open : ''}`}>
+                <HiChevronDown />
               </div>
-            ))}
+            </button>
           </div>
+
+          {/* 추천 답변 꾸밈 */}
+
+          {showAdvanced && (
+            <div className={styles.advancedSection}>
+              <div className={styles.field}>
+                <label className={styles.label}>추천 답변</label>
+                <p className={styles.caption}>
+                  사용자가 쉽게 시작할 수 있도록 예시 답변을 작성해 주세요.
+                  <br />
+                  예시는 최대 3개까지 등록하실 수 있습니다.
+                </p>
+                {suggestions.map((s, i) => (
+                  <div key={i} className={styles.inputWrapper}>
+                    <input
+                      className={styles.input}
+                      value={s}
+                      onChange={e => updateSuggestion(i, e.target.value)}
+                      placeholder={
+                        i === 0
+                          ? '오늘 기분 어때?'
+                          : i === 1
+                          ? '뭐하고 있었어?'
+                          : '주말에 뭐 할 거야?'
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         <div className={styles.step2ButtonContainer}>
           <button className={styles.Button} onClick={onPrev}>
