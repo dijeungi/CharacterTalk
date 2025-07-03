@@ -32,6 +32,7 @@ import { useEffect, useState } from 'react';
 import Step1_Profile from './_components/Step1_Profile';
 import Step2_Personality from './_components/Step2_Personality';
 import Step3_Scenario from './_components/Step3_Scenario';
+import Step4_RegistrationSettings from './_components/Step4_RegistrationSettings';
 
 // store
 import { useCharacterCreationStore } from '@/app/_store/characters';
@@ -60,6 +61,9 @@ export default function CharactersNewPage() {
       )}
       {activeStep === 2 && (
         <Step3_Scenario onPrev={() => setActiveStep(1)} onNext={() => setActiveStep(3)} />
+      )}
+      {activeStep === 3 && (
+        <Step4_RegistrationSettings onPrev={() => setActiveStep(2)} onNext={() => {}} />
       )}
     </>
   );
