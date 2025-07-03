@@ -15,7 +15,7 @@ export function useStep1() {
     resetDirty,
   } = useCharacterCreationStore();
 
-  const isFormValid = !!(name && oneliner && profileImage && mbti);
+  const isFormValid = !!(name && oneliner && profileImage);
 
   useCharacterStepCommon(['name', 'oneliner', 'profileImage', 'mbti']);
 
