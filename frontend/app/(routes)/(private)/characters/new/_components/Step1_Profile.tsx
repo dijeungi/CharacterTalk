@@ -217,7 +217,7 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
               {/* 한 줄 소개 입력 */}
               <div className={styles.field}>
                 <label className={styles.label}>
-                  한 줄 소개 <span className={styles.required}>*</span>
+                  설명 <span className={styles.required}>*</span>
                 </label>
                 <div className={styles.textareaWrapper}>
                   <textarea
@@ -227,7 +227,8 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
                     onChange={e => {
                       if (e.target.value.length <= 300) setOneliner(e.target.value);
                     }}
-                    placeholder="어떤 캐릭터인지 간단한 소개 설명을 입력해 주세요."
+                    placeholder="캐릭터의 특징, 행동, 감정 표현에 대해 자세히 작성해주세요. 그러면 개성 넘치는 캐릭터를 만들 수 있습니다.
+예시: 수현은 말이 거칠고, 다양한 비속어를 자주 사용합니다."
                     rows={3}
                   />
                   <div className={styles.textareaCharCount}>{oneliner.length} / 300</div>
@@ -236,15 +237,13 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
 
               {/* mbti */}
               <div className={styles.field}>
-                <label className={styles.label}>
-                  MBTI <span className={styles.required}>*</span>
-                </label>
+                <label className={styles.label}>MBTI</label>
                 <p className={styles.caption}>캐릭터의 성격을 나타내는 MBTI를 선택해 주세요.</p>
                 <div className={styles.selectWrapper}>
                   <select
                     className={styles.select}
                     value={mbti}
-                    onChange={e => setMbti(e.target.value as MBTI)} // MBTI를 설정하는 함수 호출
+                    onChange={e => setMbti(e.target.value as MBTI)}
                   >
                     <option value="">선택 안 함</option>
                     <option value="ISTJ">ISTJ</option>
