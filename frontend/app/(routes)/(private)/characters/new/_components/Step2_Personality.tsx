@@ -14,6 +14,7 @@ import { useCharacterCreationStore } from '@/app/_store/characters';
 import { useCheckUserStatus } from '@/app/_hooks/auth';
 import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
 import { useStep2 } from '../_hooks/useStep2';
+import { useStep1 } from '../_hooks/useStep1';
 
 export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
   // 상태
@@ -23,6 +24,7 @@ export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   // store
+  const { name } = useStep1();
   const {
     title,
     promptDetail,
@@ -95,7 +97,7 @@ export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
           {/* 상세 설명 */}
           <div className={styles.field}>
             <label className={styles.label}>
-              캐릭터 설명 및 정보 <span className={styles.required}>*</span>
+              캐릭터 세부 정보 <span className={styles.required}>*</span>
             </label>
             <p className={styles.caption}>
               상황, 성격, 말투, 관계, 세계관 등을 포함해 캐릭터를 자세히 설명해 주세요.
@@ -195,7 +197,7 @@ export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
                   </div>
 
                   <div className={styles.dialogField}>
-                    <label className={styles.dialogLabel}>{userName}</label>
+                    <label className={styles.dialogLabel}>사용자: {userName}</label>
                     <input
                       type="text"
                       className={styles.exampleDialogInput}
@@ -214,7 +216,7 @@ export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
                   </div>
 
                   <div className={styles.dialogField}>
-                    <label className={styles.dialogLabel}>Ai 캐릭터</label>
+                    <label className={styles.dialogLabel}>Ai: {name}</label>
                     <input
                       type="text"
                       className={styles.exampleDialogInput}
