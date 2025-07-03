@@ -43,7 +43,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin: 0.75rem 0;
+  margin: 1rem 0;
 }
 
 .label {
@@ -372,4 +372,127 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+}
+
+.input::placeholder {
+  font-size: 0.875rem;
+}
+.textarea::placeholder {
+  font-size: 0.875rem;
+}
+
+/* step 4 */
+.hashtagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.hashtagItem {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 16px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+}
+
+.liveHashtagSymbol {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.flexibleInput {
+  border: none;
+  outline: none;
+  padding: 0;
+  background-color: transparent;
+  flex-grow: 1;
+  min-width: 120px;
+}
+
+.drawerContent {
+  text-align: center;
+}
+
+.drawerBar {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: #c2c0c1;
+  margin: 0 auto 1.5rem;
+}
+
+.drawerTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.hashtagDisplayArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 40px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+.hashtagItem {
+  display: flex;
+  align-items: center;
+  background-color: #e9ecef;
+  color: #007aff;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.removeHashtagButton {
+  margin-left: 6px;
+  background: none;
+  border: none;
+  color: #adb5bd;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.removeHashtagButton:hover {
+  color: #495057;
+}
+
+.noHashtagsText {
+  color: #868e96;
+  font-size: 0.9rem;
+  padding-left: 4px;
+  align-self: center;
+}
+
+.addHashtagButton {
+  width: 100%;
+  padding: 14px;
+  background-color: #2e80ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addHashtagButton:hover {
+  background-color: #005ecb;
 }
