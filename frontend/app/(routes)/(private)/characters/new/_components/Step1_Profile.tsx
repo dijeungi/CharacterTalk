@@ -26,11 +26,11 @@
  *
  * @author       최준호
  * @since        2025.06.12
- * @updated      2025.06.24
+ * @updated      2025.07.06
  */
 
 'use client';
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useEffect, useMemo, useState, useRef, useCallback, ChangeEvent } from 'react';
 
 // css
 import styles from './page.module.css';
@@ -52,6 +52,8 @@ import {
   deleteImageFromDB,
   getDraftFromDB,
   getImageFromDB,
+  saveDraftToDB,
+  saveImageToDB,
 } from '@/app/_utils/indexedDBUtils';
 
 // hooks
@@ -63,6 +65,8 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   const [continueModalOpen, setContinueModalOpen] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const isNavigatingNext = useRef(false);
 
   // store
   const {
@@ -81,56 +85,84 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   // 프로필 이미지 미리보기
   const imagePreview = useMemo(() => {
     if (profileImage instanceof File) {
-      return URL.createObjectURL(profileImage);
+      const url = URL.createObjectURL(profileImage);
+      return url;
     }
-    if (typeof profileImage === 'string') {
-      return profileImage;
-    }
+    if (typeof profileImage === 'string') return profileImage;
     return null;
   }, [profileImage]);
 
-  // 프로필 이미지 업로드
-  const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setProfileImage(file);
-    }
-  };
+  // 파일 업로드
+  const handleProfileImageUpload = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        setProfileImage(file);
+      }
+    },
+    [setProfileImage]
+  );
 
   // 파일선택 창 열기
-  const triggerFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+  const triggerFileInput = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
 
   // 새로 제작
-  const handleNewCreation = async () => {
+  const handleNewCreation = useCallback(async () => {
     await deleteDraftFromDB();
     await deleteImageFromDB('profileImage');
-
     setName('');
     setOneliner('');
     setProfileImage(null);
+    setMbti('');
     resetDirty();
     setContinueModalOpen(false);
-  };
+  }, [setName, setOneliner, setProfileImage, setMbti, resetDirty]);
 
   // 이어서 제작
-  const handleContinueCreation = () => {
+  const handleContinueCreation = useCallback(() => {
     setContinueModalOpen(false);
-  };
+  }, []);
 
-  // IndexedDB에 저장된 데이터 가져오기
+  const handleNameChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.value.length <= 20) setName(e.target.value);
+    },
+    [setName]
+  );
+
+  const handleOnelinerChange = useCallback(
+    (e: ChangeEvent<HTMLTextAreaElement>) => {
+      if (e.target.value.length <= 300) setOneliner(e.target.value);
+    },
+    [setOneliner]
+  );
+
+  const handleMbtiChange = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      setMbti(e.target.value as MBTI);
+    },
+    [setMbti]
+  );
+
+  const handleNextClick = useCallback(() => {
+    isNavigatingNext.current = true;
+    onNext();
+  }, [onNext]);
+
   useEffect(() => {
     const restore = async () => {
       const saved = await getDraftFromDB();
-      const imageURL = await getImageFromDB('profileImage');
+      const imageFile = await getImageFromDB('profileImage');
 
       if (saved) {
         setName(saved.name || '');
         setOneliner(saved.oneliner || '');
-        setProfileImage(imageURL || null);
+        setMbti(saved.mbti || '');
+        if (imageFile) {
+          setProfileImage(imageFile);
+        }
         if (!fromStep2) {
           setContinueModalOpen(true);
         }
@@ -139,6 +171,13 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
     };
     restore();
   }, []);
+
+  useEffect(() => {
+    if (profileImage instanceof File) {
+      const url = URL.createObjectURL(profileImage);
+      return () => URL.revokeObjectURL(url);
+    }
+  }, [profileImage]);
 
   return (
     <>
@@ -206,9 +245,7 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
                     value={name}
                     maxLength={20}
                     className={styles.input}
-                    onChange={e => {
-                      if (e.target.value.length <= 20) setName(e.target.value);
-                    }}
+                    onChange={handleNameChange}
                     placeholder="짧은 이름이 부르기 더 좋아요!"
                   />
                   <div className={styles.charCount}>{name.length} / 20</div>
@@ -224,9 +261,7 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
                     value={oneliner}
                     maxLength={300}
                     className={styles.textarea}
-                    onChange={e => {
-                      if (e.target.value.length <= 300) setOneliner(e.target.value);
-                    }}
+                    onChange={handleOnelinerChange}
                     placeholder="캐릭터의 특징, 행동, 감정 표현에 대해 자세히 작성해주세요. 그러면 개성 넘치는 캐릭터를 만들 수 있습니다.
 예시: 수현은 말이 거칠고, 다양한 비속어를 자주 사용합니다."
                     rows={3}
@@ -240,11 +275,7 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
                 <label className={styles.label}>MBTI</label>
                 <p className={styles.caption}>캐릭터의 성격을 나타내는 MBTI를 선택해 주세요.</p>
                 <div className={styles.selectWrapper}>
-                  <select
-                    className={styles.select}
-                    value={mbti}
-                    onChange={e => setMbti(e.target.value as MBTI)}
-                  >
+                  <select className={styles.select} value={mbti} onChange={handleMbtiChange}>
                     <option value="">선택 안 함</option>
                     <option value="ISTJ">ISTJ</option>
                     <option value="ISFJ">ISFJ</option>
@@ -296,8 +327,12 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
               <ProfileImageGeneratorDrawer
                 open={imageGeneratorDrawerOpen}
                 onClose={() => setImageGeneratorDrawerOpen(false)}
-                onImageGenerated={imageFile => {
-                  setProfileImage(imageFile);
+                // R2 스토리지 URL(Blob) 를 File 객체로 변환 시키며 zustand에 저장합니다.
+                onImageGenerated={async imageUrl => {
+                  const res = await fetch(imageUrl);
+                  const blob = await res.blob();
+                  const file = new File([blob], 'generated.png', { type: blob.type });
+                  setProfileImage(file);
                   setImageGeneratorDrawerOpen(false);
                 }}
               />
@@ -307,7 +342,7 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
         <div className={styles.step1ButtonContainer}>
           <button
             className={styles.Button}
-            onClick={onNext}
+            onClick={handleNextClick}
             disabled={!isFormValid}
             style={{ width: '100%' }}
           >
