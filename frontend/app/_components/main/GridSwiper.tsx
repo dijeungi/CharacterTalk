@@ -1,26 +1,40 @@
-/*
-  Route: '/grid-swiper'
-  Path: app/_components/main/GridSwiper.tsx
-  Description:
-    - 이 페이지는 캐릭터 정보를 그리드 형식으로 표시하는 컴포넌트입니다.
-    - `MainSlide.json` 데이터를 사용해 각 캐릭터의 이미지를 포함한 정보를 동적으로 렌더링합니다.
-    - 각 캐릭터의 이름, 설명, 태그 등을 카드 형태로 표시합니다.
-*/
-
 'use client';
 
-// swiper
-import 'swiper/css';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import Image from 'next/image';
 
 // css
 import styles from './GridSwiper.module.css';
+import axiosNext from '@/app/_lib/axiosNext';
+import GridSwiperSkeleton from './GridSwiperSkeleton';
 
-// data (추후에 수정 및 api 연결 예정)
-import slideData from '../../../public/data/MainSlide.json';
+// API 응답 데이터의 타입을 정의합니다.
+interface Character {
+  code: string;
+  name: string;
+  profile_image_url: string | null;
+  oneliner: string;
+  creator_name: string;
+  hashtags: string[] | null;
+}
+
+interface ApiResponse {
+  characters: Character[];
+  // 페이지네이션 정보도 있지만, 이 컴포넌트에서는 characters만 사용합니다.
+}
+
+// 캐릭터 목록을 불러오는 API 함수
+const fetchCharacters = async (): Promise<ApiResponse> => {
+  const { data } = await axiosNext.get('/character?limit=8&sort=latest');
+  return data;
+};
 
 export default function GridSwiper() {
-  // reset data
-  const slides = slideData;
+  const { data, isLoading, isError, error } = useQuery<ApiResponse, Error>({
+    queryKey: ['mainPageCharacters'],
+    queryFn: fetchCharacters,
+  });
 
   return (
     <div className={styles.container}>
@@ -28,43 +42,44 @@ export default function GridSwiper() {
       <div className={styles.title}>이것만은 꼭!</div>
       <div className={styles.subTitle}>AI에게 추천받은 캐릭터들을 소개합니다.</div>
 
-      <div className={styles.grid}>
-        {slides.map(({ src, title, subtitle, label, tags, color }, i) => (
-          // <div key={i} className={styles.characterCard} style={{ border: `3px solid ${color}` }}>
-
-          <div key={i} className={styles.card}>
-            {/* img */}
-            <img src={src} alt={`slide-${i}`} className={styles.img} />
-            <div className={styles.overLay}>
-              {/* label */}
-              <div className={styles.labelWrapper}>
-                <p className={styles.label}>{label}</p>
-              </div>
-              {/* info */}
-              <div className={styles.info}>
-                <p className={styles.name}>{title}</p>
-                <p className={styles.description}>
-                  {/* Description */}
-                  {subtitle.split('\n').map((line, idx) => (
-                    <span key={idx}>
-                      {line}
-                      <br />
-                    </span>
-                  ))}
-                </p>
-                {/* tagList */}
-                <div className={styles.tagList}>
-                  {tags.map((tag, idx) => (
-                    <p key={idx} className={styles.tag}>
-                      {tag}
-                    </p>
-                  ))}
+      {/* 2. 삼항 연산자를 사용해 로딩, 에러, 성공 상태에 따라 다른 UI를 보여줍니다. */}
+      {isLoading ? (
+        <GridSwiperSkeleton />
+      ) : isError ? (
+        <p>오류가 발생했습니다: {error.message}</p>
+      ) : (
+        <div className={styles.grid}>
+          {data?.characters.map(char => (
+            <Link href={`/characters/${char.code}`} key={char.code} className={styles.cardLink}>
+              <div className={styles.card}>
+                {/* 이미지 영역 */}
+                <div className={styles.imageWrapper}>
+                  <Image
+                    src={char.profile_image_url || '/default-profile.png'}
+                    alt={`${char.name}의 프로필`}
+                    width={300}
+                    height={300}
+                    className={styles.img}
+                  />
+                </div>
+                {/* 텍스트 정보 영역 */}
+                <div className={styles.info}>
+                  <p className={styles.name}>{char.name}</p>
+                  <p className={styles.oneliner}>{char.oneliner}</p>
+                  <div className={styles.tagList}>
+                    {char.hashtags?.map((tag, idx) => (
+                      <p key={idx} className={styles.tag}>
+                        {tag}
+                      </p>
+                    ))}
+                  </div>
+                  <p className={styles.creator}>@{char.creator_name}</p>
                 </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
