@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // css
 import styles from './page.module.css';
@@ -7,12 +7,8 @@ import styles from './page.module.css';
 // lib
 import { HiChevronDown } from 'react-icons/hi2';
 
-// store
-import { useCharacterCreationStore } from '@/app/_store/characters';
-
 // hooks
-import { useCheckUserStatus } from '@/app/_hooks/auth';
-import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
+import { useCheckUserStatus } from '../_hooks/useCheckUserStatus';
 import { useStep2 } from '../_hooks/useStep2';
 import { useStep1 } from '../_hooks/useStep1';
 
@@ -20,7 +16,6 @@ export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
   // 상태
   const { data } = useCheckUserStatus();
   const userName = data?.user?.name || '사용자';
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   // store
@@ -40,35 +35,6 @@ export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
     removeExampleDialog,
     isFormValid,
   } = useStep2();
-
-  // 임시저장 데이터 불러오기
-  useEffect(() => {
-    const restore = async () => {
-      const saved = await getDraftFromDB();
-      if (!saved) return;
-
-      const store = useCharacterCreationStore.getState();
-
-      // Step2의 데이터를 복원
-      store.setTitle(saved.title || '');
-      store.setPromptDetail(saved.promptDetail || '');
-      store.setSpeech(saved.speech || '');
-      store.setBehaviorConstraint(saved.behaviorConstraint || '');
-
-      if (Array.isArray(saved.exampleDialogs) && saved.exampleDialogs.length > 0) {
-        // 예시 대화가 이미 존재하지 않으면 추가
-        saved.exampleDialogs.forEach((dialog: { user: string; ai: string }) => {
-          if (!store.exampleDialogs.some(d => d.user === dialog.user && d.ai === dialog.ai)) {
-            store.addExampleDialog(dialog);
-          }
-        });
-      }
-
-      setIsDataLoaded(true);
-    };
-
-    restore();
-  }, []);
 
   return (
     <>

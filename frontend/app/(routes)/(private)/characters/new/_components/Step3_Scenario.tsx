@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // css
 import styles from './page.module.css';
@@ -7,14 +7,8 @@ import styles from './page.module.css';
 // lib
 import { HiChevronDown } from 'react-icons/hi2';
 
-// store
-import { useCharacterCreationStore } from '@/app/_store/characters';
-
 // custom hooks
 import { useStep3 } from '../_hooks/useStep3';
-
-// DB
-import { getDraftFromDB } from '@/app/_utils/indexedDBUtils';
 
 export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -30,26 +24,6 @@ export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
     updateScenarioSuggestion: updateSuggestion,
     isFormValid: isValid,
   } = useStep3();
-
-  useEffect(() => {
-    const restore = async () => {
-      const saved = await getDraftFromDB();
-      if (!saved) return;
-
-      const store = useCharacterCreationStore.getState();
-      store.setScenarioTitle(saved.scenarioTitle || '');
-      store.setScenarioGreeting(saved.scenarioGreeting || '');
-      store.setScenarioSituation(saved.scenarioSituation || '');
-
-      if (Array.isArray(saved.scenarioSuggestions)) {
-        saved.scenarioSuggestions.forEach((s: string, i: number) => {
-          store.updateScenarioSuggestion(i, s);
-        });
-      }
-    };
-
-    restore();
-  }, []);
 
   return (
     <>

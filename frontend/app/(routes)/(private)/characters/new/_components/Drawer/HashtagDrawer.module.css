@@ -1,5 +1,5 @@
 .drawerContent {
-  min-height: calc(95vh - 100px);
+  min-height: calc(30vh - 100px);
   overflow-y: auto;
   padding-bottom: 6rem;
   scrollbar-width: none;

@@ -47,26 +47,21 @@ import ProfileImageGeneratorDrawer from './Drawer/ProfileImageGeneratorDrawer';
 // import VoiceSelectModal from './Modal/VoiceSelectModal';
 
 // utils
-import {
-  deleteDraftFromDB,
-  deleteImageFromDB,
-  getDraftFromDB,
-  getImageFromDB,
-  saveDraftToDB,
-  saveImageToDB,
-} from '@/app/_utils/indexedDBUtils';
+import { deleteDraftFromDB, deleteImageFromDB } from '@/app/_utils/indexedDBUtils';
 
 // hooks
 import { useStep1 } from '../_hooks/useStep1';
+import { useRestoreCharacterDraft } from '../_hooks/useRestoreCharacterDraft';
+import { useCharacterCreationStore } from '@/app/_store/characters';
 
 export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   // 상태 초기화
   const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
   const [continueModalOpen, setContinueModalOpen] = useState(false);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
   const isNavigatingNext = useRef(false);
+
+  const isDataLoaded = useRestoreCharacterDraft(fromStep2, setContinueModalOpen);
 
   // store
   const {
@@ -81,6 +76,8 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
     isFormValid,
     resetDirty,
   } = useStep1();
+
+  const resetAllData = useCharacterCreationStore(state => state.resetAllData);
 
   // 프로필 이미지 미리보기
   const imagePreview = useMemo(() => {
@@ -112,13 +109,9 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   const handleNewCreation = useCallback(async () => {
     await deleteDraftFromDB();
     await deleteImageFromDB('profileImage');
-    setName('');
-    setOneliner('');
-    setProfileImage(null);
-    setMbti('');
-    resetDirty();
+    resetAllData();
     setContinueModalOpen(false);
-  }, [setName, setOneliner, setProfileImage, setMbti, resetDirty]);
+  }, [resetAllData]);
 
   // 이어서 제작
   const handleContinueCreation = useCallback(() => {
@@ -150,27 +143,6 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
     isNavigatingNext.current = true;
     onNext();
   }, [onNext]);
-
-  useEffect(() => {
-    const restore = async () => {
-      const saved = await getDraftFromDB();
-      const imageFile = await getImageFromDB('profileImage');
-
-      if (saved) {
-        setName(saved.name || '');
-        setOneliner(saved.oneliner || '');
-        setMbti(saved.mbti || '');
-        if (imageFile) {
-          setProfileImage(imageFile);
-        }
-        if (!fromStep2) {
-          setContinueModalOpen(true);
-        }
-      }
-      setIsDataLoaded(true);
-    };
-    restore();
-  }, []);
 
   useEffect(() => {
     if (profileImage instanceof File) {

@@ -1,44 +1,46 @@
 'use client';
 
-import { useState, ChangeEvent, CompositionEvent } from 'react';
-import { useCharacterCreationStore } from '@/app/_store/characters';
+import { useState } from 'react';
 import styles from './page.module.css';
 import { HiChevronDown } from 'react-icons/hi';
 import HashtagDrawer from './Drawer/HashtagDrawer';
+import { useCreateCharacterFormData } from '../_hooks/useCreateCharacterFormData';
+import { useStep4 } from '../_hooks/useStep4';
 
 export default function Step4_RegistrationSettings({ onPrev, onNext }: any) {
+  const createFormData = useCreateCharacterFormData();
+
   // Store에서 상태 및 함수 가져오기
   const {
     visibility,
     genre,
     target,
     conversationType,
+    userFilter,
     hashtags,
     commentsEnabled,
     setVisibility,
     setGenre,
     setTarget,
     setConversationType,
+    setUserFilter,
     addHashtag,
     removeHashtag,
     setCommentsEnabled,
-  } = useCharacterCreationStore();
+    isFormValid,
+  } = useStep4();
 
   // 컴포넌트 내부 상태
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  /**
-   * input의 onChange 이벤트 핸들러
-   */
+  // input의 onChange 이벤트 핸들러
   const handleAddHashtag = (newHashtag: string) => {
     if (!hashtags.includes(newHashtag) && hashtags.length < 10) {
       addHashtag(newHashtag);
     }
   };
 
-  /**
-   * 해시태그를 목록에서 제거하는 함수
-   */
+  // 해시태그를 목록에서 제거하는 함수
   const handleOpenDrawer = () => {
     setDrawerOpen(true);
   };
@@ -124,9 +126,34 @@ export default function Step4_RegistrationSettings({ onPrev, onNext }: any) {
           </div>
         </div>
 
+        {/* 사용자 정보 필터 */}
+        <div className={styles.field}>
+          <label className={styles.label}>
+            사용자 정보 필터 <span className={styles.required}>*</span>
+          </label>
+          <p className={styles.caption}>
+            캐릭터가 사용자의 프로필 정보를 기억하는 방식을 설정합니다.
+            <br />
+            '고정'은 역할극의 몰입감을 높여줍니다.
+          </p>
+          <div className={styles.selectWrapper}>
+            <select
+              value={userFilter}
+              onChange={e => setUserFilter(e.target.value as any)}
+              className={styles.select}
+            >
+              <option value="initial">초기 설정 (실시간 반영)</option>
+              <option value="fixed">고정 (대화 시작 시점)</option>
+            </select>
+            <HiChevronDown className={styles.selectIcon} />
+          </div>
+        </div>
+
         {/* 해시태그 */}
         <div className={styles.field}>
-          <label className={styles.label}>해시태그</label>
+          <label className={styles.label}>
+            해시태그 <span className={styles.required}>*</span>
+          </label>
           <p className={styles.caption}>
             캐릭터의 특징이나 세계관을 나타내는 키워드를 추가해 보세요.
           </p>
@@ -142,7 +169,7 @@ export default function Step4_RegistrationSettings({ onPrev, onNext }: any) {
                 </div>
               ))
             ) : (
-              <p className={styles.noHashtagsText}>해시태그를 추가해 보세요.</p>
+              <p className={styles.noHashtagsText}>해시태그를 1개 이상 추가해 주세요.</p>
             )}
           </div>
 
@@ -187,8 +214,8 @@ export default function Step4_RegistrationSettings({ onPrev, onNext }: any) {
             onChange={e => setCommentsEnabled(e.target.value === 'on')}
             className={styles.select}
           >
-            <option value="on">On</option>
-            <option value="off">Off</option>
+            <option value="on">사용</option>
+            <option value="off">사용 안 함</option>
           </select>
         </div>
       </div>
@@ -197,8 +224,9 @@ export default function Step4_RegistrationSettings({ onPrev, onNext }: any) {
         <button onClick={onPrev} className={styles.Button}>
           이전 단계
         </button>
-        <button onClick={onNext} className={styles.Button}>
-          완료
+
+        <button onClick={onNext} className={styles.Button} disabled={!isFormValid}>
+          캐릭터 등록하기
         </button>
       </div>
 

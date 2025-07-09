@@ -41,9 +41,7 @@ import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 // utils
 import { Toast } from '@/app/_utils/Swal';
-
-// api
-import { requestGenerateCharacterImage } from '@/app/_apis/character';
+import { useGenerateCharacterImage } from '@/app/_apis/character/_hooks';
 
 export default function ProfileImageGeneratorDrawer({
   open,
@@ -51,7 +49,7 @@ export default function ProfileImageGeneratorDrawer({
   onImageGenerated,
 }: ProfileImageGeneratorDrawerProps) {
   const [prompt, setPrompt] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate, isPending } = useGenerateCharacterImage();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const imageOptions = [
     { src: '/img/ProfimeImageExample.png', alt: '1번 그림체', disabled: false },
@@ -76,7 +74,7 @@ export default function ProfileImageGeneratorDrawer({
   const [numImages, setNumImages] = useState(1);
 
   // 이미지 생성 요청 프롬프트 핸들러
-  const handleGenerate = async () => {
+  const handleGenerate = () => {
     if (!prompt) {
       Toast.fire({
         icon: 'warning',
@@ -85,27 +83,30 @@ export default function ProfileImageGeneratorDrawer({
       return;
     }
 
-    setIsLoading(true);
+    const [width, height] = selectedSize.split('x').map(Number);
 
-    try {
-      const [width, height] = selectedSize.split('x').map(Number);
+    const payload = {
+      prompt,
+      width,
+      height,
+      num_images: numImages,
+    };
 
-      const result = await requestGenerateCharacterImage({
-        prompt,
-        width,
-        height,
-        num_images: numImages,
-      });
+    mutate(payload, {
+      onSuccess: data => {
+        const imageUrl = data.image_urls[0];
 
-      const blob = await fetch(result.imageUrl).then(res => res.blob());
-      const file = new File([blob], 'generated.png', { type: blob.type });
-      onImageGenerated(file);
-      onClose();
-    } catch (err) {
-      Toast.fire({ icon: 'error', title: '이미지 생성 실패' });
-    } finally {
-      setIsLoading(false);
-    }
+        if (imageUrl) {
+          onImageGenerated(imageUrl);
+          onClose();
+        } else {
+          Toast.fire({ icon: 'error', title: '생성된 이미지 URL이 없습니다.' });
+        }
+      },
+      onError: () => {
+        Toast.fire({ icon: 'error', title: '이미지 생성에 실패했습니다.' });
+      },
+    });
   };
 
   return (
@@ -249,10 +250,10 @@ export default function ProfileImageGeneratorDrawer({
           <div className={styles.fixedBottom}>
             <button
               onClick={handleGenerate}
-              disabled={!isFormValid || isLoading}
+              disabled={!isFormValid || isPending}
               className={styles.Button}
             >
-              {isLoading ? '생성 중...' : '생성하기'}
+              {isPending ? '생성 중...' : '생성하기'}
             </button>
           </div>
         </div>
