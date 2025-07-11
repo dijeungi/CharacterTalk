@@ -8,6 +8,14 @@ const nextConfig = {
   allowedDevOrigins: [
     'https://3000-firebase-charactertalkgit-1747715584709.cluster-ys234awlzbhwoxmkkse6qo3fz6.cloudworkstations.dev',
   ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'charactertalk.abc3151c9a8993bf41e4e6f6f4660cdd.r2.cloudflarestorage.com',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
