@@ -9,7 +9,7 @@
 import axiosNext from '@/app/_lib/axiosNext';
 import axiosPython from '@/app/_lib/axiosPython';
 
-import { GenerateImageRequest } from './types';
+import { GenerateImageRequest } from '@/app/_apis/character/types';
 
 // 캐릭터 프로필 사진 생성 API 호출 함수 - [POST] /api/generate
 export const requestGenerateCharacterImage = async (payload: GenerateImageRequest) => {

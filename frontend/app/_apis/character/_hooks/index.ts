@@ -21,7 +21,7 @@ export const characterKeys = createQueryKeys('character', {
   uploadProfile: null,
 });
 
-// [POST] /api/generate
+// [POST] /api/generate (캐릭터 이미지 생성)
 export const useGenerateCharacterImage = () => {
   return useMutation({
     mutationKey: characterKeys.generateImage.queryKey,
@@ -29,7 +29,7 @@ export const useGenerateCharacterImage = () => {
   });
 };
 
-// [POST] /api/upload-profile-image
+// [POST] /api/upload-profile-image (클라우드 R2 업로드)
 export const useUploadProfileImage = (setProfileImage: (url: string) => void) => {
   return useMutation({
     mutationKey: characterKeys.uploadProfile.queryKey,
