@@ -29,3 +29,16 @@
 npm install
 npm run dev
 ```
+
+## 개발자: 최준호
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/dijeungi">
+        <img src="https://github.com/dijeungi.png" width="100px" style="border-radius: 50%;" />
+      </a>
+      <br />
+      <b>최준호</b>
+    </td>
+  </tr>
+</table>
