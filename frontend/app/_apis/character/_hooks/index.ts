@@ -1,9 +1,9 @@
 /**
  * @file      frontend/app/_apis/character/_hooks/index.ts
- * @desc      캐릭터 생성 및 관리에 필요한 React Query 훅과 키를 정의합니다.
+ * @desc      React Query: 캐릭터 이미지 생성 및 업로드 훅과 키 정의
  *
  * @author    최준호
- * @update      2025.07.19
+ * @update    2025.07.19
  */
 
 import { requestGenerateCharacterImage, uploadProfileImage } from '@/app/_apis/character';
