@@ -1,3 +1,16 @@
+## 개발자
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/dijeungi">
+        <img src="https://github.com/dijeungi.png" width="100px" style="border-radius: 50%;" />
+      </a>
+      <br />
+      <b>최준호</b>
+    </td>
+  </tr>
+</table>
+
 # 📝 캐릭톡
 
 **CharacterTalk**은 AI 캐릭터와 자유롭게 대화할 수 있는 **챗봇 플랫폼**입니다.  
@@ -18,26 +31,13 @@
 
 ## 🛠️ 기술 스택
 
-- Next.js 15 (App Router)
-- TypeScript
+- Next.js 15 (App Router & TypeScript)
 - Python (Django)
-- Module CSS
+- CSS Module
 
 ## 🚀 실행 방법
 
 ```bash
-npm install
+sudo npm install
 npm run dev
 ```
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/dijeungi">
-        <img src="https://github.com/dijeungi.png" width="100px" style="border-radius: 50%;" />
-      </a>
-      <br />
-      <b>최준호</b>
-    </td>
-  </tr>
-</table>
