@@ -30,7 +30,6 @@ npm install
 npm run dev
 ```
 
-## 개발자: 최준호
 <table>
   <tr>
     <td align="center">
