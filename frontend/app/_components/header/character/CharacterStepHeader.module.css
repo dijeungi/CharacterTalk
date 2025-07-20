@@ -1,4 +1,4 @@
-.Container {
+.container {
   position: sticky;
   top: 0;
   left: 0;
@@ -13,15 +13,15 @@
   background-color: white;
 }
 
-.Left_Section,
-.Right_Section {
+.leftSection,
+.rightSection {
   display: flex;
   align-items: center;
   width: 3.75rem;
   justify-content: center;
 }
 
-.IconButton {
+.iconButton {
   all: unset;
   cursor: pointer;
   display: flex;
@@ -35,16 +35,16 @@
   align-items: center;
 }
 
-.Icon {
+.icon {
   font-size: 1.75rem;
   vertical-align: middle;
 }
 
-.Title {
+.title {
   font-size: 1.25rem;
 }
 
-.Title_Button {
+.titleButton {
   font-size: 1rem;
   color: #333;
   font-weight: bold;
@@ -55,7 +55,7 @@
   cursor: pointer;
 }
 
-.Title_Button:disabled {
+.titleButton:disabled {
   color: #9ca3af;
   cursor: not-allowed;
 }

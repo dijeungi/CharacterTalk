@@ -1,46 +1,40 @@
-/*
-  Route: '/header/character-step'
-  Path: app/_components/header/CharacterStepHeader.tsx
-  Description:
-    - 이 페이지는 캐릭터 만들기 화면에서 상단 헤더를 구현하는 컴포넌트입니다.
-*/
+/**
+ * @file      frontend/app/_components/header/character/CharacterStepHeader.tsx
+ * @desc      Component: 캐릭터 생성 단계별 헤더 UI 및 임시저장 로직 정의
+ *
+ * @author    최준호
+ * @update    2025.07.20
+ */
 
 'use client';
 
-// Next.js
 import { useState } from 'react';
+import styles from '@/app/_components/header/character/CharacterStepHeader.module.css';
 
-// css
-import styles from './CharacterStepHeader.module.css';
-
-// 상태
 import { useCharacterCreationStore } from '@/app/_store/characters';
 
-// components
-import UnsavedChangesModal from '../../../(routes)/(private)/characters/new/_components/Modal/UnsavedChangesModal';
+import UnsavedChangesModal from '@/app/(routes)/(private)/characters/new/_components/Modal/UnsavedChangesModal';
 
-// lib
 import { Toast } from '@/app/_utils/Swal';
 import { LinearProgress } from '@mui/material';
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { CgProfile } from 'react-icons/cg';
 import { IoMdPaper } from 'react-icons/io';
-import { GoShieldCheck } from 'react-icons/go';
+import { BiCommand } from 'react-icons/bi';
+import { IoSettingsOutline } from 'react-icons/io5';
 
-// DB
 import { saveDraftToDB, saveImageToDB } from '@/app/_utils/indexedDBUtils';
 
 export default function CharacterStepHeader() {
   // store 상태 호출
   const { isDirty, currentStep, resetDirty } = useCharacterCreationStore();
-
   // 모달 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   // bar 계산
   const progress = (currentStep / 3) * 100;
-
-  // step별 header Title
+  // step 4 처리
+  const isStep4 = currentStep === 4;
+  // step별 header title
   const getHeaderTitle = (step: number) => {
     switch (step) {
       case 1:
@@ -60,8 +54,17 @@ export default function CharacterStepHeader() {
       case 3:
         return (
           <>
-            <GoShieldCheck style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }} />
+            <BiCommand style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }} />
             시작 설정
+          </>
+        );
+      case 4:
+        return (
+          <>
+            <IoSettingsOutline
+              style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }}
+            />
+            마무리 확인
           </>
         );
       default:
@@ -89,6 +92,14 @@ export default function CharacterStepHeader() {
       scenarioGreeting: state.scenarioGreeting,
       scenarioSituation: state.scenarioSituation,
       scenarioSuggestions: state.scenarioSuggestions,
+      // step 4
+      genre: state.genre,
+      visibility: state.visibility,
+      target: state.target,
+      conversationType: state.conversationType,
+      userFilter: state.userFilter,
+      hashtags: state.hashtags,
+      commentsEnabled: state.commentsEnabled,
     });
 
     if (state.profileImage instanceof File) {
@@ -103,12 +114,11 @@ export default function CharacterStepHeader() {
     resetDirty();
   };
 
-  // 뒤로가기 버튼 모달 창
+  // 뒤로가기
   const handleBackClick = () => {
     if (isDirty) {
       setIsModalOpen(true);
     } else {
-      // 임시 저장 안 해도 뒤로 가기 실행
       window.history.back();
     }
   };
@@ -118,7 +128,7 @@ export default function CharacterStepHeader() {
     setIsModalOpen(false);
   };
 
-  // 나가기 클릭 시 뒤로 가기
+  // 모달 - 뒤로가기
   const handleExit = () => {
     setIsModalOpen(false);
     window.history.back();
@@ -126,22 +136,22 @@ export default function CharacterStepHeader() {
 
   return (
     <>
-      <header className={styles.Container}>
-        {/* 왼쪽 섹션 - 뒤로 가기 버튼 및 제목 */}
-        <div className={styles.Left_Section}>
-          <button onClick={handleBackClick} className={styles.IconButton}>
-            <MdKeyboardBackspace className={styles.Icon} />
+      <header className={styles.container}>
+        {/* left btn - background */}
+        <div className={styles.leftSection}>
+          <button onClick={handleBackClick} className={styles.iconButton}>
+            <MdKeyboardBackspace className={styles.icon} />
           </button>
         </div>
 
-        <div className={styles.Center_Section}>
-          <span className={styles.Title}>{getHeaderTitle(currentStep)}</span>
+        <div className={styles.centerSection}>
+          <span className={styles.title}>{getHeaderTitle(currentStep)}</span>
         </div>
 
-        {/* 오른쪽 섹션 - 로그인 아이콘 */}
-        <div className={styles.Right_Section}>
+        {/* right btn - login */}
+        <div className={styles.rightSection}>
           <button
-            className={styles.Title_Button}
+            className={styles.titleButton}
             disabled={!isDirty}
             onClick={handleSaveToIndexedDB}
           >
@@ -149,9 +159,10 @@ export default function CharacterStepHeader() {
           </button>
         </div>
 
+        {/* ProgressBar */}
         <LinearProgress
           variant="determinate"
-          value={progress}
+          value={isStep4 ? 100 : progress}
           sx={{
             position: 'absolute',
             bottom: 0,
@@ -159,10 +170,15 @@ export default function CharacterStepHeader() {
             width: '100%',
             height: '5px',
             borderRadius: 0,
+            backgroundColor: isStep4 ? '#d3d3d3' : undefined,
+            '& .MuiLinearProgress-bar': {
+              backgroundColor: isStep4 ? '#4caf50' : undefined,
+            },
           }}
         />
       </header>
-      {/* 모달 컴포넌트 */}
+
+      {/* Modal */}
       {isModalOpen && <UnsavedChangesModal onClose={closeModal} onExit={handleExit} />}
     </>
   );
