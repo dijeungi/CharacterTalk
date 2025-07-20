@@ -10,10 +10,10 @@
 
 import { usePathname } from 'next/navigation';
 
-import { headerConfig } from '../../_config/headerConfig';
+import { headerConfig } from '@/app/_config/headerConfig';
 
-import MainHeader from './MainHeader';
-import CharacterStepHeader from './character/CharacterStepHeader';
+import MainHeader from '@/app/_components/header/MainHeader';
+import CharacterStepHeader from '@/app/_components/header/character/CharacterStepHeader';
 
 export default function HeaderController() {
   // 현재 경로
