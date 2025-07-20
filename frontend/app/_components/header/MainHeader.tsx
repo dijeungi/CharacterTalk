@@ -8,25 +8,16 @@
 */
 
 'use client';
-
-// React
 import { useEffect, useState } from 'react';
+import styles from '@/app/_components/header/MainHeader.module.css';
 
-// modules
 import Link from 'next/link';
 import NextLink from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
-// React Query
 import { useQueryClient } from '@tanstack/react-query';
-
-// Zustand
 import { useAuthStore } from '@/app/_store/auth/index';
 
-// css
-import styles from './MainHeader.module.css';
-
-// 아이콘
 import { HiOutlineMenu, HiOutlineMenuAlt1 } from 'react-icons/hi';
 import { GoPerson } from 'react-icons/go';
 import { TbSmartHome } from 'react-icons/tb';
@@ -36,31 +27,26 @@ import { PiRanking } from 'react-icons/pi';
 import { HiOutlineFire } from 'react-icons/hi2';
 import { FiLogIn, FiLogOut } from 'react-icons/fi';
 
-// MUI
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 
-// 유틸
 import { Toast } from '@/app/_utils/Swal';
 import axiosInstance from '@/app/_lib/axiosNext';
 
 export default function MainHeader() {
   // 상태
   const [open, setOpen] = useState(false);
-
   // 라우터
   const router = useRouter();
-
-  // React Query 클라이언트
+  // Query
   const queryClient = useQueryClient();
-
   // store
   const { isLoggedIn, logout: logoutFromStore } = useAuthStore();
 
-  // 로그아웃 핸들러
+  // Logout
   const handleLogout = async () => {
     try {
       await axiosInstance.post('/auth/refresh/logout');
@@ -91,6 +77,7 @@ export default function MainHeader() {
   return (
     <>
       <header className={styles.container}>
+        {/* Left */}
         <div className={styles.leftSection}>
           <IconButton onClick={() => setOpen(prev => !prev)}>
             {open ? (
@@ -108,7 +95,7 @@ export default function MainHeader() {
           </Link>
         </div>
 
-        {/* --- ⭐️ 수정된 아이콘 변경 부분 --- */}
+        {/* Right */}
         <div className={styles.rightSection}>
           {isLoggedIn ? (
             // 로그인 후: 로그아웃 아이콘 버튼
@@ -122,7 +109,6 @@ export default function MainHeader() {
             </Link>
           )}
         </div>
-        {/* --- ⭐️ 수정된 아이콘 변경 부분 끝 --- */}
       </header>
 
       {/* MUI Drawer */}
