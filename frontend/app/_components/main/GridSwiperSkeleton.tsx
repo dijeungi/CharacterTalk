@@ -1,6 +1,16 @@
-import React from 'react';
-import Skeleton from '@mui/material/Skeleton';
+/**
+ * @file      frontend/app/_components/main/GridSwiperSkeleton.tsx
+ * @desc      Component: GridSwiper 로딩 상태 표시용 스켈레톤 UI
+ *
+ * @author    최준호
+ * @update    2025.07.20
+ */
+
+'use client';
+
 import styles from './GridSwiper.module.css';
+
+import Skeleton from '@mui/material/Skeleton';
 
 export default function GridSwiperSkeleton() {
   const skeletonItems = Array.from({ length: 8 });

@@ -1,11 +1,10 @@
-/*
-  Route: '/sub-banner'
-  Path: app/_components/main/SubSwiper.tsx
-  Description:
-    - 이 페이지는 서브 배너 슬라이드를 관리하며, `swiper` 라이브러리의 페이드 효과를 사용하여 슬라이드를 전환합니다.
-    - `SubSlide.json` 데이터를 이용해 각 슬라이드를 동적으로 렌더링하고, 3초마다 자동으로 슬라이드가 전환됩니다.
-    - 슬라이드 전환에 따라 현재 인덱스를 업데이트하여 페이지 상단에 슬라이드 번호를 표시합니다.
-*/
+/**
+ * @file      frontend/app/_components/main/SubSwiper.tsx
+ * @desc      Component: 서브 배너 슬라이드 UI, 페이드 효과 및 자동 슬라이드 기능
+ *
+ * @author    최준호
+ * @update    2025.07.21
+ */
 
 'use client';
 

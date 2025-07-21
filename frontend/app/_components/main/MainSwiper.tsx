@@ -1,11 +1,10 @@
-/*
-  Route: '/'
-  Path: app/_components/main/MainSwiper.tsx
-  Description:
-    - 이 페이지는 메인 페이지에 표시되는 슬라이드 쇼를 관리합니다.
-    - `swiper` 라이브러리를 사용해 자동 슬라이드 기능을 구현하며, `MainSlide.json` 데이터를 사용해 각 슬라이드를 동적으로 렌더링합니다.
-    - 현재 날짜를 표시하고, 각 슬라이드의 상세 정보를 화면에 표시합니다.
-*/
+/**
+ * @file      frontend/app/_components/main/MainSwiper.tsx
+ * @desc      Component: 메인 페이지 슬라이드 쇼 UI, 자동 슬라이드 및 데이터 기반 동적 렌더링
+ *
+ * @author    최준호
+ * @update    2025.07.21
+ */
 
 'use client';
 

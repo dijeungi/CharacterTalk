@@ -32,7 +32,7 @@
   border: 1px solid #eee;
   background-color: #fff;
   display: flex;
-  flex-direction: column; /* 이미지와 텍스트를 세로로 배치 */
+  flex-direction: column;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
@@ -41,10 +41,9 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* imageWrapper 클래스 추가 */
 .imageWrapper {
   width: 100%;
-  aspect-ratio: 1 / 1; /* 정사각형 비율 */
+  aspect-ratio: 1 / 1;
 }
 
 .img {
