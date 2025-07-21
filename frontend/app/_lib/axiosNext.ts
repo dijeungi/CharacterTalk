@@ -1,28 +1,14 @@
 /**
- * @lib          axiosNext
- * @file         frontend/app/lib/axiosNext.ts
- * @desc         클라이언트 전용 Axios 인스턴스 설정 및 인증 실패 시 리다이렉션 처리
+ * @file      frontend/app/_lib/axiosNext.ts
+ * @desc      Lib: 토큰 자동 갱신 및 401 처리 로직 포함된 Axios 인스턴스 설정
  *
- * @config
- *  - baseURL: NEXT_API_HOST + '/api'
- *  - withCredentials: 쿠키 기반 인증을 위해 true 설정
- *
- * @interceptors
- *  - 401 응답 시 로그인 페이지로 리다이렉트 (비로그인 상태 대응)
- *
- * @usage        클라이언트에서 API 요청 시 axiosNext import하여 사용
- * @dependencies axios, window, NEXT_API_HOST
- *
- * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.24
+ * @author    최준호
+ * @update    2025.07.21
  */
 
-// library
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-
-// config
 import { NEXT_API_HOST } from '@/app/_apis/config';
+
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 // AxiosInstance
 const axiosNext = axios.create({
