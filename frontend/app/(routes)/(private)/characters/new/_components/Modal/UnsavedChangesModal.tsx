@@ -1,6 +1,13 @@
-'use client';
+/**
+ * @file      frontend/app/(routes)/(private)/characters/new/_components/Modal/UnsavedChangesModal.tsx
+ * @desc      Component: 캐릭터 설정 변경 후 저장 없이 이동 시 경고를 표시하는 확인 모달
+ *
+ * @author    최준호
+ * @update    2025.07.21
+ */
 
-import styles from './page.module.css';
+'use client';
+import styles from '@/app/(routes)/(private)/characters/new/_components/Modal/Modal.module.css';
 
 const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({ onClose, onExit }) => {
   return (

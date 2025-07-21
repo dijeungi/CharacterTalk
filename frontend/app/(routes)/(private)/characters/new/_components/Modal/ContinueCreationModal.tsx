@@ -1,33 +1,13 @@
 /**
- * @component    ContinueCreationModal
- * @file         frontend/app/(routes)/(private)/characters/new/_components/Modal/ContinueCreationModal.tsx
- * @desc         캐릭터 생성 중단 시 복구 여부를 묻는 모달 컴포넌트
+ * @file      frontend/app/(routes)/(private)/characters/new/_components/Modal/ContinueCreationModal.tsx
+ * @desc      Component: 이전 캐릭터 작성 데이터 감지 시 새로 시작 또는 이어서 제작 선택 안내 모달
  *
- * @layout       characters New Layout
- * @access       private
- * @props
- *  - open: 모달 노출 여부
- *  - onNew: 새로 제작 콜백j
- *  - onContinue: 이어서 제작 콜백
- *
- * @features
- *  - 로컬 저장된 캐릭터 데이터 존재 시 사용자 복구 유도
- *  - 접근성 고려된 dialog role 및 aria 속성 포함
- *
- * @dependencies
- *  - CSS Module (ContinueCreationModal.module.css)
- *  - 타입 정의 (ContinueCreationModalProps)
- *
- * @todo         공통 모달 컴포넌트로 분리 고려
- * @author       최준호
- * @since        2025.06.20
- * @updated      2025.06.24
+ * @author    최준호
+ * @update    2025.07.21
  */
 
 'use client';
-
-// css
-import styles from './page.module.css';
+import styles from '@/app/(routes)/(private)/characters/new/_components/Modal/Modal.module.css';
 
 export default function ContinueCreationModal({
   open,
