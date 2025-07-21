@@ -1,28 +1,17 @@
 /**
- * @hook         -
- * @file         -
- * @desc         -
+ * @file      frontend/app/_hooks/useAuthInitializer.tsx
+ * @desc      hooks: 초기 렌더 시 로그인 상태 확인 및 토큰 만료 시 자동 갱신 처리
  *
- * @usage        -
- *
- * @features
- *  -
- *
- * @dependencies
- *  -
- *
- * @author       최준호
- * @since        2025.06.20
- * @updated      2025.06.23
+ * @author    최준호
+ * @update    2025.07.21
  */
 
 'use client';
+
 import { useEffect, useState } from 'react';
 
-// store
 import { useAuthStore } from '@/app/_store/auth';
 
-// api
 import { checkUserStatus, refreshAuthToken } from '../_apis/user';
 
 export default function AuthInitializer() {
@@ -34,12 +23,9 @@ export default function AuthInitializer() {
 
     const initializeUser = async () => {
       try {
-        // api 요청 후 response 받기
         const { isLoggedIn, reason, user } = await checkUserStatus();
-
         if (isLoggedIn && user) {
           login(user);
-          // 토큰 만료 시
         } else if (reason === 'token_expired' && !retried) {
           retried = true;
           await refreshAuthToken();
