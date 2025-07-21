@@ -1,3 +1,11 @@
+/**
+ * @file      frontend/app/_utils/indexedDBUtils.ts
+ * @desc      Util: 캐릭터 임시 데이터와 이미지 저장을 위한 IndexedDB 유틸 함수 정의
+ *
+ * @author    최준호
+ * @update    2025.07.21
+ */
+
 import { openDB } from 'idb';
 
 const DB_NAME = 'characterDB';
