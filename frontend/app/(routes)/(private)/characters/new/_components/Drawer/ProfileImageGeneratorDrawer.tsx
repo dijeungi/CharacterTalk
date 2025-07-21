@@ -1,45 +1,19 @@
 /**
- * @component    ProfileImageGeneratorDrawer
- * @file         frontend/app/(routes)/(private)/characters/new/_components/Drawer/ProfileImageGeneratorDrawer.tsx
- * @desc         캐릭터 프로필 이미지를 프롬프트 기반으로 생성하는 이미지 생성기 컴포넌트
+ * @file      frontend/app/(routes)/(private)/characters/new/_components/Drawer/ProfileImageGeneratorDrawer.tsx
+ * @desc      Component: 이미지 프롬프트, 스타일, 해상도, 개수 선택을 포함한 캐릭터 프로필 생성 Drawer UI 정의
  *
- * @layout       characters New Layout
- * @access       private
- * @props
- *  - open: 드로어 열림 상태
- *  - onClose: 드로어 닫기 콜백
- *  - onImageGenerated: 이미지 생성 완료 시 호출되는 콜백
- *
- * @features
- *  - 프롬프트 입력 기반 이미지 생성 요청
- *  - 출력 이미지 스타일 및 사이즈 선택
- *  - 이미지 미리보기 및 선택 UI
- *  - 이미지 개수 선택 지원
- *
- * @dependencies
- *  - MUI SwipeableDrawer, Select
- *  - react-icons
- *  - @/app/_utils/Swal (Toast 알림)
- *  - @/app/_apis/character/generate (이미지 생성 요청)
- *
- * @todo         스타일 선택 항목 추가, 로딩 UI 개선
- * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.24
+ * @author    최준호
+ * @update    2025.07.21
  */
 
 'use client';
 import { useState } from 'react';
-
-// css
 import styles from './ProfileImage.module.css';
 
-// library
 import { FaCheck } from 'react-icons/fa';
 import { SwipeableDrawer } from '@mui/material';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
-// utils
 import { Toast } from '@/app/_utils/Swal';
 import { useGenerateCharacterImage } from '@/app/_apis/character/_hooks';
 
@@ -94,7 +68,7 @@ export default function ProfileImageGeneratorDrawer({
 
     mutate(payload, {
       onSuccess: data => {
-        const imageUrl = data.image_urls[0];
+        const imageUrl = data.imageUrl[0];
 
         if (imageUrl) {
           onImageGenerated(imageUrl);

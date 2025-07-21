@@ -1,8 +1,16 @@
-'use client';
+/**
+ * @file      frontend/app/(routes)/(private)/characters/new/_components/Drawer/HashtagDrawer.tsx
+ * @desc      Component: 해시태그 입력 및 표시를 위한 하단 Drawer UI + 자동 포커싱 및 조합 입력 대응
+ *
+ * @author    최준호
+ * @update    2025.07.21
+ */
 
+'use client';
 import { useState, ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react';
+import styles from '@/app/(routes)/(private)/characters/new/_components/Drawer/HashtagDrawer.module.css';
+
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import styles from './HashtagDrawer.module.css';
 import { HiSearch } from 'react-icons/hi';
 
 export default function HashtagDrawer({

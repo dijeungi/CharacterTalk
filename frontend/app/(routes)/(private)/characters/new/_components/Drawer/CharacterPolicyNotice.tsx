@@ -1,37 +1,16 @@
 /**
- * @component    CharacterPolicyNotice
- * @file         frontend/app/(routes)/(private)/characters/new/_components/Drawer/CharacterPolicyNotice.tsx
- * @desc         캐릭터 제작 가이드 및 유의사항 안내 컴포넌트
+ * @file      frontend/app/(routes)/(private)/characters/new/_components/Drawer/CharacterPolicyNotice.tsx
+ * @desc      Component: 캐릭터 제작 정책 안내를 위한 하단 슬라이드 Drawer UI 정의
  *
- * @layout       characters New Layout
- * @access       private
- * @props        없음
- *
- * @features
- *  - 캐릭터 생성 시 정책 위반 안내
- *  - 더보기 버튼 클릭 시 슬라이드 드로어 노출
- *  - MUI SwipeableDrawer 활용
- *
- * @dependencies
- *  - @mui/material/SwipeableDrawer
- *  - CSS Module (CharacterPolicyNotice.module.css)
- *
- * @todo         고정된 경고 문구를 공통 텍스트 리소스로 분리할지 검토
- * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.24
+ * @author    최준호
+ * @update    2025.07.21
  */
 
 'use client';
-
-// default
 import { useState } from 'react';
+import styles from '@/app/(routes)/(private)/characters/new/_components/Drawer/CharacterPolicyNotice.module.css';
 
-// library
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-
-// css
-import styles from './CharacterPolicyNotice.module.css';
 
 export default function CharacterPolicyNotice() {
   const [open, setOpen] = useState(false);
