@@ -1,14 +1,18 @@
+/**
+ * @file         frontend/app/(routes)/(private)/characters/new/_components/Step3_Scenario.tsx
+ * @desc         Component: 캐릭터 시작 시나리오 설정 및 고급 추천 답변 입력을 위한 Step3 UI 정의
+ *
+ * @author       최준호
+ * @update       2025.07.21
+ */
+
 'use client';
 import { useState } from 'react';
+import styles from '@/app/(routes)/(private)/characters/new/_components/page.module.css';
 
-// css
-import styles from './page.module.css';
-
-// lib
 import { HiChevronDown } from 'react-icons/hi2';
 
-// custom hooks
-import { useStep3 } from '../_hooks/useStep3';
+import { useStep3 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep3';
 
 export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
   const [showAdvanced, setShowAdvanced] = useState(false);

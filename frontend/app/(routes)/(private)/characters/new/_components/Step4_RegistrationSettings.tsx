@@ -1,15 +1,13 @@
 'use client';
-
 import { useState } from 'react';
-import styles from './page.module.css';
+import styles from '@/app/(routes)/(private)/characters/new/_components/page.module.css';
+
 import { HiChevronDown } from 'react-icons/hi';
-import HashtagDrawer from './Drawer/HashtagDrawer';
-import { useCreateCharacterFormData } from '../_hooks/useCreateCharacterFormData';
-import { useStep4 } from '../_hooks/useStep4';
+
+import { useStep4 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep4';
+import HashtagDrawer from '@/app/(routes)/(private)/characters/new/_components/Drawer/HashtagDrawer';
 
 export default function Step4_RegistrationSettings({ onPrev, onNext }: any) {
-  const createFormData = useCreateCharacterFormData();
-
   // Store에서 상태 및 함수 가져오기
   const {
     visibility,

@@ -1,57 +1,30 @@
 /**
- * @component    Step1_Profile
  * @file         frontend/app/(routes)/(private)/characters/new/_components/Step1_Profile.tsx
- * @desc         캐릭터 생성 1단계: 프로필 이미지, 이름, 한줄소개 입력 폼
+ * @desc         Component: 캐릭터 기본 정보(프로필 이미지, 이름, 설명, MBTI) 입력 및 임시 저장 감지 처리 포함한 Step1 UI 정의
  *
- * @layout       characters New Layout
- * @access       private
- * @props        없음
- *
- * @features
- *  - 프로필 이미지 업로드 및 이미지 생성기 연동
- *  - 이름 및 한줄소개 입력 (유효성 포함)
- *  - 로컬스토리지 임시 저장 데이터 불러오기
- *  - Zustand 기반 전역 상태관리
- *  - MUI, React-icons 등 외부 라이브러리 활용
- *
- * @dependencies
- *  - Zustand (useCharacterStep1Store)
- *  - React Icons (react-icons)
- *  - MUI (LinearProgress)
- *  - LocalStorage (임시 저장 복원)
- *
- * @todo
- *  - 목소리 선택 기능 추가 (VoiceSelectModal)
- *  - 다음 단계 연동
- *
- * @author       최준호
- * @since        2025.06.12
- * @updated      2025.07.06
+ * @author    최준호
+ * @update    2025.07.21
  */
 
 'use client';
 import { useEffect, useMemo, useState, useRef, useCallback, ChangeEvent } from 'react';
+import styles from '@/app/(routes)/(private)/characters/new/_components/page.module.css';
 
-// css
-import styles from './page.module.css';
-
-// Library
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { PiMagicWandDuotone } from 'react-icons/pi';
 import { HiChevronDown } from 'react-icons/hi2';
 
-// components
-import CharacterPolicyNotice from './Drawer/CharacterPolicyNotice';
-import ContinueCreationModal from './Modal/ContinueCreationModal';
-import ProfileImageGeneratorDrawer from './Drawer/ProfileImageGeneratorDrawer';
+import CharacterPolicyNotice from '@/app/(routes)/(private)/characters/new/_components/Drawer/CharacterPolicyNotice';
+import ContinueCreationModal from '@/app/(routes)/(private)/characters/new/_components/Modal/ContinueCreationModal';
+import ProfileImageGeneratorDrawer from '@/app/(routes)/(private)/characters/new/_components/Drawer/ProfileImageGeneratorDrawer';
 // import VoiceSelectModal from './Modal/VoiceSelectModal';
 
-// utils
 import { deleteDraftFromDB, deleteImageFromDB } from '@/app/_utils/indexedDBUtils';
 
-// hooks
-import { useStep1 } from '../_hooks/useStep1';
-import { useRestoreCharacterDraft } from '../_hooks/useRestoreCharacterDraft';
+import { useStep1 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep1';
+import { useRestoreCharacterDraft } from '@/app/(routes)/(private)/characters/new/_hooks/useRestoreCharacterDraft';
+
+import { MBTI } from '@/app/_store/characters/types';
 import { useCharacterCreationStore } from '@/app/_store/characters';
 
 export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {

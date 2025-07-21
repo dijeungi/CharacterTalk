@@ -1,16 +1,22 @@
+/**
+ * @file         frontend/app/(routes)/(private)/characters/new/_components/Step2_Personality.tsx
+ * @desc         Component: 캐릭터 성격 및 말투 설정, 예시 대화 입력 포함한 Step2 UI 정의
+ *
+ * @author       최준호
+ * @update       2025.07.21
+ */
+
 'use client';
 import { useState } from 'react';
+import styles from '@/app/(routes)/(private)/characters/new/_components/page.module.css';
 
-// css
-import styles from './page.module.css';
-
-// lib
 import { HiChevronDown } from 'react-icons/hi2';
 
-// hooks
-import { useCheckUserStatus } from '../_hooks/useCheckUserStatus';
-import { useStep2 } from '../_hooks/useStep2';
-import { useStep1 } from '../_hooks/useStep1';
+import { useStep1 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep1';
+import { useStep2 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep2';
+import { useCheckUserStatus } from '@/app/(routes)/(private)/characters/new/_hooks/useCheckUserStatus';
+
+import { SpeechStyle } from '@/app/_store/characters/types';
 
 export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
   // 상태
