@@ -18,13 +18,16 @@ const secretKey = new TextEncoder().encode(process.env.JWT_SECRET!);
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
   const isAPI = request.nextUrl.pathname.startsWith('/api');
-  // 특정 api는 제외
+  // ignoredPaths = 로그인 토큰이 필요없는 api : 401 Free Pass
   const ignoredPaths = [
-    '/api/auth/callback/kakao',
-    '/api/auth/signup',
-    '/api/auth/temp-user',
+    // 회원가입 & 로그인 관련
     '/api/user',
+    '/api/auth/signup',
     '/api/auth/refresh',
+    '/api/auth/temp-user',
+    '/api/auth/callback/kakao',
+    // 메인화면
+    '/api/character',
   ];
 
   if (ignoredPaths.includes(request.nextUrl.pathname)) {
@@ -47,7 +50,7 @@ export async function middleware(request: NextRequest) {
     await jwtVerify(token, secretKey);
     return NextResponse.next();
   } catch (error) {
-    console.log('Access Token 검증 실패 (만료 또는 변조):', error.message);
+    console.log('Access Token 검증 실패 (만료 또는 변조)');
     if (isAPI) {
       return new NextResponse(JSON.stringify({ message: '세션이 만료되었습니다.' }), {
         status: 401,
