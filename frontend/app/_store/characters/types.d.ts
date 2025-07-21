@@ -1,6 +1,12 @@
-// frontend/app/_store/characters/types.ts
+/**
+ * @file      frontend/app/_store/characters/types.d.ts
+ * @desc      Type: 캐릭터 생성 상태 및 단계별 입력 값과 액션 타입 정의
+ *
+ * @author    최준호
+ * @update    2025.07.21
+ */
 
-interface CharacterCreationState {
+export interface CharacterCreationState {
   // Step1
   name: string;
   oneliner: string;
@@ -46,7 +52,7 @@ interface CharacterCreationState {
   setDirty: () => void;
   resetDirty: () => void;
   setCurrentStep: (step: number) => void;
-  resetAll: () => void;
+  resetAllData: () => void;
 }
 
 // MBTI 타입 정의 (16개 성격 유형)

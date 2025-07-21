@@ -1,14 +1,13 @@
 /**
- * @store        useSignupStore
- * @file         store/signup.ts
- * @desc         회원가입 단계에서 사용하는 입력값 전역 상태 관리
+ * @file      frontend/app/_store/signup/index.ts
+ * @desc      Store: 회원가입 추가정보 입력값을 위한 상태 및 액션 정의
  *
- * @author       최준호
- * @since        2025.06.23
- * @updated      2025.06.25
+ * @author    최준호
+ * @update    2025.07.21
  */
 
 import { create } from 'zustand';
+import { SignupFormActions, SignupFormState } from '@/app/_store/signup/types';
 
 // 회원가입 추가정보 - 초기 상태
 const initialState: SignupFormState = {
