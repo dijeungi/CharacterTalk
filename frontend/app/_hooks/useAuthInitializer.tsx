@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 
 import { useAuthStore } from '@/app/_store/auth';
 
-import { checkUserStatus, refreshAuthToken } from '../_apis/user';
+import { checkUserStatus, refreshAuthToken } from '@/app/_apis/user';
 
 export default function AuthInitializer() {
   const { login, logout } = useAuthStore();
