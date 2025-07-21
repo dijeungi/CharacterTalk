@@ -1,3 +1,11 @@
+/**
+ * @file      frontend/app/(routes)/(private)/characters/[code]/_types/index.d.ts
+ * @desc      Type: 캐릭터 전체 데이터 구조를 나타내는 인터페이스 정의
+ *
+ * @author    최준호
+ * @update    2025.07.21
+ */
+
 export interface Character {
   id: number;
   code: string;
