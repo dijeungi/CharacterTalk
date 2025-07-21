@@ -8,14 +8,14 @@
 
 'use client';
 
+import { useState } from 'react';
+import styles from '@/app/_components/main/GridSwiper.module.css';
+import GridSwiperSkeleton from '@/app/_components/main/GridSwiperSkeleton';
+
 import Link from 'next/link';
 import Image from 'next/image';
 
-import styles from './GridSwiper.module.css';
-
-import GridSwiperSkeleton from './GridSwiperSkeleton';
 import { useFetchCharactersQuery } from '@/app/_apis/character/_hooks';
-import { useState } from 'react';
 
 export default function GridSwiper() {
   const [sort, setSort] = useState('latest');

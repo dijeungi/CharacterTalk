@@ -8,20 +8,15 @@
 
 'use client';
 
-// default
 import { useState } from 'react';
+import styles from '@/app/_components/main/SubSwiper.module.css';
 
-// Swiper
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
 
-// css
-import styles from './SubSwiper.module.css';
-
-// data
-import slideData from '../../../public/data/SubSlide.json';
+import slideData from '@/public/data/SubSlide.json';
 
 export default function SubBanner() {
   // 상태 초기화

@@ -7,20 +7,14 @@
  */
 
 'use client';
+import { useMemo, useState } from 'react';
+import styles from '@/app/_components/main/MainSwiper.module.css';
 
-// swiper
 import 'swiper/css';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// css
-import styles from './MainSwiper.module.css';
-
-// default
-import { useMemo, useState } from 'react';
-
-// data
-import slideData from '../../../public/data/MainSlide.json';
+import slideData from '@/public/data/MainSlide.json';
 
 export default function MainSwiper() {
   // 초기 데이터 설정

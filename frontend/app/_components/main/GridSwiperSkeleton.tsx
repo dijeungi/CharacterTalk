@@ -8,7 +8,7 @@
 
 'use client';
 
-import styles from './GridSwiper.module.css';
+import styles from '@/app/_components/main/GridSwiper.module.css';
 
 import Skeleton from '@mui/material/Skeleton';
 
