@@ -49,12 +49,12 @@
   cursor: pointer;
 }
 
-.Icon {
+.icon {
   font-size: 1.75rem;
   color: black;
 }
 
-.Drawer_Icon {
+.drawerIcon {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;

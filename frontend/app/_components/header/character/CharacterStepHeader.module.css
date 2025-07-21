@@ -40,6 +40,12 @@
   vertical-align: middle;
 }
 
+.stepIcon {
+  margin-right: 0.5rem;
+  position: relative;
+  top: 2.5px;
+}
+
 .title {
   font-size: 1.25rem;
 }

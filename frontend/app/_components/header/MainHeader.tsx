@@ -1,13 +1,13 @@
-/*
-  Route: '/header/main'
-  Path: app/_components/header/MainHeader.tsx
-  Description:
-    - 이 페이지는 상단 네비게이션 바와 MUI 드로어 메뉴를 구현한 헤더 컴포넌트입니다.
-    - 메뉴 아이콘을 클릭하면 왼쪽에서 슬라이드되는 드로어 메뉴가 열리고 닫히며, 메뉴에는 홈, 추천, 랭킹, 캐릭터 제작 등 여러 기능을 제공합니다.
-    - Zustand를 연동하여 로그인 상태에 따라 UI가 동적으로 변경됩니다.
-*/
+/**
+ * @file      frontend/app/_components/header/MainHeader.tsx
+ * @desc      Component: 메인 헤더 UI 및 사이드 드로어 메뉴, 로그인 상태에 따른 동적 렌더링 처리
+ *
+ * @author    최준호
+ * @update    2025.07.20
+ */
 
 'use client';
+
 import { useEffect, useState } from 'react';
 import styles from '@/app/_components/header/MainHeader.module.css';
 
@@ -100,12 +100,12 @@ export default function MainHeader() {
           {isLoggedIn ? (
             // 로그인 후: 로그아웃 아이콘 버튼
             <IconButton onClick={handleLogout} aria-label="logout">
-              <FiLogOut className={styles.Icon} />
+              <FiLogOut className={styles.icon} />
             </IconButton>
           ) : (
             // 로그인 전: 로그인 페이지로 이동하는 아이콘 링크
             <Link href="/login">
-              <GoPerson className={styles.Icon} />
+              <GoPerson className={styles.icon} />
             </Link>
           )}
         </div>
@@ -132,7 +132,7 @@ export default function MainHeader() {
           <ListItemButton component={NextLink} href="/">
             <ListItemText
               primary={
-                <span className={styles.Drawer_Icon}>
+                <span className={styles.drawerIcon}>
                   <TbSmartHome />홈
                 </span>
               }
@@ -141,7 +141,7 @@ export default function MainHeader() {
           <ListItemButton component={NextLink} href="/">
             <ListItemText
               primary={
-                <span className={styles.Drawer_Icon}>
+                <span className={styles.drawerIcon}>
                   <HiOutlineFire />
                   추천
                 </span>
@@ -151,7 +151,7 @@ export default function MainHeader() {
           <ListItemButton component={NextLink} href="/ranking">
             <ListItemText
               primary={
-                <span className={styles.Drawer_Icon}>
+                <span className={styles.drawerIcon}>
                   <PiRanking />
                   랭킹
                 </span>
@@ -164,7 +164,7 @@ export default function MainHeader() {
           <ListItemButton component={NextLink} href="/characters">
             <ListItemText
               primary={
-                <span className={styles.Drawer_Icon}>
+                <span className={styles.drawerIcon}>
                   <CiSquarePlus />
                   캐릭터 제작
                 </span>
@@ -174,7 +174,7 @@ export default function MainHeader() {
           <ListItemButton>
             <ListItemText
               primary={
-                <span className={styles.Drawer_Icon}>
+                <span className={styles.drawerIcon}>
                   <HiOutlineChatAlt2 />
                   대화 내역
                 </span>
@@ -189,7 +189,7 @@ export default function MainHeader() {
             <ListItemButton component={NextLink} href="/my">
               <ListItemText
                 primary={
-                  <span className={styles.Drawer_Icon}>
+                  <span className={styles.drawerIcon}>
                     <GoPerson />
                     마이페이지
                   </span>
@@ -199,7 +199,7 @@ export default function MainHeader() {
             <ListItemButton onClick={handleLogout}>
               <ListItemText
                 primary={
-                  <span className={styles.Drawer_Icon}>
+                  <span className={styles.drawerIcon}>
                     <FiLogOut />
                     로그아웃
                   </span>
@@ -213,7 +213,7 @@ export default function MainHeader() {
             <ListItemButton component={NextLink} href="/login">
               <ListItemText
                 primary={
-                  <span className={styles.Drawer_Icon}>
+                  <span className={styles.drawerIcon}>
                     <FiLogIn />
                     로그인
                   </span>

@@ -1,6 +1,6 @@
 /**
  * @file      frontend/app/_components/header/character/CharacterStepHeader.tsx
- * @desc      Component: 캐릭터 생성 단계별 헤더 UI 및 임시저장 로직 정의
+ * @desc      Component: 캐릭터 생성 단계별 헤더 UI, 진행 상태 표시 및 임시저장 기능 정의
  *
  * @author    최준호
  * @update    2025.07.20
@@ -40,30 +40,28 @@ export default function CharacterStepHeader() {
       case 1:
         return (
           <>
-            <CgProfile style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }} />
+            <CgProfile className={styles.stepIcon} />
             프로필 설정
           </>
         );
       case 2:
         return (
           <>
-            <IoMdPaper style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }} />
+            <IoMdPaper className={styles.stepIcon} />
             성격 및 기본 정보
           </>
         );
       case 3:
         return (
           <>
-            <BiCommand style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }} />
+            <BiCommand className={styles.stepIcon} />
             시작 설정
           </>
         );
       case 4:
         return (
           <>
-            <IoSettingsOutline
-              style={{ marginRight: '0.5rem', position: 'relative', top: '2.5px' }}
-            />
+            <IoSettingsOutline className={styles.stepIcon} />
             마무리 확인
           </>
         );

@@ -1,6 +1,6 @@
 /**
  * @file      frontend/app/_components/header/HeaderController.tsx
- * @desc      Component: 캐릭터 생성 단계별 헤더 UI 및 임시저장 로직 정의
+ * @desc      Component: 경로 기반으로 헤더 종류를 동적으로 렌더링하는 컨트롤러 컴포넌트
  *
  * @author    최준호
  * @update    2025.07.20
