@@ -1,13 +1,15 @@
 /**
- * @hook         useRestoreCharacterDraft
- * @file         frontend/app/_hooks/characters/useRestoreCharacterDraft.ts
- * @desc         캐릭터 생성 임시저장 데이터를 복원하는 범용 훅
+ * @file         frontend/app/(routes)/(private)/characters/new/_hooks/useRestoreCharacterDraft.ts
+ * @desc         IndexedDB에 저장된 캐릭터 생성(step 1 ~ 4) 초안 데이터를 불러와 Zustand 스토어에 복원하는 훅
  *
  * @author       최준호
- * @since        2025.07.07
+ * @update       2025.07.24
  */
+
 import { useEffect, useState } from 'react';
+
 import { getDraftFromDB, getImageFromDB } from '@/app/_utils/indexedDBUtils';
+
 import { useCharacterCreationStore } from '@/app/_store/characters';
 
 export const useRestoreCharacterDraft = (

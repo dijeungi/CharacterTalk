@@ -1,4 +1,10 @@
-// frontend/app/_apis/_hooks/useCreateCharacterFormData.ts
+/**
+ * @file         frontend/app/(routes)/(private)/characters/new/_hooks/useCreateCharacterFormData.ts
+ * @desc         캐릭터 생성 데이터를 FormData 형태로 변환하여 서버 전송에 활용하는 커스텀 훅
+ *
+ * @author       최준호
+ * @update       2025.07.24
+ */
 
 import { useCharacterCreationStore } from '@/app/_store/characters';
 
