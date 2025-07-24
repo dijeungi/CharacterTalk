@@ -26,6 +26,15 @@ export interface CharacterCreationState {
   scenarioSituation: string;
   scenarioSuggestions: string[];
 
+  // Step 4
+  visibility: 'private' | 'public' | 'link';
+  userFilter: 'initial' | 'fixed';
+  genre: 'romance' | 'fantasy' | 'sci-fi' | 'daily' | 'historical' | 'other';
+  target: 'male' | 'female' | 'all';
+  conversationType: '1to1' | 'simulation';
+  hashtags: string[];
+  commentsEnabled: boolean;
+
   // 공통
   isDirty: boolean;
   currentStep: number;
@@ -48,6 +57,17 @@ export interface CharacterCreationState {
   setScenarioGreeting: (greeting: string) => void;
   setScenarioSituation: (situation: string) => void;
   updateScenarioSuggestion: (index: number, text: string) => void;
+
+  // Step 4 Actions
+  setVisibility: (visibility: 'private' | 'public' | 'link') => void;
+  setUserFilter: (filter: 'initial' | 'fixed') => void;
+  setGenre: (genre: 'romance' | 'fantasy' | 'sci-fi' | 'daily' | 'historical' | 'other') => void;
+  setTarget: (target: 'male' | 'female' | 'all') => void;
+  setConversationType: (type: '1to1' | 'simulation') => void;
+  setHashtags: (hashtags: string[]) => void;
+  addHashtag: (hashtag: string) => void;
+  removeHashtag: (hashtag: string) => void;
+  setCommentsEnabled: (enabled: boolean) => void;
 
   setDirty: () => void;
   resetDirty: () => void;
