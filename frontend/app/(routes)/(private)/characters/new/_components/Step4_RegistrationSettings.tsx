@@ -1,3 +1,11 @@
+/**
+ * @file         frontend/app/(routes)/(private)/characters/new/_components/Step4_RegistrationSettings.tsx
+ * @desc         Component: 캐릭터 등록 단계 최종 설정 화면 (공개 범위, 대화 방식, 해시태그, 댓글 설정 등 포함)
+ *
+ * @author       최준호
+ * @update       2025.07.22
+ */
+
 'use client';
 import { useState } from 'react';
 import styles from '@/app/(routes)/(private)/characters/new/_components/page.module.css';
