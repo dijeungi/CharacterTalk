@@ -38,6 +38,7 @@ export interface CharacterCreationState {
   // 공통
   isDirty: boolean;
   currentStep: number;
+  creationCompleted: boolean;
 
   // Actions
   setName: (name: string) => void;
@@ -47,6 +48,7 @@ export interface CharacterCreationState {
 
   setTitle: (title: string) => void;
   setPromptDetail: (text: string) => void;
+  setExampleDialogs: (dialogs: { user: string; ai: string }[]) => void;
   addExampleDialog: (dialog: { user: string; ai: string }) => void;
   updateExampleDialog: (index: number, dialog: { user: string; ai: string }) => void;
   removeExampleDialog: (index: number) => void;
@@ -56,9 +58,9 @@ export interface CharacterCreationState {
   setScenarioTitle: (title: string) => void;
   setScenarioGreeting: (greeting: string) => void;
   setScenarioSituation: (situation: string) => void;
+  setScenarioSuggestions: (suggestions: string[]) => void;
   updateScenarioSuggestion: (index: number, text: string) => void;
 
-  // Step 4 Actions
   setVisibility: (visibility: 'private' | 'public' | 'link') => void;
   setUserFilter: (filter: 'initial' | 'fixed') => void;
   setGenre: (genre: 'romance' | 'fantasy' | 'sci-fi' | 'daily' | 'historical' | 'other') => void;
@@ -72,6 +74,7 @@ export interface CharacterCreationState {
   setDirty: () => void;
   resetDirty: () => void;
   setCurrentStep: (step: number) => void;
+  setCreationCompleted: (status: boolean) => void;
   resetAllData: () => void;
 }
 
