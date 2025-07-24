@@ -14,13 +14,13 @@ import { HiChevronDown } from 'react-icons/hi2';
 
 import { useStep1 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep1';
 import { useStep2 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep2';
-import { useCheckUserStatus } from '@/app/(routes)/(private)/characters/new/_hooks/useCheckUserStatus';
+import { useCheckUserStatusQuery } from '@/app/_apis/user/_hooks/index';
 
 import { SpeechStyle } from '@/app/_store/characters/types';
 
 export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
   // 상태
-  const { data } = useCheckUserStatus();
+  const { data } = useCheckUserStatusQuery();
   const userName = data?.user?.name || '사용자';
   const [showAdvanced, setShowAdvanced] = useState(false);
 
