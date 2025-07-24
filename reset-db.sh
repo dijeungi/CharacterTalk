@@ -24,11 +24,9 @@ echo "-> PostgreSQL 서버 연결 완료."
 # --- 데이터베이스 초기화 로직 수정 ---
 echo "2. 데이터베이스 '$DB_NAME'를 초기화합니다..."
 
-# --- ✨ 추가된 부분 시작 ---
 # 기존 데이터베이스에 연결된 모든 세션을 강제 종료
 echo "-> (1/4) 기존 '$DB_NAME' 데이터베이스의 모든 연결을 종료합니다."
 psql -U "$DB_USER" -d postgres -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$DB_NAME' AND pid <> pg_backend_pid();" > /dev/null
-# --- ✨ 추가된 부분 끝 ---
 
 # 기존 데이터베이스 삭제
 echo "-> (2/4) 기존 '$DB_NAME' 데이터베이스를 삭제합니다."
@@ -39,7 +37,6 @@ echo "-> (3/4) 새 '$DB_NAME' 데이터베이스를 생성합니다."
 createdb -U "$DB_USER" "$DB_NAME"
 
 echo "-> (4/4) 데이터베이스 초기화 완료."
-# ---
 
 if [ ! -f "$SCHEMA_FILE" ]; then
   echo "[!] 오류: 스키마 파일 '$SCHEMA_FILE'을 찾을 수 없습니다."
@@ -47,7 +44,7 @@ if [ ! -f "$SCHEMA_FILE" ]; then
 fi
 
 echo "4. 스키마 파일 '$SCHEMA_FILE'을 실행하여 테이블을 생성합니다..."
-psql -U "$DB_USER" -d "$DB_NAME" -f "$SCHEMA_FILE" > /dev/null # 성공 메시지만 보도록 출력 숨김
+psql -U "$DB_USER" -d "$DB_NAME" -f "$SCHEMA_FILE" > /dev/null
 echo "-> 스키마 적용 완료."
 
 echo ""
