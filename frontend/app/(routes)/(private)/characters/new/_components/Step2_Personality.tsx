@@ -3,7 +3,7 @@
  * @desc         Component: 캐릭터 성격 및 말투 설정, 예시 대화 입력 포함한 Step2 UI 정의
  *
  * @author       최준호
- * @update       2025.07.21
+ * @update       2025.07.25
  */
 
 'use client';
@@ -18,7 +18,9 @@ import { useCheckUserStatusQuery } from '@/app/_apis/user/_hooks/index';
 
 import { SpeechStyle } from '@/app/_store/characters/types';
 
-export default function Step2_Personality({ onPrev, onNext }: Step2Props) {
+import { StepComponentProps } from '@/app/(routes)/(private)/characters/new/_types';
+
+export default function Step2_Personality({ onPrev, onNext }: StepComponentProps) {
   // 상태
   const { data } = useCheckUserStatusQuery();
   const userName = data?.user?.name || '사용자';

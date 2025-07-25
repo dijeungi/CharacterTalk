@@ -1,44 +1,36 @@
 // Step
 
-interface Step1Props {
+export interface Step1Props {
   onNext: () => void;
+  // muti-form으로 이전 버튼 시 /characters(이전페이지) 로 다시 이동시켜야하기 때문에
   fromStep2: boolean;
 }
 
-interface Step2Props {
+export interface StepComponentProps {
   onPrev: () => void;
   onNext: () => void;
 }
 
-interface Step3Props {
-  onPrev: () => void;
-  onNext: () => void;
-}
-
-// UnsavedChangesModal.tsx
-interface UnsavedChangesModalProps {
+export interface UnsavedChangesModalProps {
   onClose: () => void;
   onExit: () => void;
 }
 
 // ContinueCreationModal.tsx
-interface ContinueCreationModalProps {
+export interface ContinueCreationModalProps {
   open: boolean;
   onNew: () => void;
   onContinue: () => void;
 }
-
-// Drawer
-
 // ProfileImageGeneratorDrawer.tsx
-interface ProfileImageGeneratorDrawerProps {
+export interface ProfileImageGeneratorDrawerProps {
   open: boolean;
   onClose: () => void;
   onImageGenerated: (imageUrl: string) => void;
 }
 
 // HashtagDrawer.tsx
-interface HashtagDrawerProps {
+export interface HashtagDrawerProps {
   open: boolean;
   onClose: () => void;
   onAddHashtag: (hashtag: string) => void;

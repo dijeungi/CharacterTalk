@@ -2,8 +2,8 @@
  * @file         frontend/app/(routes)/(private)/characters/new/_components/Step1_Profile.tsx
  * @desc         Component: 캐릭터 기본 정보(프로필 이미지, 이름, 설명, MBTI) 입력 및 임시 저장 감지 처리 포함한 Step1 UI 정의
  *
- * @author    최준호
- * @update    2025.07.21
+ * @author       최준호
+ * @update       2025.07.25
  */
 
 'use client';
@@ -26,6 +26,8 @@ import { useRestoreCharacterDraft } from '@/app/(routes)/(private)/characters/ne
 
 import { MBTI } from '@/app/_store/characters/types';
 import { useCharacterCreationStore } from '@/app/_store/characters';
+
+import { Step1Props } from '@/app/(routes)/(private)/characters/new/_types';
 
 export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   // 상태 초기화

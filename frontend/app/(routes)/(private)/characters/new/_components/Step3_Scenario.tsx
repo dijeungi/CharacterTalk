@@ -3,7 +3,7 @@
  * @desc         Component: 캐릭터 시작 시나리오 설정 및 고급 추천 답변 입력을 위한 Step3 UI 정의
  *
  * @author       최준호
- * @update       2025.07.21
+ * @update       2025.07.25
  */
 
 'use client';
@@ -14,7 +14,9 @@ import { HiChevronDown } from 'react-icons/hi2';
 
 import { useStep3 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep3';
 
-export default function Step3_Scenario({ onPrev, onNext }: Step3Props) {
+import { StepComponentProps } from '@/app/(routes)/(private)/characters/new/_types';
+
+export default function Step3_Scenario({ onPrev, onNext }: StepComponentProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
   // store
   const {

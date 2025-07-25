@@ -3,7 +3,7 @@
  * @desc         Component: 캐릭터 등록 단계 최종 설정 화면 (공개 범위, 대화 방식, 해시태그, 댓글 설정 등 포함)
  *
  * @author       최준호
- * @update       2025.07.22
+ * @update       2025.07.25
  */
 
 'use client';
@@ -15,7 +15,9 @@ import { HiChevronDown } from 'react-icons/hi';
 import { useStep4 } from '@/app/(routes)/(private)/characters/new/_hooks/useStep4';
 import HashtagDrawer from '@/app/(routes)/(private)/characters/new/_components/Drawer/HashtagDrawer';
 
-export default function Step4_RegistrationSettings({ onPrev, onNext }: any) {
+import { StepComponentProps } from '@/app/(routes)/(private)/characters/new/_types';
+
+export default function Step4_RegistrationSettings({ onPrev, onNext }: StepComponentProps) {
   // Store에서 상태 및 함수 가져오기
   const {
     visibility,
