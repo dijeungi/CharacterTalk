@@ -53,7 +53,7 @@ export interface GenerateImageRequest {
 
 // [Response] : AI 이미지 생성 API의 성공 응답 타입
 export interface GenerateImageResponse {
-  imageUrl: string;
+  image_urls: string[];
 }
 
 // [Response] : 캐릭터 생성 API의 성공 응답 타입

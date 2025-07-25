@@ -275,7 +275,7 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
                 open={imageGeneratorDrawerOpen}
                 onClose={() => setImageGeneratorDrawerOpen(false)}
                 // R2 스토리지 URL(Blob) 를 File 객체로 변환 시키며 zustand에 저장합니다.
-                onImageGenerated={async imageUrl => {
+                onImageGenerated={async (imageUrl: string) => {
                   const res = await fetch(imageUrl);
                   const blob = await res.blob();
                   const file = new File([blob], 'generated.png', { type: blob.type });

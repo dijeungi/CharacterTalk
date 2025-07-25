@@ -68,7 +68,7 @@ export default function ProfileImageGeneratorDrawer({
 
     mutate(payload, {
       onSuccess: data => {
-        const imageUrl = data.imageUrl[0];
+        const imageUrl = data.image_urls[0];
 
         if (imageUrl) {
           onImageGenerated(imageUrl);
