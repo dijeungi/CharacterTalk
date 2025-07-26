@@ -58,7 +58,7 @@ export interface GenerateImageResponse {
 
 // [Response] : 캐릭터 생성 API의 성공 응답 타입
 export interface CreateCharacterResponse {
-  code: string;
+  characterCode: string;
   message: string;
 }
 
