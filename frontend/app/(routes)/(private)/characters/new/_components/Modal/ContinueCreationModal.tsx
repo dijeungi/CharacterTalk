@@ -8,6 +8,7 @@
 
 'use client';
 import styles from '@/app/(routes)/(private)/characters/new/_components/Modal/Modal.module.css';
+import { ContinueCreationModalProps } from '@/app/(routes)/(private)/characters/new/_types';
 
 export default function ContinueCreationModal({
   open,
