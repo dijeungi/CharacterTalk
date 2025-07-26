@@ -1,28 +1,9 @@
 /**
- * @route        /characters/new
  * @file         frontend/app/(routes)/(private)/characters/new/page.tsx
- * @component    CharactersNewPage
- * @desc         캐릭터 생성 단계별 입력 폼 페이지
- *
- * @layout       default
- * @access       private
- * @props        없음
- *
- * @features
- *  - 단계별 입력 폼 구성 (현재 Step1만 연결됨)
- *  - MUI LinearProgress로 진행률 표시
- *
- * @dependencies
- *  - React (useState)
- *  - MUI LinearProgress
- *
- * @todo
- *  - Step2, Step3 컴포넌트 연결
- *  - 진행 상태 전역 관리로 분리 고려
+ * @desc         캐릭터 생성 절차를 단계별로 진행하고 최종 등록까지 처리하는 페이지 컴포넌트
  *
  * @author       최준호
- * @since        2025.06.12
- * @updated      2025.07.09
+ * @update       2025.07.26
  */
 
 'use client';
