@@ -8,8 +8,9 @@
 
 'use client';
 import styles from '@/app/(routes)/(private)/characters/new/_components/Modal/Modal.module.css';
+import { UnsavedChangesModalProps } from '@/app/(routes)/(private)/characters/new/_types';
 
-const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({ onClose, onExit }) => {
+const UnsavedChangesModal = ({ onClose, onExit }: UnsavedChangesModalProps) => {
   return (
     <div className={styles.container}>
       <div
