@@ -1,5 +1,10 @@
-// frontend/middleware.ts
-// api 및
+/**
+ * @file         frontend/middleware.ts
+ * @desc         middleware : 인증 토큰 검사 및 예외 처리 로직 포함
+ *
+ * @author       최준호
+ * @update       2025.07.24
+ */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
@@ -12,21 +17,21 @@ export const config = {
   matcher: ['/api/:function*', '/characters/:path*'],
 };
 
-// JWT 서명 검증을 위한 비밀 키
 const secretKey = new TextEncoder().encode(process.env.JWT_SECRET!);
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
   const isAPI = request.nextUrl.pathname.startsWith('/api');
-  // ignoredPaths = 로그인 토큰이 필요없는 api : 401 Free Pass
+
+  /**
+   * ignoredPaths = 로그인 토큰이 필요없는 api : 401 Free Pass
+   */
   const ignoredPaths = [
-    // 회원가입 & 로그인 관련
     '/api/user',
     '/api/auth/signup',
     '/api/auth/refresh',
     '/api/auth/temp-user',
     '/api/auth/callback/kakao',
-    // 메인화면
     '/api/character',
   ];
 
@@ -45,7 +50,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 토큰 서명 및 만료 시간 검증 Try 구문
   try {
     await jwtVerify(token, secretKey);
     return NextResponse.next();

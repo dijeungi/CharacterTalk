@@ -1,6 +1,6 @@
 /**
- * @file
- * @desc
+ * @file         frontend/app/(routes)/(public)/signup/_types/index.d.ts
+ * @desc         회원가입 폼들의 타입
  *
  * @author       최준호
  * @update       2025.07.27
