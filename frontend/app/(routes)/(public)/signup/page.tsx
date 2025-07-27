@@ -11,28 +11,28 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 // css
-import styles from './page.module.css';
+import styles from '@/app/(routes)/(public)/signup/page.module.css';
 
 // modules
 import { ConfirmationResult } from 'firebase/auth';
 
 // custom hooks, utils
-import { useFirebaseAuth } from './_hooks/useFirebaseAuth';
-import { useSignupUser } from './_hooks/useSignupUser';
-import { useTempUser } from './_hooks/useTempUser';
+import { useFirebaseAuth } from '@/app/(routes)/(public)/signup/_hooks/useFirebaseAuth';
+import { useSignupUser } from '@/app/(routes)/(public)/signup/_hooks/useSignupUser';
+import { useTempUser } from '@/app/(routes)/(public)/signup/_hooks/useTempUser';
 import { Toast } from '@/app/_utils/Swal';
 
 // store
 import { useSignupStore } from '@/app/_store/signup/index';
 
 // Components
-import FullNameInput from './_components/FullNameInput';
-import ResidentInput from './_components/ResidentInput';
-import PhoneInput from './_components/PhoneInput';
-import VerifyCodeInput from './_components/VerifyCodeInput';
+import FullNameInput from '@/app/(routes)/(public)/signup/_components/FullNameInput';
+import ResidentInput from '@/app/(routes)/(public)/signup/_components/ResidentInput';
+import PhoneInput from '@/app/(routes)/(public)/signup/_components/PhoneInput';
+import VerifyCodeInput from '@/app/(routes)/(public)/signup/_components/VerifyCodeInput';
 
 // types
-import { SignupPayload } from './_types/index';
+import { SignupPayload } from '@/app/(routes)/(public)/signup/_types/index';
 
 export default function SignUpPage() {
   // 상태 관리
