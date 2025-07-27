@@ -1,28 +1,9 @@
 /**
- * @route        /characters
  * @file         frontend/app/(routes)/(private)/characters/page.tsx
- * @component    CharacterPage
- * @desc         사용자 본인의 캐릭터 목록을 보여주는 페이지
- *
- * @layout       default
- * @access       private
- * @props        없음
- *
- * @features
- *  - 내 캐릭터 리스트 UI 렌더링
- *  - 캐릭터 생성 버튼 클릭 시 생성 페이지 이동
- *
- * @dependencies
- *  - next/navigation (router)
- *  - CSS Module (CharacterPage.module.css)
- *
- * @todo
- *  - 서버에서 캐릭터 목록 받아오는 기능 추가
- *  - 리스트 없을 때 Empty UI 구성
+ * @desc         내 캐릭터 목록을 보여주고 새 캐릭터 생성으로 이동하는 페이지 컴포넌트
  *
  * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.24
+ * @update       2025.07.27
  */
 
 'use client';
@@ -34,7 +15,6 @@ import styles from './CharacterPage.module.css';
 export default function CharacterPage() {
   const router = useRouter();
 
-  // route
   const handleCreate = () => {
     router.push('/characters/new');
   };

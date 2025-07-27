@@ -1,21 +1,9 @@
 /**
- * @hook         useSignupUser
  * @file         frontend/app/(routes)/(public)/signup/_hooks/useSignupUser.tsx
- * @desc         회원가입 API 요청 훅
- *
- * @usage        회원가입 버튼 클릭 시 호출
- *
- * @features
- *  - 서버에 POST 요청
- *  - 성공 시 홈 리디렉션
- *  - 실패 시 토스트 알림
- *
- * @dependencies
- *  - react-query, axiosInstance, Toast, useRouter
+ * @desc         회원가입 API 요청을 처리하고, 성공 시 메인 페이지로 이동하며, 실패 시 에러 메시지를 사용자에게 표시합니다.
  *
  * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.23
+ * @update       2025.07.27
  */
 
 'use client';

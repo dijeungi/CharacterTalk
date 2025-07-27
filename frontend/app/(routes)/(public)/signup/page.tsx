@@ -1,31 +1,9 @@
 /**
- * @route        /signup
  * @file         frontend/app/(routes)/(public)/signup/page.tsx
- * @component    SignUpPage
- * @desc         소셜 로그인 이후 회원가입 정보를 입력받는 폼 구성 페이지
- *
- * @layout       default
- * @access       public
- * @props        -
- *
- * @features
- *  - 소셜 로그인으로 받은 닉네임 자동 입력
- *  - 이름, 주민번호, 휴대폰번호, 인증번호 순 입력
- *  - Firebase 인증 기반 휴대폰 인증
- *  - Zustand로 사용자 입력 상태 관리
- *  - 인증 완료 시 서버에 회원가입 요청
- *
- * @dependencies
- *  - Firebase Auth (휴대폰 인증)
- *  - Zustand (입력 상태 관리)
- *  - React Toast (사용자 알림)
- *
- * @todo
- *  - 전화번호 중복 확인 기능 추가
+ * @desc         회원가입 Page
  *
  * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.23
+ * @update       2025.07.27
  */
 
 'use client';

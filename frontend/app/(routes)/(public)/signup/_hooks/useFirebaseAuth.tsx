@@ -1,32 +1,18 @@
 /**
- * @hook         useFirebaseAuth
  * @file         frontend/app/(routes)/(public)/signup/_hooks/useFirebaseAuth.tsx
- * @desc         Firebase 휴대폰 인증 및 reCAPTCHA 초기화 훅
- *
- * @usage        인증번호 요청 및 확인 로직에서 호출
- *
- * @features
- *  - invisible reCAPTCHA 초기화
- *  - 휴대폰 번호로 인증번호 전송
- *  - confirmation 상태 전달
- *
- * @dependencies
- *  - firebase/auth, Toast, useEffect
+ * @desc         Firebase 인증을 위한 reCAPTCHA 초기화와 SMS 인증번호 요청
  *
  * @author       최준호
- * @since        2025.06.20
- * @updated      2025.06.23
+ * @update       2025.07.27
  */
 
 import { useEffect } from 'react';
 
 // Firebase Authentication Module
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
-
 // config
-import { auth } from '@/app/_firebase/config';
-
-// hooks & utils
+import { auth } from '@/app/_firebase';
+// utils
 import { Toast } from '@/app/_utils/Swal';
 
 export function useFirebaseAuth(setConfirmation: (c: ConfirmationResult) => void) {

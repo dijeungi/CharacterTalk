@@ -1,4 +1,11 @@
-// components
+/**
+ * @file
+ * @desc
+ *
+ * @author       최준호
+ * @update       2025.07.27
+ */
+
 export interface BaseInputProps {
   editable?: boolean;
   onChangeOnly?: boolean;
@@ -9,7 +16,7 @@ export interface VerifyCodeInputProps extends BaseInputProps {
 }
 
 // custom hooks
-interface TempUserData {
+export interface TempUserData {
   email: string;
   oauth: string;
   name: string;

@@ -1,27 +1,9 @@
 /**
- * @route        components
  * @file         frontend/app/(routes)/(public)/signup/_components/ResidentInput.tsx
- * @component    ResidentInput
- * @desc         주민등록번호 입력을 처리하는 컴포넌트
+ * @desc         Component: 회원가입 폼 - 주민번호 입력 필드
  *
- * @layout       Signup Layout
- * @access       public
- * @props        editable?: boolean (입력 가능 여부 제어)
- *
- * @features
- *  - 앞자리 6자리 자동 포커스 전환
- *  - 뒷자리 마스킹 처리
- *  - Zustand 상태 반영
- *
- * @dependencies
- *  - @/app/store/signupStore
- *  - @/app/types/signup
- *  - @/app/_utils/ (없다면 masking 관련 유틸 고려)
- *
- * @todo         뒤 6자리 보안 처리 강화
  * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.23
+ * @update       2025.07.27
  */
 
 'use client';

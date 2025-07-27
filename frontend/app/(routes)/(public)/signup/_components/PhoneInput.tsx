@@ -1,26 +1,9 @@
 /**
- * @route        components
  * @file         frontend/app/(routes)/(public)/signup/_components/PhoneInput.tsx
- * @component    PhoneInput
- * @desc         회원가입 단계에서 휴대폰 번호 입력받는 인풋 컴포넌트
+ * @desc         Component: 회원가입 폼 - 휴대폰 입력 필드
  *
- * @layout       Signup Layout
- * @access       public
- * @props        onChangeOnly?: boolean (입력 제한 여부)
- *
- * @features
- *  - 휴대폰 번호 자동 포맷팅
- *  - Zustand 상태 반영
- *
- * @dependencies
- *  - @/app/store/signupStore
- *  - @/app/_utils/formatters
- *  - @/app/types/signup
- *
- * @todo         추후 국가번호 입력 기능 추가
  * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.23
+ * @update       2025.07.27
  */
 
 'use client';

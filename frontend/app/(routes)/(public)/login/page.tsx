@@ -1,26 +1,9 @@
 /**
- * @route        /login
  * @file         frontend/app/(routes)/(public)/login/page.tsx
- * @component    LoginPage
- * @desc         카카오/구글 소셜 로그인 기능을 제공하는 로그인 페이지 컴포넌트
+ * @desc         로그인 페이지로, 카카오/구글 소셜 로그인 버튼을 제공하며 쿼리 파라미터에 따라 토스트 알림을 띄우고 로그인 후 리다이렉트를 처리합니다.
  *
- * @layout       default
- * @access       public
- * @props        없음 (페이지 단위 컴포넌트)
- *
- * @features
- *  - 카카오/구글 OAuth 로그인 연동
- *  - 로그인 실패 시 reason 쿼리값에 따라 알림 노출
- *  - 로그인 없이 홈으로 이동 가능 (둘러보기 버튼)
- *
- * @dependencies
- *  - next/navigation: useSearchParams 사용
- *  - @/_utils/Swal: 커스텀 토스트 알림
- *
- * @todo         추후 기능: 구글 소셜 로그인 api 연결
  * @author       최준호
- * @since        2025.06.12
- * @updated      2025.06.22
+ * @update       2025.07.27
  */
 
 'use client';
@@ -29,7 +12,7 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 // css
-import styles from './page.module.css';
+import styles from '@/app/(routes)/(public)/login/page.module.css';
 
 // library
 import { Toast } from '@/app/_utils/Swal';
