@@ -1,16 +1,17 @@
 /**
- * @swagger
- * /api/auth/logout:
- *   post:
- *     summary: 사용자 로그아웃
- *     description: 리프레시 토큰을 검증하고 서버와 클라이언트의 토큰을 삭제합니다.
- *     responses:
- *       200:
- *         description: 로그아웃 완료
- *       401:
- *         description: 토큰 없음 또는 무효
- *       500:
- *         description: 서버 오류
+ * @file         frontend/app/api/auth/refresh/logout/route.ts
+ * @desc         사용자 로그아웃
+ *
+ * @summary      사용자 로그아웃
+ * @description  리프레시 토큰을 검증하고 서버와 클라이언트의 토큰을 삭제합니다.
+ * @param        {NextRequest} req - 들어오는 요청 객체.
+ * @responses
+ *   200: 로그아웃 완료
+ *   401: 토큰 없음 또는 무효
+ *   500: 서버 오류
+ *
+ * @author       최준호
+ * @update       2025.07.28
  */
 
 import { NextRequest, NextResponse } from 'next/server';

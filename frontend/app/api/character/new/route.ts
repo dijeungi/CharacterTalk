@@ -1,11 +1,30 @@
+/**
+ * @file         frontend/app/api/character/new/route.ts
+ * @desc         새로운 캐릭터 생성을 위한 API 라우트
+ *
+ * @summary      새로운 캐릭터 생성
+ * @description  FormData로 받은 캐릭터 데이터와 프로필 이미지를 사용하여 새로운 캐릭터를 생성합니다.
+ * @param        {NextRequest} request - 들어오는 요청 객체. FormData는 'characterData'와 'profileImage'를 포함합니다.
+ * @responses
+ *   201: 캐릭터가 성공적으로 생성되었습니다.
+ *   400: 캐릭터 데이터가 없거나, 데이터 형식이 올바르지 않거나, 잘못된 JSON 형식일 경우 에러를 반환합니다.
+ *   401: 인증되지 않은 사용자일 경우 에러를 반환합니다.
+ *   500: 서버 내부 오류 또는 파일 업로드 중 오류가 발생한 경우 에러를 반환합니다.
+ *
+ * @author       최준호
+ * @update       2025.07.28
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
+
 import { z } from 'zod';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
-import { v4 as uuidv4 } from 'uuid';
-import { pool } from '@/app/_lib/PostgreSQL';
-// 1단계에서 만든 커스텀 인증 함수를 import 합니다.
+
 import { getUserIdFromRequest } from '@/app/_lib/auth';
 import { s3Client } from '@/app/_config/s3Client';
+
+import { v4 as uuidv4 } from 'uuid';
+import { pool } from '@/app/_lib/PostgreSQL';
 
 // Zod를 사용한 유효성 검사 스키마
 const characterSchema = z.object({
@@ -35,9 +54,10 @@ type CharacterData = z.infer<typeof characterSchema>;
 export async function POST(request: NextRequest) {
   let creatorId: number;
   try {
-    // --- 1. 인증 확인 ---
-    // API의 가장 첫 부분에서 토큰을 검증하고 사용자 ID를 가져옵니다.
-    // 실패하면 여기서 바로 401 에러를 반환하고 종료됩니다.
+    /**
+     * API의 가장 첫 부분에서 토큰을 검증하고 사용자 ID를 가져옵니다.
+     * 실패하면 여기서 바로 401 에러를 반환하고 종료됩니다.
+     */
     creatorId = await getUserIdFromRequest(request);
   } catch (error: any) {
     return NextResponse.json(
@@ -49,7 +69,9 @@ export async function POST(request: NextRequest) {
   const client = await pool.connect();
 
   try {
-    // --- 2. FormData 파싱 ---
+    /**
+     * FormData 파싱
+     */
     const formData = await request.formData();
     const characterDataString = formData.get('characterData') as string;
     const profileImageFile = formData.get('profileImage') as File | null;
@@ -58,7 +80,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '캐릭터 데이터가 없습니다.' }, { status: 400 });
     }
 
-    // --- 3. 데이터 유효성 검사 ---
+    /**
+     * 데이터 유효성 검사
+     */
     let characterData: CharacterData;
     try {
       const parsedData = JSON.parse(characterDataString);
@@ -74,12 +98,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '잘못된 JSON 형식입니다.' }, { status: 400 });
     }
 
-    // --- 4. 이미지 업로드 처리 ---
+    /**
+     * 이미지 업로드 처리
+     */
     let imageKeyForDB: string | null = null;
     if (profileImageFile) {
       try {
         const buffer = Buffer.from(await profileImageFile.arrayBuffer());
-        // R2에 저장될 고유한 파일 이름(Key) 생성
         const imageKey = `characters/${uuidv4()}-${profileImageFile.name.replace(/\s+/g, '-')}`;
 
         const command = new PutObjectCommand({
@@ -89,8 +114,6 @@ export async function POST(request: NextRequest) {
           ContentType: profileImageFile.type,
         });
         await s3Client.send(command);
-
-        // 데이터베이스에는 전체 URL이 아닌, 이 파일 이름(Key)을 저장합니다.
         imageKeyForDB = imageKey;
       } catch (error) {
         console.error('R2 파일 업로드 실패:', error);
@@ -98,7 +121,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // --- 5. 데이터베이스 트랜잭션 ---
+    /**
+     * 데이터베이스 트랜잭션
+     */
     await client.query('BEGIN');
 
     const characterInsertQuery = `
@@ -111,7 +136,7 @@ export async function POST(request: NextRequest) {
       RETURNING id, code;
     `;
     const characterValues = [
-      creatorId, // 인증을 통해 가져온 creatorId를 사용합니다.
+      creatorId,
       characterData.name,
       imageKeyForDB,
       characterData.oneliner,

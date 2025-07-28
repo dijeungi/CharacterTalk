@@ -1,6 +1,22 @@
-// frontend/app/api/auth/signup/route.ts
+/**
+ * @file         frontend/app/api/auth/signup/route.ts
+ * @desc         신규 사용자의 회원가입을 처리하는 API
+ *
+ * @summary      신규 회원가입
+ * @description  사용자로부터 받은 정보를 검증하고, 데이터베이스에 새로운 사용자를 추가합니다.
+ * @param        {NextRequest} req - 들어오는 요청 객체. body에 사용자 정보를 포함합니다.
+ * @responses
+ *   201: 회원가입에 성공했습니다.
+ *   400: 필수 값이 누락되었거나 본인인증이 완료되지 않았습니다.
+ *   409: 이미 가입된 이메일입니다.
+ *   500: 서버 내부 오류가 발생했습니다.
+ *
+ * @author       최준호
+ * @update       2025.07.28
+ */
 
 import { NextRequest, NextResponse } from 'next/server';
+
 import { pool } from '@/app/_lib/PostgreSQL';
 
 export async function POST(req: NextRequest) {

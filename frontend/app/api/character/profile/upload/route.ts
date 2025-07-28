@@ -1,6 +1,23 @@
+/**
+ * @file         frontend/app/api/character/profile/upload/route.ts
+ * @desc         캐릭터 프로필 이미지를 업로드하고 영구 URL을 반환하는 API
+ *
+ * @summary      프로필 이미지 업로드
+ * @description  클라이언트로부터 받은 이미지 파일을 R2 버킷에 업로드하고, 해당 파일에 접근할 수 있는 영구 URL을 반환합니다.
+ * @param        {Request} request - 들어오는 요청 객체. FormData는 'image' 필드를 포함해야 합니다.
+ * @responses
+ *   200: 이미지 업로드 및 URL 생성을 성공적으로 완료했습니다.
+ *   400: 요청에 이미지 파일이 포함되지 않았습니다.
+ *   500: 이미지 업로드 중 서버에서 오류가 발생했습니다.
+ *
+ * @author       최준호
+ * @update       2025.07.28
+ */
+
+import { NextResponse } from 'next/server';
+
 import { s3Client } from '@/app/_config/s3Client';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
-import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {

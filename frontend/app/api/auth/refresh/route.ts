@@ -1,6 +1,23 @@
+/**
+ * @file         frontend/app/api/auth/refresh/route.ts
+ * @desc         리프레시 토큰을 사용하여 액세스 토큰을 갱신하는 API
+ *
+ * @summary      액세스 토큰 갱신
+ * @description  리프레시 토큰을 검증하고, 새로운 액세스 토큰과 리프레시 토큰을 발급합니다.
+ * @param        {NextRequest} req - 들어오는 요청 객체. 'refresh_token' 쿠키를 포함합니다.
+ * @responses
+ *   200: 토큰이 성공적으로 갱신되었습니다.
+ *   401: 리프레시 토큰이 없거나, 유효하지 않거나, 비정상적인 접근일 경우 에러를 반환합니다.
+ *   500: 서버 내부 오류가 발생한 경우 에러를 반환합니다.
+ *
+ * @author       최준호
+ * @update       2025.07.28
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { pool } from '@/app/_lib/PostgreSQL';
+import { DecodedToken } from '@/app/_types/api';
 
 export async function POST(req: NextRequest) {
   const refreshToken = req.cookies.get('refresh_token')?.value;

@@ -1,3 +1,23 @@
+/**
+ * @file         frontend/app/api/character/route.ts
+ * @desc         캐릭터 목록을 조회하는 API
+ *
+ * @summary      캐릭터 목록 조회
+ * @description  페이지네이션, 검색, 필터링, 정렬 기능을 포함하여 캐릭터 목록을 조회합니다.
+ * @param        {NextRequest} request - 들어오는 요청 객체. 다양한 쿼리 파라미터를 포함할 수 있습니다.
+ * @query        {string} [page='1'] - 조회할 페이지 번호
+ * @query        {string} [limit='12'] - 페이지 당 캐릭터 수
+ * @query        {string} [keyword] - 검색어 (캐릭터 이름 또는 한 줄 소개)
+ * @query        {string} [genre] - 필터링할 장르
+ * @query        {string} [target] - 필터링할 타겟
+ * @query        {string} [sort='latest'] - 정렬 기준 ('latest' 또는 'popular')
+ * @responses
+ *   200: 캐릭터 목록과 페이지네이션 정보를 성공적으로 조회했습니다.
+ *   500: 서버 내부 오류가 발생했습니다.
+ *
+ * @author       최준호
+ * @update       2025.07.28
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { pool } from '@/app/_lib/PostgreSQL';
 import { s3Client } from '@/app/_config/s3Client';
