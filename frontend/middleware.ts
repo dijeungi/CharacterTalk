@@ -31,6 +31,7 @@ export async function middleware(request: NextRequest) {
     '/api/auth/temp-user',
     '/api/auth/callback/kakao',
     '/api/character',
+    '/api/user/characters',
   ];
 
   if (ignoredPaths.some(path => pathname.startsWith(path))) {
