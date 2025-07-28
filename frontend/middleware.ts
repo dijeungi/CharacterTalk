@@ -21,11 +21,9 @@ const secretKey = new TextEncoder().encode(process.env.JWT_SECRET!);
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
-  const isAPI = request.nextUrl.pathname.startsWith('/api');
+  const { pathname } = request.nextUrl;
+  const isAPI = pathname.startsWith('/api');
 
-  /**
-   * ignoredPaths = 로그인 토큰이 필요없는 api : 401 Free Pass
-   */
   const ignoredPaths = [
     '/api/user',
     '/api/auth/signup',
@@ -35,33 +33,36 @@ export async function middleware(request: NextRequest) {
     '/api/character',
   ];
 
-  if (ignoredPaths.includes(request.nextUrl.pathname)) {
+  if (ignoredPaths.some(path => pathname.startsWith(path))) {
     return NextResponse.next();
   }
 
   if (!token) {
+    const redirectUrl = new URL('/login', request.url);
     if (isAPI) {
       return new NextResponse(JSON.stringify({ message: '인증 토큰이 없습니다.' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' },
       });
-    } else {
-      return NextResponse.redirect(new URL('/login', request.url));
     }
+    return NextResponse.redirect(redirectUrl);
   }
 
+  // 페이지 이동 요청의 경우, 토큰 존재 여부만 확인하고 통과시킵니다.
+  // 실제 토큰 유효성 검증과 갱신은 클라이언트 측 API 요청 핸들러(axios interceptor)에 위임합니다.
+  if (!isAPI) {
+    return NextResponse.next();
+  }
+
+  // API 요청의 경우에만 토큰 유효성을 검증합니다.
   try {
     await jwtVerify(token, secretKey);
     return NextResponse.next();
   } catch (error) {
-    console.log('Access Token 검증 실패 (만료 또는 변조)');
-    if (isAPI) {
-      return new NextResponse(JSON.stringify({ message: '세션이 만료되었습니다.' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    } else {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
+    console.log('Access Token 검증 실패 (만료 또는 변조) - API 요청');
+    return new NextResponse(JSON.stringify({ message: '세션이 만료되었습니다.' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }

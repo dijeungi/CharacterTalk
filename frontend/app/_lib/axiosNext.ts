@@ -7,6 +7,7 @@
  */
 
 import { NEXT_API_HOST } from '@/app/_apis/config';
+import { useAuthStore } from '@/app/_store/auth';
 
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
@@ -74,6 +75,9 @@ axiosNext.interceptors.response.use(
       console.error('리프레시 토큰도 만료되었거나 유효하지 않습니다.', refreshError);
       // 4. 토큰 갱신마저 실패한 경우
       processQueue(refreshError as AxiosError);
+
+      // Zustand 스토어의 상태를 로그아웃으로 변경
+      useAuthStore.getState().logout();
 
       // 로그인 페이지로 이동
       if (typeof window !== 'undefined') {

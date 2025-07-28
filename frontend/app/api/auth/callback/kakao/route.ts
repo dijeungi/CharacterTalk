@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
           oauth_provider: 'kakao',
         }),
         'EX',
-        600 // 10분
+        600
       );
       const signupUrl = new URL('/signup', req.nextUrl.origin);
       signupUrl.searchParams.set('tempId', tempId);
