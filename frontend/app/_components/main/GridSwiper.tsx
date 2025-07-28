@@ -19,52 +19,65 @@ import { useFetchCharactersQuery } from '@/app/_apis/character/_hooks';
 
 export default function GridSwiper() {
   const [sort, setSort] = useState('latest');
-  const { data, isLoading, isError } = useFetchCharactersQuery({
+  const { data, isLoading, isError, refetch } = useFetchCharactersQuery({
     sort: sort,
     page: 1,
   });
 
+  const renderContent = () => {
+    if (isLoading) {
+      return <GridSwiperSkeleton />;
+    }
+
+    if (isError) {
+      return (
+        <div className={styles.errorContainer}>
+          <p>캐릭터를 불러오는 데 실패했습니다.</p>
+          <button onClick={() => refetch()} className={styles.retryButton}>
+            다시 시도
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.grid}>
+        {data?.characters.map(char => (
+          <Link href={`/characters/${char.code}`} key={char.code} className={styles.cardLink}>
+            <div className={styles.card}>
+              <div className={styles.imageWrapper}>
+                <Image
+                  src={char.profile_image_url || '/img/default-profile.png'}
+                  alt={`${char.name}의 프로필`}
+                  width={300}
+                  height={300}
+                  className={styles.img}
+                />
+              </div>
+              <div className={styles.info}>
+                <p className={styles.name}>{char.name}</p>
+                <p className={styles.oneliner}>{char.oneliner}</p>
+                <div className={styles.tagList}>
+                  {char.hashtags?.map((tag, idx) => (
+                    <p key={idx} className={styles.tag}>
+                      {tag}
+                    </p>
+                  ))}
+                </div>
+                <p className={styles.creator}>@{char.creator_name}</p>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className={styles.container}>
-      {/* title */}
       <div className={styles.title}>이것만은 꼭!</div>
       <div className={styles.subTitle}>AI에게 추천받은 캐릭터들을 소개합니다.</div>
-
-      {isLoading || isError ? (
-        <GridSwiperSkeleton />
-      ) : (
-        <div className={styles.grid}>
-          {data?.characters.map(char => (
-            <Link href={`/characters/${char.code}`} key={char.code} className={styles.cardLink}>
-              <div className={styles.card}>
-                {/* 이미지 영역 */}
-                <div className={styles.imageWrapper}>
-                  <Image
-                    src={char.profile_image_url || '/default-profile.png'}
-                    alt={`${char.name}의 프로필`}
-                    width={300}
-                    height={300}
-                    className={styles.img}
-                  />
-                </div>
-                {/* 텍스트 정보 영역 */}
-                <div className={styles.info}>
-                  <p className={styles.name}>{char.name}</p>
-                  <p className={styles.oneliner}>{char.oneliner}</p>
-                  <div className={styles.tagList}>
-                    {char.hashtags?.map((tag, idx) => (
-                      <p key={idx} className={styles.tag}>
-                        {tag}
-                      </p>
-                    ))}
-                  </div>
-                  <p className={styles.creator}>@{char.creator_name}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+      {renderContent()}
     </div>
   );
 }

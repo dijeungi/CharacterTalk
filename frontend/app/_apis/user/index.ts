@@ -8,9 +8,9 @@
 
 import axiosInstance from '@/app/_lib/axiosNext';
 
-import { AuthState } from '@/app/_apis/user/types';
+import { AuthState, Character } from '@/app/_apis/user/types';
 
-// 현재 로그인 상태 확인 - [POST] /api/user
+// 현재 로그인 상태 확인 - [GET] /api/user
 export const checkUserStatus = async (): Promise<AuthState> => {
   const response = await axiosInstance.get<AuthState>('/user');
   console.log('[', new Date().toLocaleString(), '] /user 응답:', response.data);
@@ -21,5 +21,11 @@ export const checkUserStatus = async (): Promise<AuthState> => {
 export const refreshAuthToken = async (): Promise<any> => {
   const response = await axiosInstance.post('/auth/refresh');
   console.log('/refresh 응답:', response.data);
+  return response.data;
+};
+
+// 내 캐릭터 목록 조회 - [GET] /api/user/characters
+export const getMyCharacters = async (): Promise<Character[]> => {
+  const response = await axiosInstance.get<Character[]>('/user/characters');
   return response.data;
 };

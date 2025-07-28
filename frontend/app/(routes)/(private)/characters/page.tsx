@@ -7,35 +7,93 @@
  */
 
 'use client';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-// css
+import Link from 'next/link';
+import Image from 'next/image';
+import { useMyCharacters } from './_hooks/useMyCharacters';
 import styles from './CharacterPage.module.css';
+import SkeletonCard from './_components/SkeletonCard';
+import { BsFillGridFill, BsList } from 'react-icons/bs';
+
+type ViewMode = 'grid' | 'list';
 
 export default function CharacterPage() {
   const router = useRouter();
+  const { characters, loading, error } = useMyCharacters();
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   const handleCreate = () => {
     router.push('/characters/new');
   };
 
-  return (
-    <main className={styles.page}>
-      {/* 헤더 부분 */}
-      <section className={styles.header}>
-        <h1 className={styles.title}>내 캐릭터</h1>
-        <button onClick={handleCreate} className={styles.createButton}>
-          캐릭터 만들기
-        </button>
-      </section>
+  if (error) {
+    return <p>캐릭터를 불러오는 중 오류가 발생했습니다.</p>;
+  }
 
-      {/* 캐릭터 목록 */}
-      <section className={styles.list}>
-        <div className={styles.card}>
-          <p className={styles.name}>캐릭터 이름</p>
-          <p className={styles.description}>설명 or 태그</p>
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div className={styles.titleGroup}>
+          <h1 className={styles.title}>
+            내 캐릭터
+            {!loading && <span className={styles.count}>{characters.length}개</span>}
+          </h1>
+          <p className={styles.subtitle}>나만의 특별한 캐릭터를 만나보세요!</p>
         </div>
-      </section>
-    </main>
+        <div className={styles.viewToggle}>
+          <button
+            onClick={() => setViewMode(prev => (prev === 'grid' ? 'list' : 'grid'))}
+            className={styles.toggleButton}
+            aria-label="보기 모드 전환"
+          >
+            {viewMode === 'grid' ? <BsList /> : <BsFillGridFill />}
+          </button>
+        </div>
+      </div>
+      <div className={styles.listWrapper}>
+        {loading ? (
+          <section className={viewMode === 'grid' ? styles.list : styles.list_list_view}>
+            {Array.from({ length: 6 }).map((_, index) =>
+              viewMode === 'grid' ? <SkeletonCard key={index} /> : <div key={index} />
+            )}
+          </section>
+        ) : characters.length > 0 ? (
+          <section className={viewMode === 'grid' ? styles.list : styles.list_list_view}>
+            {characters.map(char => (
+              <Link
+                href={`/characters/${char.code}`}
+                key={char.code}
+                className={`${styles.card} ${viewMode === 'list' ? styles.card_list_view : ''}`}
+              >
+                <div className={styles.imageWrapper}>
+                  <Image
+                    src={char.profile_image_url}
+                    alt={char.name}
+                    width={160}
+                    height={160}
+                    className={styles.image}
+                  />
+                </div>
+                <div className={styles.info}>
+                  <p className={styles.name}>{char.name}</p>
+                  <p className={styles.oneliner}>{char.oneliner}</p>
+                </div>
+              </Link>
+            ))}
+          </section>
+        ) : (
+          <section className={styles.empty}>
+            <p>아직 생성한 캐릭터가 없어요.</p>
+            <p>첫 번째 캐릭터를 만들어보세요!</p>
+          </section>
+        )}
+      </div>
+      <div className={styles.buttonContainer}>
+        <button onClick={handleCreate} className={styles.createButton}>
+          + 캐릭터 만들기
+        </button>
+      </div>
+    </div>
   );
 }

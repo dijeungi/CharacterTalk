@@ -17,3 +17,10 @@ export interface AuthState {
   user: User | null;
   reason?: 'token_expired' | 'no_token';
 }
+
+export interface Character {
+  code: string;
+  name: string;
+  oneliner: string;
+  profile_image_url: string;
+}
