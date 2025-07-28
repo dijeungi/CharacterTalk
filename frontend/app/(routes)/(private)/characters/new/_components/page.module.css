@@ -33,8 +33,6 @@
   flex-shrink: 0;
 }
 
-/* Step 1 */
-
 .field {
   display: flex;
   flex-direction: column;
@@ -107,29 +105,6 @@
 .exampleDialogBtn:hover {
   background-color: #e6e6e6;
 }
-
-/* .voiceSelectedButton {
-  position: relative;
-  width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 1rem;
-  font-size: 1rem;
-  color: #000;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  text-align: left;
-  cursor: pointer;
-  outline: none;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.voiceSelectedButton:focus {
-  border-color: #2e80ff;
-  box-shadow: 0 0 0 2px rgba(46, 128, 255, 0.3);
-} */
 
 .inputWrapper {
   display: flex;
@@ -242,8 +217,6 @@
 .Button:hover {
   background-color: hsl(221, 83%, 53%);
 }
-
-/* step 2 */
 
 .toggleButton {
   display: flex;
@@ -377,7 +350,6 @@
   font-size: 0.875rem;
 }
 
-/* step 4 */
 .hashtagContainer {
   display: flex;
   flex-wrap: wrap;

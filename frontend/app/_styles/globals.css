@@ -1,14 +1,9 @@
-/* custom Fonts */
-
 * {
   box-sizing: border-box;
   font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
 }
 
-/* pc버전에서도 휴대폰 사이즈로 고정 */
 .container {
-  /* width: 480px;
-  max-width: 480px; */
   margin: 0 auto;
   height: 100dvh;
 }
