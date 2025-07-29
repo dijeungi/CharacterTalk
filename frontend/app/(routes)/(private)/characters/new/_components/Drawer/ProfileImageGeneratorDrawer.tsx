@@ -16,6 +16,7 @@ import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 import { Toast } from '@/app/_utils/Swal';
 import { useGenerateCharacterImage } from '@/app/_apis/character/_hooks';
+import { ProfileImageGeneratorDrawerProps } from '@/app/(routes)/(private)/characters/new/_types';
 
 export default function ProfileImageGeneratorDrawer({
   open,
@@ -129,7 +130,7 @@ export default function ProfileImageGeneratorDrawer({
           {/* 프로필 사진 그림체 */}
           <div className={styles.field}>
             <label className={styles.label}>
-              프로필 사진체<span className={styles.required}>*</span>
+              그림체 미리보기<span className={styles.required}>*</span>
             </label>
             <p className={styles.drawerText}>
               추후에 여러 AI를 추가하여 여러 사진체를 선택하실 수 있습니다.
