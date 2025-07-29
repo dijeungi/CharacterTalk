@@ -1,5 +1,5 @@
 /**
- * @file      frontend/app/(routes)/(private)/characters/[code]/SkeletonUI.tsx
+ * @file      frontend/app/(routes)/(public)/characters/[code]/SkeletonUI.tsx
  * @desc      Component: 캐릭터 상세 페이지 로딩 상태를 위한 MUI Skeleton UI 컴포넌트 정의
  *
  * @author    최준호
@@ -7,7 +7,7 @@
  */
 
 'use client';
-import styles from '@/app/(routes)/(private)/characters/[code]/page.module.css';
+import styles from '@/app/(routes)/(public)/characters/[code]/page.module.css';
 
 import Skeleton from '@mui/material/Skeleton';
 

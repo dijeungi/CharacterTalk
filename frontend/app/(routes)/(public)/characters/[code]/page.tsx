@@ -1,5 +1,5 @@
 /**
- * @file      frontend/app/(routes)/(private)/characters/[code]/page.tsx
+ * @file      frontend/app/(routes)/(public)/characters/[code]/page.tsx
  * @desc      Page: 캐릭터 코드 기반 상세 정보 조회 및 UI 렌더링 (Skeleton, 예외 처리 포함)
  *
  * @author    최준호
@@ -13,8 +13,8 @@ import Image from 'next/image';
 import { useParams } from 'next/navigation';
 
 import axiosNext from '@/app/_lib/axiosNext';
-import SkeletonUI from '@/app/(routes)/(private)/characters/[code]/SkeletonUI';
-import { Character } from '@/app/(routes)/(private)/characters/[code]/_types';
+import SkeletonUI from '@/app/(routes)/(public)/characters/[code]/SkeletonUI';
+import { Character } from '@/app/(routes)/(public)/characters/[code]/_types';
 
 import { useQuery } from '@tanstack/react-query';
 

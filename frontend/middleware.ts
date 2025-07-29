@@ -14,7 +14,7 @@ import { jwtVerify } from 'jose';
  * 단, 로그인/회원가입/refresh 등 인증 예외 경로는 제외됩니다.
  */
 export const config = {
-  matcher: ['/api/:function*', '/characters/:path*'],
+  matcher: ['/api/:function*', '/characters/new'],
 };
 
 const secretKey = new TextEncoder().encode(process.env.JWT_SECRET!);
@@ -30,6 +30,7 @@ export async function middleware(request: NextRequest) {
     '/api/auth/refresh',
     '/api/auth/temp-user',
     '/api/auth/callback/kakao',
+
     '/api/character',
     '/api/user/characters',
   ];
