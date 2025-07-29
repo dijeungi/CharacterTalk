@@ -3,16 +3,15 @@
 # PostgreSQL 데이터베이스 초기화 스크립트
 # 사용법:
 # 1. PostgreSQL 서버 실행 확인
-# 2. USER 변수에 PostgreSQL 사용자 이름 입력 (기본값: postgres)
+# 2. 밑에 config에 PostgreSQL 사용자 이름 입력 (기본값: postgres)
 # 3. ./reset-db.sh 실행 (실행 권한 필요: chmod +x reset-db.sh)
 
 set -euo pipefail
 
-# --- 설정 ---
+# --- config ---
 DB_USER="postgres"
 DB_NAME="charctertalk"
 SCHEMA_FILE="db/schema.sql"
-# ---
 
 echo "1. PostgreSQL 서버 연결 확인 중 (User: $DB_USER)..."
 until pg_isready -U "$DB_USER" -d postgres &>/dev/null; do
@@ -21,7 +20,7 @@ until pg_isready -U "$DB_USER" -d postgres &>/dev/null; do
 done
 echo "-> PostgreSQL 서버 연결 완료."
 
-# --- 데이터베이스 초기화 로직 수정 ---
+# --- 데이터베이스 초기화 ---
 echo "2. 데이터베이스 '$DB_NAME'를 초기화합니다..."
 
 # 기존 데이터베이스에 연결된 모든 세션을 강제 종료
