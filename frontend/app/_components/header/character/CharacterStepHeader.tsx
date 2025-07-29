@@ -62,7 +62,7 @@ export default function CharacterStepHeader() {
         return (
           <>
             <IoSettingsOutline className={styles.stepIcon} />
-            마무리 확인
+            등록 설정
           </>
         );
       default:
