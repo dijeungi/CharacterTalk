@@ -29,6 +29,7 @@
     - App Router 기반
 - **TypeScript**: 타입 안전성 보장
 - **CSS Module**: 클래스 이름 중복 방지
+- React Query & Zustand: Server State, Client State 분리로 전역 상태 관리
 
 ### Backend
 - **Next.js**: FullStack 프레임워크
