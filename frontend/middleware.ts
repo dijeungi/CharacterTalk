@@ -8,34 +8,31 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
+import { publicPaths, ignoredApiPaths } from './app/_config/middlewareConfig';
 
 /**
  * 모든 /api 요청과 URL 요청 전에 access_token을 검사합니다.
  * 단, 로그인/회원가입/refresh 등 인증 예외 경로는 제외됩니다.
  */
 export const config = {
-  matcher: ['/api/:function*', '/characters/new'],
+  matcher: ['/mypage/:path*', '/chat/:path*', '/characters/:path*', '/test/:path*'],
 };
 
 const secretKey = new TextEncoder().encode(process.env.JWT_SECRET!);
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get('access_token')?.value;
   const { pathname } = request.nextUrl;
+
+  // 공개 경로는 인증 검사를 건너뜁니다.
+  if (publicPaths.some(path => path.test(pathname))) {
+    return NextResponse.next();
+  }
+
+  const token = request.cookies.get('access_token')?.value;
   const isAPI = pathname.startsWith('/api');
 
-  const ignoredPaths = [
-    '/api/user',
-    '/api/auth/signup',
-    '/api/auth/refresh',
-    '/api/auth/temp-user',
-    '/api/auth/callback/kakao',
-
-    '/api/character',
-    '/api/user/characters',
-  ];
-
-  if (ignoredPaths.some(path => pathname.startsWith(path))) {
+  // 인증 예외 API 경로는 로직을 통과시킵니다.
+  if (ignoredApiPaths.some(path => pathname.startsWith(path))) {
     return NextResponse.next();
   }
 
@@ -68,3 +65,4 @@ export async function middleware(request: NextRequest) {
     });
   }
 }
+
