@@ -1,0 +1,87 @@
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 4rem);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chatHeader {
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+}
+
+.messageList {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.message {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  max-width: 70%;
+}
+
+.message.system {
+  align-self: center;
+  background-color: #f0f0f0;
+  color: #666;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.message.you {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: white;
+}
+
+.message.character {
+  align-self: flex-start;
+  background-color: #e9e9eb;
+}
+
+.inputForm {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.inputForm input {
+  flex-grow: 1;
+  padding: 0.5rem 3.5rem 0.5rem 1rem;
+  height: 3rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  font-size: 1rem;
+}
+
+.inputForm button {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 2.8rem;
+  color: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputForm button:hover {
+  color: #0056b3;
+}

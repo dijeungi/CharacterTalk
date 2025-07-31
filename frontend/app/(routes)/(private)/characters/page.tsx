@@ -13,7 +13,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useMyCharacters } from './_hooks/useMyCharacters';
 import styles from './CharacterPage.module.css';
-import SkeletonCard from './_components/SkeletonCard';
+import { CharacterCardSkeleton } from '@/app/_components/common/Skeletons';
 import { BsFillGridFill, BsList } from 'react-icons/bs';
 
 type ViewMode = 'grid' | 'list';
@@ -55,7 +55,7 @@ export default function CharacterPage() {
         {loading ? (
           <section className={viewMode === 'grid' ? styles.list : styles.list_list_view}>
             {Array.from({ length: 6 }).map((_, index) =>
-              viewMode === 'grid' ? <SkeletonCard key={index} /> : <div key={index} />
+              viewMode === 'grid' ? <CharacterCardSkeleton key={index} /> : <div key={index} />
             )}
           </section>
         ) : characters.length > 0 ? (
