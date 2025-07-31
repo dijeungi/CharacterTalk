@@ -1,0 +1,58 @@
+/* frontend/app/_components/header/chat/ChatHeader.module.css */
+.container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 4rem;
+  border-bottom: 1px solid #ccc;
+  z-index: 1301;
+  background-color: white;
+}
+
+.leftSection,
+.rightSection {
+  display: flex;
+  align-items: center;
+  width: 3.75rem;
+}
+
+.leftSection {
+  justify-content: flex-start;
+}
+
+.rightSection {
+  justify-content: flex-end;
+}
+
+.centerSection {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  color: black;
+}

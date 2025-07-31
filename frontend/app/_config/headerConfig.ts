@@ -8,6 +8,11 @@
 
 export const headerConfig = [
   {
+    path: '/chat',
+    visible: true,
+    variant: 'chat',
+  },
+  {
     path: '/characters/new',
     visible: true,
     variant: 'characters',

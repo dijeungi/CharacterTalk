@@ -14,6 +14,7 @@ import { headerConfig } from '@/app/_config/headerConfig';
 
 import MainHeader from '@/app/_components/header/MainHeader';
 import CharacterStepHeader from '@/app/_components/header/character/CharacterStepHeader';
+import ChatHeader from './chat/ChatHeader';
 
 export default function HeaderController() {
   // 현재 경로
@@ -27,6 +28,8 @@ export default function HeaderController() {
   switch (config.variant) {
     case 'admin':
     // return <AdminHeader />;
+    case 'chat':
+      return <ChatHeader />;
     case 'characters':
       return <CharacterStepHeader />;
     default:
