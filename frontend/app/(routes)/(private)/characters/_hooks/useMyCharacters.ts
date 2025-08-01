@@ -1,3 +1,11 @@
+/**
+ * @file         frontend/app/(routes)/(private)/characters/_hooks/useMyCharacters.ts
+ * @desc         사용자 캐릭터 목록 조회용
+ *
+ * @author       최준호
+ * @update       2025.08.01
+ */
+
 'use client';
 
 import { useState, useEffect } from 'react';

@@ -23,16 +23,12 @@ type ViewMode = 'grid' | 'list';
 
 export default function CharacterPage() {
   const router = useRouter();
-  const { characters, loading, error } = useMyCharacters();
+  const { characters, loading } = useMyCharacters();
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   const handleCreate = () => {
     router.push('/characters/new');
   };
-
-  if (error) {
-    return <p>캐릭터를 불러오는 중 오류가 발생했습니다.</p>;
-  }
 
   return (
     <div className={styles.container}>
