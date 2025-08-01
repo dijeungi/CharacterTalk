@@ -16,6 +16,7 @@ import {
   GenerateImageRequest,
   GenerateImageResponse,
   UploadProfileImageResponse,
+  CharacterDetailResponse,
 } from '@/app/_apis/character/types';
 
 // 캐릭터 목록을 불러오는 API 함수 - [GET] /api/character?
@@ -45,4 +46,10 @@ export const uploadProfileImage = async (formData: FormData) => {
     formData
   );
   return response.data;
+};
+
+// 캐릭터 상세 정보를 불러오는 API 함수 - [GET] /api/character/[code]
+export const fetchCharacterDetail = async (code: string) => {
+  const res = await axiosNext.get<CharacterDetailResponse>(`/character/${code}`);
+  return res.data;
 };

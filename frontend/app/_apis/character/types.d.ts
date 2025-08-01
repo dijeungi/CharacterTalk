@@ -66,3 +66,23 @@ export interface CreateCharacterResponse {
 export interface UploadProfileImageResponse {
   imageUrl: string;
 }
+
+// =============== 캐릭터 상세 정보 ===============
+
+// [GET] /api/character/[code] API의 전체 응답 타입
+export interface CharacterDetailResponse {
+  id: number;
+  code: string;
+  name: string;
+  profile_image_url: string | null;
+  oneliner: string;
+  creator_name: string;
+  hashtags: string[];
+  prompt_detail: string;
+  scenario_greeting: string;
+  scenario_situation: string;
+  example_dialogs: {
+    user: string;
+    character: string;
+  }[];
+}

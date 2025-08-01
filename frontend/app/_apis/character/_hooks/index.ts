@@ -8,6 +8,7 @@
 
 import {
   fetchCharacters,
+  fetchCharacterDetail,
   requestGenerateCharacterImage,
   uploadProfileImage,
 } from '@/app/_apis/character';
@@ -32,6 +33,15 @@ export const useFetchCharactersQuery = (filters: CharacterListFilters) => {
   });
 };
 
+// [GET] /api/character/[code]
+export const useCharacterDetailQuery = (code: string) => {
+  return useQuery({
+    queryKey: characterKeys.detail(code).queryKey,
+    queryFn: () => fetchCharacterDetail(code),
+    enabled: !!code, // 코드가 있을 때만 쿼리 실행
+  });
+};
+
 // [POST] /api/generate (캐릭터 이미지 생성)
 export const useGenerateCharacterImage = () => {
   return useMutation({
@@ -47,3 +57,4 @@ export const useUploadProfileImage = () => {
     mutationFn: (formData: FormData) => uploadProfileImage(formData),
   });
 };
+
