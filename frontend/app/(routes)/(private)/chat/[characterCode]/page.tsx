@@ -1,14 +1,20 @@
+/**
+ * @file         frontend/app/(routes)/(private)/chat/[characterCode]/page.tsx
+ * @desc         Page: WebSocket 기반 실시간 캐릭터 채팅 페이지
+ *
+ * @author       최준호
+ * @update       2025.08.01
+ */
+
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
-import styles from './page.module.css';
-import { IoArrowForwardCircleOutline } from 'react-icons/io5';
+import { useEffect, useState, useRef } from 'react';
+import styles from '@/app/(routes)/(private)/chat/[characterCode]/page.module.css';
 
-interface Message {
-  user: string;
-  text: string;
-}
+import { Message } from '@/app/(routes)/(private)/chat/[characterCode]/_types';
+
+import { IoArrowForwardCircleOutline } from 'react-icons/io5';
 
 export default function ChatPage() {
   const params = useParams();
