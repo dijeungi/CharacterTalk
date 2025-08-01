@@ -29,7 +29,6 @@ export default function ChatPage() {
     socketRef.current = new WebSocket(ws_path);
 
     socketRef.current.onopen = () => {
-      console.log('WebSocket connection opened');
       setMessages(prev => [...prev, { user: 'System', text: '채팅 서버에 연결되었습니다.' }]);
     };
 
@@ -39,7 +38,6 @@ export default function ChatPage() {
     };
 
     socketRef.current.onclose = () => {
-      console.log('WebSocket connection closed');
       setMessages(prev => [...prev, { user: 'System', text: '채팅 서버와 연결이 끊어졌습니다.' }]);
     };
 
@@ -62,6 +60,12 @@ export default function ChatPage() {
     }
   };
 
+  const handleInputBlur = () => {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+  };
+
   return (
     <div className={styles.chatContainer}>
       <div className={styles.messageList}>
@@ -76,7 +80,8 @@ export default function ChatPage() {
           type="text"
           value={input}
           onChange={e => setInput(e.target.value)}
-          onKeyPress={e => e.key === 'Enter' && sendMessage()}
+          onKeyDown={e => e.key === 'Enter' && sendMessage()}
+          onBlur={handleInputBlur}
           placeholder="메시지 보내기"
         />
         <button onClick={sendMessage}>
