@@ -1,0 +1,100 @@
+/**
+ * @file      frontend/app/_skeletons/Skeletons.module.css
+ * @desc      CSS: 공용 스켈레톤 UI 컴포넌트 스타일
+ *
+ * @author    최준호
+ * @update    2025.07.31
+ */
+
+/* ================== 공통 스켈레톤 스타일 ================== */
+.skeleton {
+  background-color: #e0e0e0;
+  border-radius: 16px;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f0f0f0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}
+
+/* ================== 캐릭터 상세 페이지 스켈레톤 ================== */
+
+.skeletonChatButton {
+  height: 52px;
+}
+
+.skeletonName {
+  width: 100px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.skeletonCreator {
+  width: 70px;
+  height: 20px;
+  border-radius: 6px;
+}
+
+.skeletonHashtag {
+  height: 28px;
+  border-radius: 1rem;
+}
+
+.skeletonOneliner {
+  margin-top: 1rem;
+  width: 80%;
+  height: 24px;
+  border-radius: 6px;
+}
+
+.skeletonDetailTitle {
+  height: 28px;
+  width: 120px;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+
+.skeletonDetailContent {
+  width: 100%;
+  border-radius: 6px;
+}
+
+/* ================== 캐릭터 카드 스켈레톤 ================== */
+.card {
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.cardImageWrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.cardInfo {
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardName {
+  width: 60%;
+  height: 1rem;
+  border-radius: 4px;
+}
+
+.cardOneliner {
+  width: 90%;
+  height: 0.8rem;
+  border-radius: 4px;
+}
