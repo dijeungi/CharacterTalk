@@ -7,14 +7,14 @@
  */
 
 'use client';
-import styles from './page.module.css';
+import styles from '@/app/(routes)/(public)/characters/[characterCode]/page.module.css';
 
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 
 import axiosNext from '@/app/_lib/axiosNext';
-import { CharacterDetailSkeleton } from '@/app/_components/common/Skeletons';
-import { Character } from '@/app/(routes)/(public)/characters/[characterCode]/_types';
+import { CharacterDetailSkeleton } from '@/app/_skeletons/Skeletons';
+import { CharacterDetailResponse as Character } from '@/app/_apis/character/types';
 
 import { useQuery } from '@tanstack/react-query';
 

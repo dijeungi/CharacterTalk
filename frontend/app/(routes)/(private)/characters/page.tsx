@@ -8,12 +8,15 @@
 
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import styles from '@/app/(routes)/(private)/characters/CharacterPage.module.css';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import { useMyCharacters } from './_hooks/useMyCharacters';
-import styles from './CharacterPage.module.css';
-import { CharacterCardSkeleton } from '@/app/_components/common/Skeletons';
+import { useRouter } from 'next/navigation';
+
+import { useMyCharacters } from '@/app/(routes)/(private)/characters/_hooks/useMyCharacters';
+import { CharacterCardSkeleton } from '@/app/_skeletons/Skeletons';
+
 import { BsFillGridFill, BsList } from 'react-icons/bs';
 
 type ViewMode = 'grid' | 'list';
