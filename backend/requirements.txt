@@ -19,3 +19,8 @@ boto3
 
 # Environment
 python-dotenv
+
+# WebSocket
+daphne
+channels
+channels-redis

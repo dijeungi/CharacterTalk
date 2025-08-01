@@ -19,6 +19,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application
 INSTALLED_APPS = [
+    'daphne',
     # default
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,6 +32,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'corsheaders',
+    'channels',
 ]
 
 # Middleware
@@ -49,6 +51,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 # URL
@@ -71,8 +74,8 @@ TEMPLATES = [
     },
 ]
 
-# Web Server GateWay Interface Settings
-WSGI_APPLICATION = 'config.wsgi.application'
+# Asynchronous Server Gateway Interface
+ASGI_APPLICATION = 'config.asgi.application'
 
 # DB (SQLite3)
 DATABASES = {
@@ -127,3 +130,13 @@ R2_ENDPOINT_URL = os.getenv("R2_ENDPOINT_URL")
 R2_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
 R2_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
 R2_PUBLIC_URL = os.getenv("R2_PUBLIC_URL")
+
+# Channel settings
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
