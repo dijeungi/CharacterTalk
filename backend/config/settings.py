@@ -3,6 +3,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 # 기본 경로 및 환경 변수 설정
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,6 +12,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # env
 SECRET_KEY = os.getenv('SECRET_KEY')
 HUGGING_FACE_TOKEN = os.getenv('HUGGING_FACE_TOKEN')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 't')
 
@@ -77,13 +79,11 @@ TEMPLATES = [
 # Asynchronous Server Gateway Interface
 ASGI_APPLICATION = 'config.asgi.application'
 
-# DB (SQLite3)
+# DB
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(env='POSTGRESQL_URL', conn_max_age=600, ssl_require=False)
 }
+
 
 # Password
 AUTH_PASSWORD_VALIDATORS = [

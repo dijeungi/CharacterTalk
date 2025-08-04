@@ -1,62 +1,69 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
+from api.models import Character
+from api.services.gemini_service import gemini_service
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        print("--- [WebSocket] connect() 함수 시작 ---")
         self.character_code = self.scope['url_route']['kwargs']['character_code']
-        print(f"캐릭터 코드: {self.character_code}")
-
         self.room_group_name = f'chat_{self.character_code}'
-        print(f"채팅방 그룹 이름: {self.room_group_name}")
+        self.chat_history = []
 
-        try:
-            # 채널 그룹에 참여
-            print("채널 그룹에 참여를 시도합니다...")
-            await self.channel_layer.group_add(
-                self.room_group_name,
-                self.channel_name
-            )
-            print("채널 그룹 참여 성공.")
-        except Exception as e:
-            print(f"!!! 채널 그룹 참여 중 에러 발생: {e} !!!")
-            # 에러 발생 시 연결을 닫음
+        self.character = await self.get_character(self.character_code)
+
+        if not self.character:
             await self.close()
             return
 
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
         await self.accept()
-        print("--- [WebSocket] 연결이 성공적으로 수락되었습니다. ---")
+
+        # 첫 접속 시 환영 메시지 전송
+        initial_message = self.character.scenario_greeting
+        self.chat_history.append({"sender": "ai", "message": initial_message})
+        await self.send(text_data=json.dumps({
+            'message': initial_message,
+            'sender': 'ai'
+        }))
 
     async def disconnect(self, close_code):
-        print(f"--- [WebSocket] disconnect() 함수 호출됨 (종료 코드: {close_code}) ---")
-        # 채널 그룹에서 나감
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
-        print("채널 그룹에서 나갔습니다.")
 
-    # 웹소켓으로부터 메시지 수신
     async def receive(self, text_data):
-        print(f"수신 메시지: {text_data}")
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        
+        # 사용자 메시지 기록
+        self.chat_history.append({"sender": "user", "message": message})
 
-        # 채팅방 그룹으로 메시지 전송
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': message
-            }
-        )
+        # AI 응답 생성
+        ai_response = await self.generate_ai_response(message)
+        
+        # AI 메시지 기록
+        self.chat_history.append({"sender": "ai", "message": ai_response})
 
-    # 채팅방 그룹으로부터 메시지 수신
-    async def chat_message(self, event):
-        message = event['message']
-        print(f"그룹에서 받은 메시지: {message}")
-
-        # 웹소켓으로 메시지 전송
+        # AI 응답을 보낸 클라이언트에게만 직접 전송
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': ai_response,
+            'sender': 'ai'
         }))
+
+    @database_sync_to_async
+    def get_character(self, code):
+        try:
+            return Character.objects.get(code=code)
+        except Character.DoesNotExist:
+            return None
+
+    @database_sync_to_async
+    def generate_ai_response(self, user_message):
+        # 마지막 10개 대화만 히스토리로 사용 (토큰 제한)
+        recent_history = self.chat_history[-10:]
+        return gemini_service.generate_response(self.character, user_message, recent_history)
