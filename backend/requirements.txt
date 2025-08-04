@@ -13,14 +13,19 @@ safetensors
 sentencepiece
 Pillow
 sacremoses
+google-generativeai
 
 # 클라우드 플레어 R2 스토리지 관련
 boto3
 
 # Environment
 python-dotenv
+dj-database-url
 
 # WebSocket
 daphne
 channels
 channels-redis
+
+# PostgreSQL
+psycopg2-binary
