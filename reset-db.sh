@@ -46,5 +46,18 @@ echo "4. 스키마 파일 '$SCHEMA_FILE'을 실행하여 테이블을 생성합�
 psql -U "$DB_USER" -d "$DB_NAME" -f "$SCHEMA_FILE" > /dev/null
 echo "-> 스키마 적용 완료."
 
+SEED_FILE="db/seed.sql"
+if [ -f "$SEED_FILE" ]; then
+  echo "5. 시드 파일 '$SEED_FILE'을 실행하여 초기 데이터를 추가합니다..."
+  psql -U "$DB_USER" -d "$DB_NAME" -f "$SEED_FILE" > /dev/null
+  echo "-> 시드 데이터 추가 완료."
+
+  echo "6. users 테이블의 ID 시퀀스를 재설정합니다..."
+  psql -U "$DB_USER" -d "$DB_NAME" -c "SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));" > /dev/null
+  echo "-> 시퀀스 재설정 완료."
+else
+  echo "[!] 경고: 시드 파일 '$SEED_FILE'을 찾을 수 없어 초기 데이터 추가를 건너뜁니다."
+fi
+
 echo ""
 echo "모든 작업이 성공적으로 완료되었습니다."
