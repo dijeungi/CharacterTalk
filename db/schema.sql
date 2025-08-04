@@ -1,7 +1,3 @@
--- #################################################################
--- ### charctertalk 데이터베이스 전체 스키마
--- #################################################################
-
 -- 확장 및 공용 함수 정의
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
@@ -19,7 +15,7 @@ $$ language 'plpgsql';
 -- users 테이블: 사용자 정보
 CREATE TABLE IF NOT EXISTS users (
     id BIGSERIAL PRIMARY KEY,
-    code UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),            -- 공개 식별자
+    code UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     email VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     phone_number VARCHAR(20),
@@ -27,8 +23,8 @@ CREATE TABLE IF NOT EXISTS users (
     gender CHAR(1),
     oauth_provider VARCHAR(50),
     is_verified BOOLEAN DEFAULT FALSE,
-    role VARCHAR(20) NOT NULL DEFAULT 'user',                       -- 사용자 권한 (user, admin)
-    status VARCHAR(20) NOT NULL DEFAULT 'active',                   -- 계정 상태 (active, inactive)
+    role VARCHAR(20) NOT NULL DEFAULT 'user',
+    status VARCHAR(20) NOT NULL DEFAULT 'active',
     last_login_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -45,7 +41,7 @@ EXECUTE FUNCTION update_updated_at_column();
 CREATE TABLE IF NOT EXISTS characters (
     id BIGSERIAL PRIMARY KEY,
     code UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
-    creator_id BIGINT NOT NULL,                                     -- 생성자 ID (users.id)
+    creator_id BIGINT NOT NULL,
     -- step 1
     name VARCHAR(20) NOT NULL,
     profile_image_url TEXT,
@@ -56,18 +52,18 @@ CREATE TABLE IF NOT EXISTS characters (
     prompt_detail TEXT NOT NULL,
     speech_style VARCHAR(50) NOT NULL,
     behavior_constraint TEXT,
-    example_dialogs JSONB,                                          -- 예시 대화
+    example_dialogs JSONB,
     -- step 3
     scenario_title VARCHAR(12) NOT NULL,
     scenario_greeting TEXT NOT NULL,
     scenario_situation TEXT NOT NULL,
-    scenario_suggestions JSONB,                                     -- 추천 답변
+    scenario_suggestions JSONB,
     -- step 4
-    genre VARCHAR(20) NOT NULL,                                     -- 장르
-    target VARCHAR(20) NOT NULL,                                    -- 타겟
-    conversation_type VARCHAR(20) NOT NULL,                         -- 대화 형태
+    genre VARCHAR(20) NOT NULL,
+    target VARCHAR(20) NOT NULL,
+    conversation_type VARCHAR(20) NOT NULL,
     user_filter VARCHAR(20) NOT NULL DEFAULT 'initial',
-    visibility VARCHAR(20) NOT NULL DEFAULT 'private',              -- 공개 범위
+    visibility VARCHAR(20) NOT NULL DEFAULT 'private',
     comments_enabled BOOLEAN NOT NULL DEFAULT TRUE,
     status VARCHAR(20) NOT NULL DEFAULT 'active',
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -85,7 +81,7 @@ EXECUTE FUNCTION update_updated_at_column();
 CREATE TABLE IF NOT EXISTS hashtags (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(20) NOT NULL UNIQUE,
-    character_count INT NOT NULL DEFAULT 0                          -- 해시태그 사용 횟수
+    character_count INT NOT NULL DEFAULT 0
 );
 
 -- 4. character_hashtags 테이블: 캐릭터와 해시태그 연결
