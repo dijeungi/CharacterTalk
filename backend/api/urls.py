@@ -9,7 +9,7 @@
 @update       2025.08.05
 """
 from django.urls import path
-from .views import ImageGenerationView, ReactionView
+from .views import ImageGenerationView
 
 urlpatterns = [
     path('generate/', ImageGenerationView.as_view(), name='generate-image'),

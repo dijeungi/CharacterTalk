@@ -16,7 +16,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.utils import timezone
 from django.db.models import Count, F
-from api.models import Character, ChatMessage, User, Reaction
+from api.models import Character, ChatMessage, User
 from api.services.gemini_service import gemini_service
 import redis
 
@@ -119,13 +119,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.send_message_to_client(message)
 
     async def send_message_to_client(self, message_obj):
-        reactions = await self.get_reactions_for_message(message_obj)
         await self.send(text_data=json.dumps({
             'uuid': str(message_obj.uuid),
             'sender': message_obj.sender_type,
             'text': message_obj.content,
-            'created_at': message_obj.created_at.isoformat(),
-            'reactions': reactions
+            'created_at': message_obj.created_at.isoformat()
         }))
 
     # Helper and DB methods
@@ -171,7 +169,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return list(ChatMessage.objects.filter(
             user=self.user,
             character=self.character
-        ).order_by('created_at').prefetch_related('reactions')[:50])
+        ).order_by('created_at')[:50])
 
     @database_sync_to_async
     def get_chat_message(self, uuid):

@@ -2,7 +2,7 @@
 @file         backend/api/models.py
 @desc         데이터베이스 모델 정의 파일
  
-@summary      User, Character, ChatMessage, Reaction 모델 정의
+@summary      User, Character, ChatMessage 모델 정의
 @description  Django ORM을 사용하여 애플리케이션의 데이터베이스 테이블 구조를 정의합니다.
 
 @author       최준호

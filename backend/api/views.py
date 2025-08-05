@@ -2,7 +2,7 @@
 @file         backend/api/views.py
 @desc         API 뷰 정의 파일
  
-@summary      ImageGenerationView, ReactionView 클래스 정의
+@summary      ImageGenerationView 클래스 정의
 @description  Django REST Framework의 APIView를 상속받아 각 API 엔드포인트의 요청/응답 로직을 처리합니다.
 
 @author       최준호
@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .services.ai_service import ai_service
-from .models import ChatMessage, Reaction
+from .models import ChatMessage
 
 class ImageGenerationView(APIView):
     """AI를 이용한 이미지 생성을 처리하는 뷰"""
