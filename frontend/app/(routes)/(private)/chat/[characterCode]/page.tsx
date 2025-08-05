@@ -29,57 +29,71 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const socketRef = useRef<WebSocket | null>(null);
   const messageListRef = useRef<HTMLDivElement>(null);
-  const isFirstMessage = useRef(true);
 
   useEffect(() => {
     if (!characterCode) return;
 
-    const ws_scheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const ws_path = `${ws_scheme}://127.0.0.1:8000/ws/chat/${characterCode}/`;
+    const connectWebSocket = async () => {
+      try {
+        // 1. 백엔드에 티켓 요청
+        const response = await fetch('/api/auth/ws-ticket', { method: 'POST' });
+        if (!response.ok) {
+          throw new Error('웹소켓 연결 티켓을 발급받지 못했습니다.');
+        }
+        const { ticket } = await response.json();
 
-    socketRef.current = new WebSocket(ws_path);
+        // 2. 티켓과 함께 웹소켓 연결
+        const ws_scheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        const ws_path = `${ws_scheme}://127.0.0.1:8000/ws/chat/${characterCode}/?ticket=${ticket}`;
 
-    socketRef.current.onopen = () => {
-      setMessages(prev => [...prev, { sender: 'system', text: '채팅 서버에 연결되었습니다.' }]);
-    };
+        socketRef.current = new WebSocket(ws_path);
 
-    socketRef.current.onmessage = event => {
-      const data = JSON.parse(event.data);
-      const sender = data.sender === 'ai' ? 'ai' : 'user';
+        socketRef.current.onopen = () => {
+          console.log('채팅 서버에 연결되었습니다.');
+        };
 
-      if (sender === 'user') return;
+        socketRef.current.onmessage = event => {
+          if (isLoading) {
+            setIsLoading(false);
+          }
+          const data = JSON.parse(event.data);
+          const sender = data.sender;
+          const text = data.message;
+          setMessages(prev => [...prev, { sender, text }]);
+          if (sender === 'ai') {
+            setIsTyping(false);
+          }
+        };
 
-      if (isFirstMessage.current) {
-        setMessages(prev => [...prev, { sender: sender, text: data.message }]);
-        isFirstMessage.current = false;
-        return;
+        socketRef.current.onclose = () => {
+          setIsTyping(false);
+          if (!messages.some(m => m.sender === 'system' && m.text.includes('연결이 끊어졌습니다')))
+            setMessages(prev => [
+              ...prev,
+              { sender: 'system', text: '채팅 서버와 연결이 끊어졌습니다.' },
+            ]);
+        };
+
+        socketRef.current.onerror = error => {
+          setIsLoading(false);
+          setIsTyping(false);
+          console.error('WebSocket error:', error);
+          setMessages(prev => [...prev, { sender: 'system', text: '오류가 발생했습니다.' }]);
+        };
+      } catch (error) {
+        console.error('웹소켓 연결 실패:', error);
+        setIsLoading(false);
+        setMessages(prev => [
+          ...prev,
+          { sender: 'system', text: '채팅 서버에 연결할 수 없습니다.' },
+        ]);
       }
-
-      const messageLength = data.message.length;
-      const typingSpeed = 100; // WPM
-      const delay = Math.max(1500, (messageLength / ((typingSpeed * 5) / 60)) * 1000);
-
-      setTimeout(() => {
-        setIsTyping(false);
-        setMessages(prev => [...prev, { sender: sender, text: data.message }]);
-      }, delay);
     };
 
-    socketRef.current.onclose = () => {
-      setIsTyping(false);
-      setMessages(prev => [
-        ...prev,
-        { sender: 'system', text: '채팅 서버와 연결이 끊어졌습니다.' },
-      ]);
-    };
-
-    socketRef.current.onerror = error => {
-      setIsTyping(false);
-      console.error('WebSocket error:', error);
-      setMessages(prev => [...prev, { sender: 'system', text: '오류가 발생했습니다.' }]);
-    };
+    connectWebSocket();
 
     return () => {
       socketRef.current?.close();
@@ -102,6 +116,22 @@ export default function ChatPage() {
     }
   };
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [input]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     sendMessage();
@@ -110,28 +140,76 @@ export default function ChatPage() {
   return (
     <div className={styles.chatContainer}>
       <div className={styles.messageList} ref={messageListRef}>
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`${styles.messageRow} ${
-              msg.sender === 'user' ? styles.user : msg.sender === 'ai' ? styles.ai : styles.system
-            }`}
-          >
-            {msg.sender === 'ai' && (
-              <Image
-                src={character?.profile_image_url || '/img/default-profile.png'}
-                alt="Character Avatar"
-                width={40}
-                height={40}
-                className={styles.avatar}
-              />
-            )}
-            <div className={styles.messageContent}>
-              {msg.sender === 'ai' && <span className={styles.senderName}>{character?.name}</span>}
-              <div className={styles.messageBubble}>{msg.text}</div>
+        {isLoading ? (
+          <div className={styles.skeletonContainer}>
+            <div className={`${styles.skeletonMessage} ${styles.ai}`}>
+              <div className={styles.skeletonAvatar} />
+              <div className={styles.skeletonTextContainer}>
+                <div className={styles.skeletonText} style={{ width: '60%' }} />
+              </div>
+            </div>
+            <div className={`${styles.skeletonMessage} ${styles.user}`}>
+              <div className={styles.skeletonTextContainer}>
+                <div className={styles.skeletonText} style={{ width: '70%' }} />
+              </div>
+            </div>
+            <div className={`${styles.skeletonMessage} ${styles.ai}`}>
+              <div className={styles.skeletonAvatar} />
+              <div className={styles.skeletonTextContainer}>
+                <div className={styles.skeletonText} style={{ width: '50%' }} />
+                <div className={styles.skeletonText} style={{ width: '40%' }} />
+              </div>
             </div>
           </div>
-        ))}
+        ) : (
+          messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`${styles.messageRow} ${
+                msg.sender === 'user'
+                  ? styles.user
+                  : msg.sender === 'ai'
+                  ? styles.ai
+                  : styles.system
+              }`}
+            >
+              {msg.sender === 'ai' && (
+                <Image
+                  src={character?.profile_image_url || '/img/default-profile.png'}
+                  alt="Character Avatar"
+                  width={40}
+                  height={40}
+                  className={styles.avatar}
+                />
+              )}
+              <div className={styles.messageContent}>
+                {msg.sender === 'ai' && (
+                  <span className={styles.senderName}>{character?.name}</span>
+                )}
+                <div className={styles.messageBubble}>
+                  {msg.text
+                    .split(/(\*.*?\*)/g)
+                    .filter(Boolean)
+                    .map((part, i) => {
+                      if (part.startsWith('*') && part.endsWith('*')) {
+                        return (
+                          <em
+                            key={i}
+                            className={
+                              msg.sender === 'user' ? styles.userActionText : styles.actionText
+                            }
+                          >
+                            {part.slice(1, -1)}
+                          </em>
+                        );
+                      }
+                      return part;
+                    })}
+                </div>
+              </div>
+            </div>
+          ))
+        )}
         {isTyping && (
           <div className={`${styles.messageRow} ${styles.ai}`}>
             <Image
@@ -153,13 +231,15 @@ export default function ChatPage() {
         )}
       </div>
       <form className={styles.inputForm} onSubmit={handleSendMessage}>
-        <input
-          type="text"
+        <textarea
+          ref={textareaRef}
           value={input}
           onChange={e => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="메시지 보내기"
+          rows={1}
         />
-        <button type="submit">
+        <button type="submit" disabled={!input.trim()}>
           <FaArrowUp />
         </button>
       </form>
