@@ -29,9 +29,17 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const socketRef = useRef<WebSocket | null>(null);
   const messageListRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [input]);
 
   useEffect(() => {
     if (!characterCode) return;
@@ -62,8 +70,10 @@ export default function ChatPage() {
           const data = JSON.parse(event.data);
           const sender = data.sender;
           const text = data.message;
-          setMessages(prev => [...prev, { sender, text }]);
+
+          // AI가 보낸 메시지만 화면에 추가하고, 사용자가 보낸 메시지는 무시 (에코 방지)
           if (sender === 'ai') {
+            setMessages(prev => [...prev, { sender, text }]);
             setIsTyping(false);
           }
         };
@@ -110,25 +120,10 @@ export default function ChatPage() {
     if (input.trim() && socketRef.current?.readyState === WebSocket.OPEN) {
       const messagePayload = { message: input };
       socketRef.current.send(JSON.stringify(messagePayload));
+      // 사용자가 보낸 메시지를 화면에 즉시 표시
       setMessages(prev => [...prev, { sender: 'user', text: input }]);
       setInput('');
       setIsTyping(true);
-    }
-  };
-
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  }, [input]);
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
     }
   };
 
@@ -232,12 +227,11 @@ export default function ChatPage() {
       </div>
       <form className={styles.inputForm} onSubmit={handleSendMessage}>
         <textarea
-          ref={textareaRef}
           value={input}
           onChange={e => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
           placeholder="메시지 보내기"
           rows={1}
+          ref={textareaRef}
         />
         <button type="submit" disabled={!input.trim()}>
           <FaArrowUp />

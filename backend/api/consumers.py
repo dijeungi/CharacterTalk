@@ -80,13 +80,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     def format_ai_response(self, text: str) -> str:
-        # AI 응답의 앞뒤 공백 제거
-        processed_text = text.strip()
-        # `*...*` 패턴을 기준으로 텍스트를 분리 (패턴도 유지)
+        # 1. AI 응답에서 지문(*) 바로 뒤에 오는 불필요한 . 및 공백을 제거합니다.
+        processed_text = re.sub(r'(\*.*?)\*\s*\.', r'\1*', text.strip())
+        
+        # 2. `*...*` 패턴을 기준으로 텍스트를 분리 (패턴도 유지)
         parts = re.split(r'(\*.*?\*)', processed_text)
-        # 각 부분을 정리하고 빈 문자열 제거
+        
+        # 3. 각 부분을 정리하고 빈 문자열 제거
         cleaned_parts = [p.strip() for p in parts if p.strip()]
-        # 정리된 부분들을 두 개의 줄바꿈 문자로 연결하여 최종 결과 생성
+        
+        # 4. 정리된 부분들을 두 개의 줄바꿈 문자로 연결하여 최종 결과 생성
         return '\n\n'.join(cleaned_parts)
 
     async def receive(self, text_data):
