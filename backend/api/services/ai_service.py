@@ -8,27 +8,22 @@
 @author       최준호
 @update       2025.08.05
 """
-import os
+
 import uuid
 import torch
-import boto3
 
 from PIL import Image
 from django.conf import settings
 from diffusers import DiffusionPipeline
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-# 1. get_r2_client를 임포트합니다.
 from .r2_client import get_r2_client, test_r2_connection
 from io import BytesIO
 
 class AIGenerationService:
-    # Modal Loading
     def __init__(self):
         
-        # R2 연결 확인
         test_r2_connection()
         
-        # 2. __init__에서 R2 클라이언트를 미리 생성하여 self.s3_client로 저장합니다.
         self.s3_client = get_r2_client()
         
         print("[!] AI 모델 로딩 중 입니다.")
@@ -36,13 +31,13 @@ class AIGenerationService:
         
         hf_token = settings.HUGGING_FACE_TOKEN
         
-        # 1. 번역 모델 변경 (Helsinki-NLP/opus-mt-ko-en)
+        # 1. 번역 모델 로드
         translator_model_name = 'Helsinki-NLP/opus-mt-ko-en'
         self.translator_tokenizer = AutoTokenizer.from_pretrained(translator_model_name, token=hf_token)
         self.translator_model = AutoModelForSeq2SeqLM.from_pretrained(translator_model_name, token=hf_token)
         self.translator_model.to(self.device)
         
-        # 2. 이미지 생성 모델 로드 (기존과 동일)
+        # 2. 이미지 생성 모델 로드
         self.image_pipeline = DiffusionPipeline.from_pretrained(
             "cagliostrolab/animagine-xl-3.1",
             torch_dtype=torch.float16,
@@ -93,8 +88,6 @@ class AIGenerationService:
 
         image_urls = []
         
-        # 3. 매번 클라이언트를 생성하는 대신, __init__에서 만들어 둔 self.s3_client를 사용합니다.
-        #    이렇게 하면 모든 R2 요청(업로드, URL 생성)이 SigV4를 사용하게 됩니다.
         for image in images:
             filename = f"{uuid.uuid4()}.png"
             buffer = BytesIO()
@@ -117,6 +110,4 @@ class AIGenerationService:
         print("이미지 생성 및 업로드 완료.")
         return image_urls
 
-
-# 장고 앱 전체에서 이 서비스 인스턴스 하나만 사용하도록 미리 생성해 둡니다.
 ai_service = AIGenerationService()

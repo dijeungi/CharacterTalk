@@ -1,4 +1,15 @@
-# backend/api/models.py
+"""
+@file         backend/api/models.py
+@desc         데이터베이스 모델 정의 파일
+ 
+@summary      User, Character, ChatMessage, Reaction 모델 정의
+@description  Django ORM을 사용하여 애플리케이션의 데이터베이스 테이블 구조를 정의합니다.
+
+@author       최준호
+@update       2025.08.05
+"""
+
+ 
 from django.db import models
 import uuid
 
@@ -55,6 +66,7 @@ class Character(models.Model):
 
 class ChatMessage(models.Model):
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
     sender_type = models.CharField(max_length=10) # 'user' or 'ai'

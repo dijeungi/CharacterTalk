@@ -1,11 +1,23 @@
-# backend/api/views.py
+"""
+@file         backend/api/views.py
+@desc         API 뷰 정의 파일
+ 
+@summary      ImageGenerationView, ReactionView 클래스 정의
+@description  Django REST Framework의 APIView를 상속받아 각 API 엔드포인트의 요청/응답 로직을 처리합니다.
+
+@author       최준호
+@update       2025.08.05
+"""
 
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .services.ai_service import ai_service
+from .models import ChatMessage, Reaction
 
 class ImageGenerationView(APIView):
+    """AI를 이용한 이미지 생성을 처리하는 뷰"""
     def post(self, request, *args, **kwargs):
         korean_prompt = request.data.get('prompt')
         width = int(request.data.get('width', 832))
@@ -14,10 +26,6 @@ class ImageGenerationView(APIView):
 
         if not korean_prompt:
             return Response({"error": "프롬프트(prompt)를 입력해주세요."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # 옵션 선택으로 인한 코드 미사용
-        # if not 1 <= num_images <= 3:
-        #     return Response({"error": "이미지 생성은 최대 3장 입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             print("API View: 이미지 생성 요청 수신. 서비스 호출 시작...")
@@ -29,10 +37,7 @@ class ImageGenerationView(APIView):
                 "image_urls": image_urls
             }, status=status.HTTP_201_CREATED)
 
-        # Error
         except Exception as e:
             import traceback
             traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
