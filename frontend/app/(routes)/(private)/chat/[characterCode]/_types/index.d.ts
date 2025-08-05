@@ -3,10 +3,10 @@
  * @desc      Type
  *
  * @author    최준호
- * @update    2025.08.01
+ * @update    2025.08.05
  */
 
 export interface Message {
-  user: string;
+  sender: string;
   text: string;
 }
