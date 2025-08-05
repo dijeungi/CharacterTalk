@@ -52,3 +52,15 @@ class Character(models.Model):
 
     class Meta:
         db_table = 'characters'
+
+class ChatMessage(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    character = models.ForeignKey(Character, on_delete=models.CASCADE)
+    sender_type = models.CharField(max_length=10) # 'user' or 'ai'
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'chat_messages'
+        ordering = ['created_at']
