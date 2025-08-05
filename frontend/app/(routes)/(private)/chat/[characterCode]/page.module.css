@@ -24,7 +24,7 @@
 .messageRow {
   display: flex;
   gap: 0.6rem;
-  align-items: flex-end;
+  align-items: flex-start; /* 프로필 상단 정렬 */
 }
 
 .messageRow.user {
@@ -44,6 +44,7 @@
   color: #6b7280;
   margin: 0 0.2rem;
   white-space: nowrap;
+  align-self: flex-end; /* bubbleContainer 내에서 항상 아래에 위치 */
 }
 
 .avatar {
@@ -55,6 +56,11 @@
   display: flex;
   flex-direction: column;
   max-width: 70%;
+}
+
+.bubbleContainer {
+  display: flex;
+  gap: 0.6rem;
 }
 
 .senderName {
@@ -243,4 +249,27 @@
 .userActionText {
   color: #e1e1e1;
   font-style: italic;
+}
+
+.reactionsContainer {
+  display: flex;
+  gap: 4px;
+  margin-top: 0.5rem;
+}
+
+.user .reactionsContainer {
+  justify-content: flex-end;
+}
+
+.ai .reactionsContainer {
+  justify-content: flex-start;
+}
+
+.reaction {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 2px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #ddd;
 }
