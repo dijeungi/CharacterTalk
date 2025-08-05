@@ -112,3 +112,18 @@ ON DELETE CASCADE;
 CREATE INDEX IF NOT EXISTS idx_characters_creator_id ON characters(creator_id);
 CREATE INDEX IF NOT EXISTS idx_hashtags_name ON hashtags(name);
 CREATE INDEX IF NOT EXISTS idx_character_hashtags_hashtag_id ON character_hashtags(hashtag_id);
+
+-- 채팅내역 Table
+CREATE TABLE IF NOT EXISTS chat_messages (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    character_id BIGINT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    sender_type VARCHAR(10) NOT NULL CHECK (sender_type IN ('user', 'ai')),
+    content TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (user_id, character_id, created_at)
+);
+
+-- Create indexes for faster queries
+CREATE INDEX IF NOT EXISTS idx_chat_messages_user_id_character_id_created_at
+ON chat_messages (user_id, character_id, created_at DESC);
