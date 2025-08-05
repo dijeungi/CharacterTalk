@@ -24,7 +24,7 @@
 .messageRow {
   display: flex;
   gap: 0.6rem;
-  align-items: flex-start;
+  align-items: flex-end;
 }
 
 .messageRow.user {
@@ -37,6 +37,13 @@
 
 .messageRow.system {
   justify-content: center;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0 0.2rem;
+  white-space: nowrap;
 }
 
 .avatar {
@@ -89,7 +96,7 @@
 
 .inputForm {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   padding: 0.8rem;
   border-top: 1px solid #e5e7eb;
   background-color: #ffffff;

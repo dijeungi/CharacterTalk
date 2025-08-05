@@ -3,6 +3,7 @@ import re
 from urllib.parse import parse_qs
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
+from django.utils import timezone
 from api.models import Character, ChatMessage, User
 from api.services.gemini_service import gemini_service
 import redis
@@ -43,16 +44,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_add(self.room_group_name, self.channel_name)
             await self.accept()
 
-            await self.load_chat_history()
+            # 대화 기록 불러오기 및 전송
+            history_with_ts = await self.get_chat_history_with_timestamps()
 
-            if not self.chat_history:
+            if not history_with_ts:
                 initial_message = self.character.scenario_greeting
+                new_greeting = await self.save_chat_message('ai', initial_message)
                 self.chat_history.append({"sender": "ai", "message": initial_message})
-                await self.save_chat_message('ai', initial_message)
-                await self.send(text_data=json.dumps({'message': initial_message, 'sender': 'ai'}))
+                await self.send(text_data=json.dumps({
+                    'message': new_greeting.content,
+                    'sender': 'ai',
+                    'created_at': new_greeting.created_at.isoformat()
+                }))
             else:
-                for record in self.chat_history:
-                    await self.send(text_data=json.dumps({'message': record['message'], 'sender': record['sender']}))
+                for record in history_with_ts:
+                    self.chat_history.append({
+                        "sender": record['sender_type'],
+                        "message": record['content']
+                    })
+                    await self.send(text_data=json.dumps({
+                        'message': record['content'],
+                        'sender': record['sender_type'],
+                        'created_at': record['created_at'].isoformat()
+                    }))
         except Exception as e:
             print(f"WebSocket 연결 오류: {e}")
             await self.close()
@@ -106,12 +120,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         # AI 메시지 기록 및 저장
         self.chat_history.append({"sender": "ai", "message": ai_response})
-        await self.save_chat_message('ai', ai_response)
+        new_ai_message = await self.save_chat_message('ai', ai_response)
 
         # AI 응답을 클라이언트에게 전송
         await self.send(text_data=json.dumps({
-            'message': ai_response,
-            'sender': 'ai'
+            'message': new_ai_message.content,
+            'sender': 'ai',
+            'created_at': new_ai_message.created_at.isoformat()
         }))
 
     @database_sync_to_async
@@ -128,23 +143,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return gemini_service.generate_response(self.character, user_message, recent_history)
 
     @database_sync_to_async
-    def load_chat_history(self):
+    def get_chat_history_with_timestamps(self):
         messages = ChatMessage.objects.filter(
             user_id=self.user.id,
             character_id=self.character.id
-        ).order_by('created_at').values('sender_type', 'content')[:50]
-        
-        for msg in messages:
-            self.chat_history.append({
-                "sender": msg['sender_type'],
-                "message": msg['content']
-            })
+        ).order_by('created_at').values('sender_type', 'content', 'created_at')[:50]
+        return list(messages)
 
     @database_sync_to_async
     def save_chat_message(self, sender_type, content):
-        ChatMessage.objects.create(
+        return ChatMessage.objects.create(
             user_id=self.user.id,
             character_id=self.character.id,
             sender_type=sender_type,
             content=content
         )
+

@@ -68,13 +68,15 @@ export default function ChatPage() {
             setIsLoading(false);
           }
           const data = JSON.parse(event.data);
-          const sender = data.sender;
-          const text = data.message;
+          const { sender, message: text, created_at } = data;
 
           // AI가 보낸 메시지만 화면에 추가하고, 사용자가 보낸 메시지는 무시 (에코 방지)
           if (sender === 'ai') {
-            setMessages(prev => [...prev, { sender, text }]);
+            setMessages(prev => [...prev, { sender, text, created_at }]);
             setIsTyping(false);
+          } else if (sender === 'user') {
+            // 히스토리 로드 시 사용자 메시지도 받아서 처리
+            setMessages(prev => [...prev, { sender, text, created_at }]);
           }
         };
 
@@ -121,7 +123,10 @@ export default function ChatPage() {
       const messagePayload = { message: input };
       socketRef.current.send(JSON.stringify(messagePayload));
       // 사용자가 보낸 메시지를 화면에 즉시 표시
-      setMessages(prev => [...prev, { sender: 'user', text: input }]);
+      setMessages(prev => [
+        ...prev,
+        { sender: 'user', text: input, created_at: new Date().toISOString() },
+      ]);
       setInput('');
       setIsTyping(true);
     }
@@ -130,6 +135,16 @@ export default function ChatPage() {
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     sendMessage();
+  };
+
+  const formatTime = (isoString: string) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    return date.toLocaleTimeString('ko-KR', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
   };
 
   return (
@@ -177,6 +192,11 @@ export default function ChatPage() {
                   className={styles.avatar}
                 />
               )}
+
+              {msg.sender === 'user' && (
+                <span className={styles.timestamp}>{formatTime(msg.created_at)}</span>
+              )}
+
               <div className={styles.messageContent}>
                 {msg.sender === 'ai' && (
                   <span className={styles.senderName}>{character?.name}</span>
@@ -202,6 +222,10 @@ export default function ChatPage() {
                     })}
                 </div>
               </div>
+
+              {msg.sender === 'ai' && (
+                <span className={styles.timestamp}>{formatTime(msg.created_at)}</span>
+              )}
             </div>
           ))
         )}
