@@ -116,14 +116,27 @@ CREATE INDEX IF NOT EXISTS idx_character_hashtags_hashtag_id ON character_hashta
 -- 채팅내역 Table
 CREATE TABLE IF NOT EXISTS chat_messages (
     id BIGSERIAL PRIMARY KEY,
+    uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     character_id BIGINT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
     sender_type VARCHAR(10) NOT NULL CHECK (sender_type IN ('user', 'ai')),
     content TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 반응(Reaction) Table
+CREATE TABLE IF NOT EXISTS reactions (
+    id BIGSERIAL PRIMARY KEY,
+    message_id BIGINT NOT NULL REFERENCES chat_messages(id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    emoji VARCHAR(50) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE (user_id, character_id, created_at)
+    UNIQUE (message_id, user_id, emoji)
 );
 
 -- Create indexes for faster queries
 CREATE INDEX IF NOT EXISTS idx_chat_messages_user_id_character_id_created_at
 ON chat_messages (user_id, character_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_reactions_message_id
+ON reactions(message_id);

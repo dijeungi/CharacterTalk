@@ -7,7 +7,9 @@
  */
 
 export interface Message {
+  uuid: string;
   sender: string;
   text: string;
   created_at: string;
+  reactions?: { [emoji: string]: string[] };
 }
