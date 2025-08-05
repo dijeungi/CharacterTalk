@@ -63,6 +63,10 @@
   gap: 0.6rem;
 }
 
+.messageRow.user .bubbleContainer {
+  flex-direction: row-reverse;
+}
+
 .senderName {
   font-size: 0.85rem;
   font-weight: 600;
