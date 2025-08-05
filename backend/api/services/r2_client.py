@@ -1,5 +1,13 @@
-# backend/api/services/r2_client.py
+"""
+@file         backend/api/services/r2_client.py
+@desc         Cloudflare R2 스토리지 클라이언트 유틸리티 파일
+ 
+@summary      get_r2_client, test_r2_connection 함수 정의
+@description  Boto3를 사용하여 Cloudflare R2 스토리지 서비스와 상호작용하는 클라이언트를 생성하고 연결을 테스트합니다.
 
+@author       최준호
+@update       2025.08.05
+"""
 import sys
 import boto3
 from botocore.config import Config

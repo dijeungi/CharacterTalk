@@ -1,3 +1,13 @@
+"""
+@file         backend/api/services/ai_service.py
+@desc         AI 모델을 이용한 이미지 생성 서비스 파일
+ 
+@summary      AIGenerationService 클래스 정의
+@description  Hugging Face의 DiffusionPipeline을 사용하여 한국어 프롬프트를 영어로 번역하고, 이를 기반으로 이미지를 생성하여 R2 스토리지에 업로드합니다.
+
+@author       최준호
+@update       2025.08.05
+"""
 import os
 import uuid
 import torch

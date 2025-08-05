@@ -1,4 +1,13 @@
-# backend/api/services/gemini_service.py
+"""
+@file         backend/api/services/gemini_service.py
+@desc         Gemini API를 이용한 챗봇 응답 생성 서비스 파일
+ 
+@summary      GeminiService 클래스 정의
+@description  Google Gemini API를 사용하여 캐릭터 설정과 대화 기록을 기반으로 자연스러운 역할극 응답을 생성합니다.
+
+@author       최준호
+@update       2025.08.05
+"""
 import os
 import google.generativeai as genai
 from django.conf import settings

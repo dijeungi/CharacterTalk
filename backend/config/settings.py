@@ -1,5 +1,13 @@
-# backend/config/settings.py
+"""
+@file         backend/config/settings.py
+@desc         Django 프로젝트 설정 파일
+ 
+@summary      프로젝트의 주요 설정 변수 정의
+@description  데이터베이스, 설치된 앱, 미들웨어, 정적 파일, 인증, CORS, 외부 API 키 등 프로젝트 전반의 설정을 구성합니다.
 
+@author       최준호
+@update       2025.08.05
+"""
 from pathlib import Path
 import os
 from dotenv import load_dotenv
