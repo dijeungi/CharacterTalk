@@ -28,12 +28,27 @@
 
 'use client';
 
+import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+
 // components
 import MainSwiper from './_components/main/MainSwiper';
 import SubSwiper from './_components/main/SubSwiper';
 import GridSwiper from './_components/main/GridSwiper';
+import { Toast } from './_utils/Swal';
 
 export default function Home() {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('character_created') === 'true') {
+      Toast.fire({
+        icon: 'success',
+        title: '캐릭터가 성공적으로 등록되었습니다!',
+      });
+    }
+  }, [searchParams]);
+
   return (
     <main>
       {/* main */}

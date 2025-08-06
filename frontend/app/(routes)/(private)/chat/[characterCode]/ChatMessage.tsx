@@ -31,25 +31,26 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   onLongPressEnd,
   reactions,
 }) => {
-  // isStreaming이 true일 때만 빈 문자열로 시작, 아닐 경우 전체 텍스트로 시작
   const [displayedText, setDisplayedText] = useState(
     msg.sender === 'ai' && isStreaming ? '' : msg.text
   );
 
   useEffect(() => {
-    // isStreaming이 true인 AI 메시지에만 타이핑 효과 적용
     if (msg.sender === 'ai' && isStreaming) {
       let i = 0;
       const typingInterval = setInterval(() => {
         if (i < msg.text.length) {
-          setDisplayedText(prev => prev + msg.text.charAt(i));
           i++;
+          setDisplayedText(msg.text.slice(0, i));
         } else {
           clearInterval(typingInterval);
         }
       }, 50); // 50ms 간격
 
       return () => clearInterval(typingInterval);
+    } else {
+      // 스트리밍이 아닐 경우, 전체 텍스트를 즉시 표시
+      setDisplayedText(msg.text);
     }
   }, [msg.text, msg.sender, isStreaming]);
 

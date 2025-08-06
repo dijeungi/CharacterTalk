@@ -33,6 +33,7 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
   // 상태 초기화
   const [imageGeneratorDrawerOpen, setImageGeneratorDrawerOpen] = useState(false);
   const [continueModalOpen, setContinueModalOpen] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const isNavigatingNext = useRef(false);
 
@@ -140,7 +141,10 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
                 </label>
 
                 <div className={styles.profileRow}>
-                  <div className={styles.imageBox}>
+                  <div
+                    className={styles.imageBox}
+                    onClick={() => imagePreview && setIsImageModalOpen(true)}
+                  >
                     {imagePreview && (
                       <img src={imagePreview} alt="Profile" className={styles.profileImage} />
                     )}
@@ -201,25 +205,26 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
               {/* 한 줄 소개 입력 */}
               <div className={styles.field}>
                 <label className={styles.label}>
-                  설명 <span className={styles.required}>*</span>
+                  한 줄 설명 <span className={styles.required}>*</span>
                 </label>
                 <div className={styles.textareaWrapper}>
                   <textarea
                     value={oneliner}
-                    maxLength={300}
+                    maxLength={50}
                     className={styles.textarea}
                     onChange={handleOnelinerChange}
-                    placeholder="캐릭터의 특징, 행동, 감정 표현에 대해 자세히 작성해주세요. 그러면 개성 넘치는 캐릭터를 만들 수 있습니다.
-예시: 수현은 말이 거칠고, 다양한 비속어를 자주 사용합니다."
-                    rows={3}
+                    placeholder='캐릭터의 핵심 성격/매력을 담아주세요. (예: "엉뚱하지만 사랑스러운 우리 과 새내기")'
+                    rows={2}
                   />
-                  <div className={styles.textareaCharCount}>{oneliner.length} / 300</div>
+                  <div className={styles.textareaCharCount}>{oneliner.length} / 50</div>
                 </div>
               </div>
 
               {/* mbti */}
               <div className={styles.field}>
-                <label className={styles.label}>MBTI</label>
+                <label className={styles.label}>
+                  MBTI <span className={styles.required}>*</span>
+                </label>
                 <p className={styles.caption}>캐릭터의 성격을 나타내는 MBTI를 선택해 주세요.</p>
                 <div className={styles.selectWrapper}>
                   <select className={styles.select} value={mbti} onChange={handleMbtiChange}>
@@ -302,6 +307,11 @@ export default function Step1_Profile({ onNext, fromStep2 }: Step1Props) {
         onNew={handleNewCreation}
         onContinue={handleContinueCreation}
       />
+      {isImageModalOpen && imagePreview && (
+        <div className={styles.imageModalOverlay} onClick={() => setIsImageModalOpen(false)}>
+          <img src={imagePreview} alt="Profile enlarged" className={styles.enlargedImage} />
+        </div>
+      )}
     </>
   );
 }

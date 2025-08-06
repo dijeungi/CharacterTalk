@@ -66,15 +66,9 @@ export default function CharactersNewPage() {
 
       Toast.close();
 
-      // 성공 토스트 보여주기
-      Toast.fire({
-        icon: 'success',
-        title: '캐릭터가 성공적으로 등록되었습니다!',
-      });
-
       resetAllData();
 
-      router.push(`/character/${response.characterCode}`);
+      router.push('/?character_created=true');
     } catch (error: any) {
       Toast.close();
 
