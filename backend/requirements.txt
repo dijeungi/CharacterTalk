@@ -1,31 +1,11 @@
-# Django & API
-django
-djangorestframework
-
-# CORS
-django-cors-headers
-
-# AI & Image
-torch
-diffusers
-transformers
-safetensors
-sentencepiece
-Pillow
-sacremoses
-google-generativeai
-
-# 클라우드 플레어 R2 스토리지 관련
-boto3
-
-# Environment
-python-dotenv
-dj-database-url
-
-# WebSocket
-daphne
-channels
-channels-redis
-
-# PostgreSQL
-psycopg2-binary
+Django==5.2.4
+channels==4.3.0
+channels-redis==4.3.0
+daphne==4.2.1
+psycopg2-binary==2.9.10
+djangorestframework==3.16.0
+google-generativeai==0.8.5
+Pillow==11.3.0
+boto3==1.40.3
+python-dotenv==1.1.1
+httpx==0.28.1
