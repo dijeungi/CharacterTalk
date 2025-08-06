@@ -33,6 +33,7 @@ export interface Character {
   target: string;
   creator_name: string;
   hashtags: string[];
+  conversation_count: number;
 }
 
 // 캐릭터 목록 필터 타입
@@ -85,4 +86,5 @@ export interface CharacterDetailResponse {
     user: string;
     character: string;
   }[];
+  conversation_count: number;
 }

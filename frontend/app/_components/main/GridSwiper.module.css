@@ -44,6 +44,22 @@
 .imageWrapper {
   width: 100%;
   aspect-ratio: 1 / 1;
+  position: relative;
+}
+
+.conversationCountOverlay {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  z-index: 1;
 }
 
 .img {

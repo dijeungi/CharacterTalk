@@ -11,6 +11,7 @@ import styles from '@/app/(routes)/(public)/characters/[characterCode]/page.modu
 
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
+import { BsChatFill } from 'react-icons/bs';
 
 import axiosNext from '@/app/_lib/axiosNext';
 import { CharacterDetailSkeleton } from '@/app/_skeletons/Skeletons';
@@ -75,6 +76,10 @@ export default function CharacterDetailPage() {
             height={300}
             className={styles.profileImage}
           />
+          <div className={styles.conversationCountOverlay}>
+            <BsChatFill />
+            <span>{character.conversation_count}</span>
+          </div>
         </div>
         <button className={styles.chatButton} onClick={handleChatStart}>
           대화 시작하기

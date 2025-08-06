@@ -38,7 +38,8 @@ export async function GET(request: NextRequest, context: { params: { code: strin
     const query = `
       SELECT
         c.*,
-        u.name as creator_name
+        u.name as creator_name,
+        c.conversation_count
       FROM
         characters c
       LEFT JOIN

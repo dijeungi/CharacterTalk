@@ -14,6 +14,7 @@ import GridSwiperSkeleton from '@/app/_components/main/GridSwiperSkeleton';
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { BsChatFill } from 'react-icons/bs';
 
 import { useFetchCharactersQuery } from '@/app/_apis/character/_hooks';
 
@@ -53,6 +54,10 @@ export default function GridSwiper() {
                   height={300}
                   className={styles.img}
                 />
+                <div className={styles.conversationCountOverlay}>
+                  <BsChatFill />
+                  <span>{char.conversation_count}</span>
+                </div>
               </div>
               <div className={styles.info}>
                 <p className={styles.name}>{char.name}</p>

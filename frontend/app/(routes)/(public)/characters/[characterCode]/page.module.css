@@ -28,6 +28,21 @@
   object-fit: cover;
 }
 
+.conversationCountOverlay {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  z-index: 1;
+}
+
 .chatButton {
   width: 100%;
   padding: 1rem;
