@@ -121,7 +121,7 @@ export default function CharacterDetailPage() {
                     <strong>사용자:</strong> {dialog.user}
                   </p>
                   <p>
-                    <strong>{character.name}:</strong> {dialog.character}
+                    <strong>{character.name}:</strong> {dialog.ai}
                   </p>
                 </div>
               ))}
