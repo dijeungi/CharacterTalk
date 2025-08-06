@@ -9,6 +9,7 @@
 @update       2025.08.05
 """
 import sys
+import os
 import boto3
 from botocore.config import Config
 from django.conf import settings
@@ -24,6 +25,7 @@ def get_r2_client():
 
 def test_r2_connection():
     try:
+        os.system('clear')
         client = get_r2_client()
         client.list_objects_v2(Bucket=settings.R2_BUCKET_NAME)
         print("[✔] R2 연결 성공")

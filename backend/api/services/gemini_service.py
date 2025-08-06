@@ -8,8 +8,7 @@
 @author       최준호
 @update       2025.08.05
 """
-import os
-import google.generativeai as genai
+import httpx
 from django.conf import settings
 from api.models import Character
 
@@ -18,29 +17,52 @@ class GeminiService:
         self.api_key = settings.GEMINI_API_KEY
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY가 설정되지 않았습니다.")
-        genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        self.api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={self.api_key}"
 
-    def generate_response(self, character: Character, user_message: str, chat_history: list) -> str:
+    async def generate_response(self, character: Character, user_message: str, chat_history: list) -> str:
         system_prompt = self._create_system_prompt(character)
         
-        # 대화 기록을 Gemini API 형식에 맞게 변환
         history_for_api = []
         for msg in chat_history:
             role = 'user' if msg['sender'] == 'user' else 'model'
             history_for_api.append({'role': role, 'parts': [{'text': msg['message']}]})
 
-        try:
-            chat_session = self.model.start_chat(history=history_for_api)
-            
-            # 시스템 프롬프트를 첫 메시지로 추가 (API 정책에 따라)
-            full_prompt = f"{system_prompt}\n\n---\n\n{user_message}"
-            
-            response = chat_session.send_message(full_prompt)
-            return response.text
-        except Exception as e:
-            print(f"[!] Gemini API 오류: {e}")
-            return "죄송합니다. 지금은 답변을 생성할 수 없습니다."
+        # 시스템 프롬프트는 대화 기록에 포함시키지 않고, 최종 요청에만 결합합니다.
+        # 이렇게 하면 API가 시스템 지시사항을 더 명확하게 인식합니다.
+        final_user_prompt = f"{system_prompt}\n\n---\n\n{user_message}"
+        full_conversation = history_for_api + [{'role': 'user', 'parts': [{'text': final_user_prompt}]}]
+
+        payload = {
+            "contents": full_conversation,
+            "generationConfig": {
+                "temperature": 0.9,
+                "topK": 1,
+                "topP": 1,
+                "maxOutputTokens": 2048,
+            }
+        }
+
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.post(self.api_url, json=payload, timeout=60.0)
+                response.raise_for_status()
+                result = response.json()
+                
+                # API 응답 구조에 따라 안전하게 텍스트 추출
+                if 'candidates' in result and result['candidates']:
+                    content = result['candidates'][0].get('content', {})
+                    if 'parts' in content and content['parts']:
+                        return content['parts'][0].get('text', '')
+                
+                print(f"[!] Gemini API 응답 형식 오류: {result}")
+                return "응답 형식이 올바르지 않아 답변을 생성할 수 없습니다."
+
+            except httpx.HTTPStatusError as e:
+                print(f"[!] Gemini API HTTP 오류: {e.response.status_code} - {e.response.text}")
+                return "API 서버 오류로 답변을 생성할 수 없습니다."
+            except Exception as e:
+                print(f"[!] Gemini API 호출 중 알 수 없는 오류: {e}")
+                return "죄송합니다. 지금은 답변을 생성할 수 없습니다."
 
     def _create_system_prompt(self, character: Character) -> str:
         dialogs = "\n".join([f"사용자: {d['user']}\n{character.name}: {d['ai']}" for d in character.example_dialogs]) if character.example_dialogs else "없음"

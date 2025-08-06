@@ -11,6 +11,7 @@
 import json
 import re
 import asyncio
+import traceback
 from urllib.parse import parse_qs
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
@@ -84,36 +85,45 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message_content = text_data_json['message']
         
-        # 1. 사용자 메시지 저장
         user_message = await self.save_chat_message('user', message_content)
         self.chat_history.append({"sender": "user", "message": message_content})
-
-        # 2. 사용자 메시지를 클라이언트에게 즉시 전송
         await self.send_message_to_client(user_message)
 
-        # 3. AI 응답 생성을 백그라운드 작업으로 시작
         asyncio.create_task(self.generate_and_send_ai_response(message_content))
 
     async def generate_and_send_ai_response(self, user_message_content):
         """AI 응답을 생성하고 그룹에 브로드캐스트합니다."""
-        raw_ai_response = await self.generate_ai_response(user_message_content)
-        ai_response_content = self.format_ai_response(raw_ai_response)
-        
-        ai_message = await self.save_chat_message('ai', ai_response_content)
-        self.chat_history.append({"sender": "ai", "message": ai_response_content})
+        try:
+            recent_history = self.chat_history[-10:]
+            raw_ai_response = await gemini_service.generate_response(
+                self.character, user_message_content, recent_history
+            )
 
-        # AI 메시지를 채널 그룹으로 전송
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message_uuid': str(ai_message.uuid)
-            }
-        )
+            if not raw_ai_response or not raw_ai_response.strip():
+                print("[AI] 오류: AI가 빈 응답을 반환했습니다.")
+                return
+
+            ai_response_content = self.format_ai_response(raw_ai_response)
+            
+            ai_message = await self.save_chat_message('ai', ai_response_content)
+            self.chat_history.append({"sender": "ai", "message": ai_response_content})
+
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message_uuid': str(ai_message.uuid)
+                }
+            )
+        except Exception as e:
+            print(f"[AI] 치명적 오류 발생 in generate_and_send_ai_response: {e}")
+            traceback.print_exc()
 
     async def chat_message(self, event):
-        # 그룹에서 받은 메시지(AI 메시지)를 클라이언트에게 전송
-        message_uuid = event['message_uuid']
+        message_uuid = event.get('message_uuid')
+        if not message_uuid:
+            return
+
         message = await self.get_chat_message(message_uuid)
         if message:
             await self.send_message_to_client(message)
@@ -136,13 +146,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return None
 
     def format_ai_response(self, text: str) -> str:
-        # 행동 지시문 뒤에 점이 오는 경우(예: *웃는다.*) 일관성을 위해 점을 제거합니다.
-        processed_text = re.sub(r'(\*.*?\*)\s*\.', r'\1', text.strip())
-        # 행동 지시문을 기준으로 문장을 분리하되, 지시문은 유지합니다.
-        parts = re.split(r'(\*.*?\*)', processed_text)
-        # 각 부분을 정리하고 빈 문자열을 제거합니다.
+        # 행동 지시문과 일반 텍스트를 분리 (지시문 유지)
+        parts = re.split(r'(\*.*?\*)', text) 
+        
+        # 각 부분의 앞뒤 공백을 제거하고, 빈 문자열이 아닌 것만 필터링
         cleaned_parts = [p.strip() for p in parts if p.strip()]
-        # 각 부분을 두 줄 띄어쓰기로 합쳐서 반환합니다.
+        
+        # 분리된 부분들을 두 줄 띄어쓰기로 합쳐서 반환
         return '\n\n'.join(cleaned_parts)
 
     @database_sync_to_async
@@ -158,11 +168,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return Character.objects.get(code=code)
         except Character.DoesNotExist:
             return None
-
-    @database_sync_to_async
-    def generate_ai_response(self, user_message):
-        recent_history = self.chat_history[-10:]
-        return gemini_service.generate_response(self.character, user_message, recent_history)
 
     @database_sync_to_async
     def get_chat_history(self):
