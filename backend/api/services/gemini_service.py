@@ -17,7 +17,7 @@ class GeminiService:
         self.api_key = settings.GEMINI_API_KEY
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY가 설정되지 않았습니다.")
-        self.api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={self.api_key}"
+        self.api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={self.api_key}"
 
     async def generate_response(self, character: Character, user_message: str, chat_history: list) -> str:
         system_prompt = self._create_system_prompt(character)
