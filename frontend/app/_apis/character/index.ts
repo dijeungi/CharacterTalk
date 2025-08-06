@@ -18,6 +18,7 @@ import {
   UploadProfileImageResponse,
   CharacterDetailResponse,
 } from '@/app/_apis/character/types';
+import { Character } from '../user/types';
 
 // 캐릭터 목록을 불러오는 API 함수 - [GET] /api/character?
 export const fetchCharacters = async (filters: CharacterListFilters) => {
@@ -57,5 +58,14 @@ export const fetchCharacterDetail = async (code: string) => {
 // 메시지 반응(이모티콘) 추가/삭제 API 함수 - [POST] /api/messages/{message_uuid}/reactions/
 export const toggleReaction = async (messageUuid: string, emoji: string) => {
   const res = await axiosNext.post(`/messages/${messageUuid}/reactions/`, { emoji });
+  return res.data;
+};
+
+// 랭킹 데이터를 불러오는 API 함수 - [GET] /api/ranking?period=
+export const fetchRanking = async (period: string) => {
+  const res = await axiosNext.get<Character[]>(`/ranking?period=${period}`);
+  if (res.status === 204) {
+    return [];
+  }
   return res.data;
 };

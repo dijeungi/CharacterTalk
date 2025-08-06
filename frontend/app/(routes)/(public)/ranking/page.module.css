@@ -12,6 +12,39 @@
   margin-bottom: 1.5rem;
 }
 
+.tabContainer {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabButton {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b7280;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tabButton.active {
+  color: #007aff;
+}
+
+.tabButton.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #007aff;
+}
+
 .list {
   flex-grow: 1;
   overflow-y: auto;
@@ -93,4 +126,24 @@
   color: #4b5563;
   margin-left: auto;
   flex-shrink: 0;
+}
+
+.noDataMessage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  color: #6b7280;
+  gap: 0.5rem;
+}
+
+.noDataMessage p:first-child {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.noDataMessage p:last-child {
+  font-size: 1rem;
 }

@@ -25,6 +25,7 @@ export interface PaginationInfo {
 // 목록에 표시될 개별 캐릭터의 정보
 export interface Character {
   id: number;
+  rank?: number; // 랭킹 필드 추가 (선택적)
   code: string;
   name: string;
   profile_image_url: string | null;

@@ -9,6 +9,7 @@
 import {
   fetchCharacters,
   fetchCharacterDetail,
+  fetchRanking,
   requestGenerateCharacterImage,
   uploadProfileImage,
 } from '@/app/_apis/character';
@@ -21,6 +22,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 export const characterKeys = createQueryKeys('character', {
   list: (filters: { sort: string; page: number }) => ['list', filters],
   detail: (code: string) => ['detail', code],
+  ranking: (period: string) => ['ranking', period],
   generateImage: null,
   uploadProfile: null,
 });
@@ -39,6 +41,14 @@ export const useCharacterDetailQuery = (code: string) => {
     queryKey: characterKeys.detail(code).queryKey,
     queryFn: () => fetchCharacterDetail(code),
     enabled: !!code, // 코드가 있을 때만 쿼리 실행
+  });
+};
+
+// [GET] /api/ranking?period=
+export const useFetchRankingQuery = (period: string) => {
+  return useQuery({
+    queryKey: characterKeys.ranking(period).queryKey,
+    queryFn: () => fetchRanking(period),
   });
 };
 
