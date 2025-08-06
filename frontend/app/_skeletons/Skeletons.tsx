@@ -149,3 +149,27 @@ export const ChatMessageSkeleton = () => {
     </>
   );
 };
+
+/**
+ * @description 랭킹 페이지 행용 스켈레톤 UI
+ */
+export const CharacterRowSkeleton = () => {
+  return (
+    <div className={skeletonStyles.row}>
+      <div className={skeletonStyles.rowRankSection}>
+        <div className={`${skeletonStyles.skeleton} ${skeletonStyles.rowRank}`} />
+      </div>
+      <div className={skeletonStyles.rowInfoCell}>
+        <div className={`${skeletonStyles.skeleton} ${skeletonStyles.rowAvatar}`} />
+        <div className={skeletonStyles.rowNameAndCreator}>
+          <div className={`${skeletonStyles.skeleton} ${skeletonStyles.rowName}`} />
+          <div className={`${skeletonStyles.skeleton} ${skeletonStyles.rowCreator}`} />
+        </div>
+      </div>
+      <div className={skeletonStyles.rowTags}>
+        <div className={`${skeletonStyles.skeleton} ${skeletonStyles.rowTag}`} />
+        <div className={`${skeletonStyles.skeleton} ${skeletonStyles.rowTag}`} />
+      </div>
+    </div>
+  );
+};

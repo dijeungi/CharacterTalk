@@ -147,3 +147,68 @@
 .user .chatBubble:first-child {
   border-top-right-radius: 0.3rem;
 }
+
+/* ================== 랭킹 페이지 행 스켈레톤 ================== */
+.row {
+  display: grid;
+  grid-template-columns: 80px 1fr 250px;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f3f5;
+}
+.row:last-child {
+  border-bottom: none;
+}
+
+.rowRankSection {
+  text-align: center;
+}
+
+.rowRank {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.rowInfoCell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rowAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.rowNameAndCreator {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.rowName {
+  width: 150px;
+  height: 1.1rem;
+  border-radius: 4px;
+}
+
+.rowCreator {
+  width: 100px;
+  height: 0.9rem;
+  border-radius: 4px;
+}
+
+.rowTags {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.rowTag {
+  width: 70px;
+  height: 2rem;
+  border-radius: 9999px;
+}
