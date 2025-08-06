@@ -12,11 +12,11 @@ import json
 import re
 import asyncio
 import traceback
+import time
 from urllib.parse import parse_qs
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.utils import timezone
-from django.db.models import Count, F
 from api.models import Character, ChatMessage, User
 from api.services.gemini_service import gemini_service
 import redis
@@ -147,7 +147,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     def format_ai_response(self, text: str) -> str:
         # 행동 지시문과 일반 텍스트를 분리 (지시문 유지)
-        parts = re.split(r'(\*.*?\*)', text) 
+        parts = re.split(r'(*.*?)', text)
         
         # 각 부분의 앞뒤 공백을 제거하고, 빈 문자열이 아닌 것만 필터링
         cleaned_parts = [p.strip() for p in parts if p.strip()]

@@ -6,15 +6,18 @@
 @description  Django REST Framework의 APIView를 상속받아 각 API 엔드포인트의 요청/응답 로직을 처리합니다.
 
 @author       최준호
-@update       2025.08.05
+@update       2025.08.06
 """
 
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from .services.ai_service import ai_service
-from .models import ChatMessage
+from .models import Character
+import redis
+
+# Redis 클라이언트 설정
+redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
 
 class ImageGenerationView(APIView):
     """AI를 이용한 이미지 생성을 처리하는 뷰"""
@@ -28,15 +31,11 @@ class ImageGenerationView(APIView):
             return Response({"error": "프롬프트(prompt)를 입력해주세요."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            print("API View: 이미지 생성 요청 수신. 서비스 호출 시작...")
             image_urls = ai_service.generate_image(korean_prompt, width, height, num_images)
-            print("API View: 서비스 작업 완료. 응답 반환.")
-            
             return Response({
                 "message": "이미지가 성공적으로 생성되었습니다.",
                 "image_urls": image_urls
             }, status=status.HTTP_201_CREATED)
-
         except Exception as e:
             import traceback
             traceback.print_exc()
