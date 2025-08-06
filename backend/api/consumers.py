@@ -146,13 +146,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return None
 
     def format_ai_response(self, text: str) -> str:
-        # 행동 지시문과 일반 텍스트를 분리 (지시문 유지)
-        parts = re.split(r'(*.*?)', text)
+        # AI 응답을 `(...)` 또는 `*...*` 패턴을 기준으로 분리합니다.
+        # 괄호를 사용하여 분리 기준이 된 패턴(delimiter)도 결과에 포함시킵니다.
+        parts = re.split(r'(\([^)]*\)|\*.*?\*)', text)
         
-        # 각 부분의 앞뒤 공백을 제거하고, 빈 문자열이 아닌 것만 필터링
+        # 각 부분의 앞뒤 공백을 제거하고, 내용이 없는 부분은 제외합니다.
         cleaned_parts = [p.strip() for p in parts if p.strip()]
         
-        # 분리된 부분들을 두 줄 띄어쓰기로 합쳐서 반환
+        # 정리된 부분들을 두 줄의 줄바꿈으로 합쳐 최종 결과물을 만듭니다.
         return '\n\n'.join(cleaned_parts)
 
     @database_sync_to_async
