@@ -1,10 +1,11 @@
--- 임시 테스트 계정 추가
+-- 임시 캐릭터를 추가하기 위한 테스트 계정 추가
+-- 자체 로그인 기능이 없기에 이 계정으로는 로그인이 불가합니다.
+-- 소셜 로그인으로 회원가입을 진행해주셔도 원활한 테스트가 가능합니다.
 INSERT INTO users (email, name, oauth_provider, role, status)
 VALUES ('testuser@example.com', '테스트유저', 'local', 'user', 'active')
 ON CONFLICT (email) DO NOTHING;
 
-
--- 임시 캐릭터 추가
+-- 임시 대화 캐릭터 추가
 -- 1번째 캐릭터 이로운.
 INSERT INTO characters (
     creator_id, name, oneliner, mbti,
@@ -102,12 +103,11 @@ DECLARE
     hashtag_id_5 BIGINT;
     hashtag_id_6 BIGINT;
 BEGIN
-    -- Get character IDs
+
     SELECT id INTO iroun_id FROM characters WHERE name = '이로운';
     SELECT id INTO lillian_id FROM characters WHERE name = '릴리안';
     SELECT id INTO taepung_id FROM characters WHERE name = '강태풍';
 
-    -- Upsert hashtags and get their IDs
     INSERT INTO hashtags (name) VALUES ('#탐정'), ('#SF'), ('#엘프'), ('#판타지'), ('#농구'), ('#일상')
     ON CONFLICT (name) DO NOTHING;
 
@@ -118,49 +118,21 @@ BEGIN
     SELECT id INTO hashtag_id_5 FROM hashtags WHERE name = '#농구';
     SELECT id INTO hashtag_id_6 FROM hashtags WHERE name = '#일상';
 
-    -- Link hashtags to Iroun
     IF iroun_id IS NOT NULL THEN
         INSERT INTO character_hashtags (character_id, hashtag_id) VALUES (iroun_id, hashtag_id_1) ON CONFLICT DO NOTHING;
         INSERT INTO character_hashtags (character_id, hashtag_id) VALUES (iroun_id, hashtag_id_2) ON CONFLICT DO NOTHING;
         UPDATE hashtags SET character_count = character_count + 1 WHERE id IN (hashtag_id_1, hashtag_id_2);
     END IF;
 
-    -- Link hashtags to Lillian
     IF lillian_id IS NOT NULL THEN
         INSERT INTO character_hashtags (character_id, hashtag_id) VALUES (lillian_id, hashtag_id_3) ON CONFLICT DO NOTHING;
         INSERT INTO character_hashtags (character_id, hashtag_id) VALUES (lillian_id, hashtag_id_4) ON CONFLICT DO NOTHING;
         UPDATE hashtags SET character_count = character_count + 1 WHERE id IN (hashtag_id_3, hashtag_id_4);
     END IF;
 
-    -- Link hashtags to Kang Tae-pung
     IF taepung_id IS NOT NULL THEN
         INSERT INTO character_hashtags (character_id, hashtag_id) VALUES (taepung_id, hashtag_id_5) ON CONFLICT DO NOTHING;
         INSERT INTO character_hashtags (character_id, hashtag_id) VALUES (taepung_id, hashtag_id_6) ON CONFLICT DO NOTHING;
         UPDATE hashtags SET character_count = character_count + 1 WHERE id IN (hashtag_id_5, hashtag_id_6);
-    END IF;
-END $$;
-
-
--- 채팅 메시지 데이터 추가
-DO $$
-DECLARE
-    user_id_val BIGINT;
-    character_id_val BIGINT;
-    message_id_val BIGINT;
-BEGIN
-    -- Get user and character IDs
-    SELECT id INTO user_id_val FROM users WHERE email = 'testuser@example.com';
-    SELECT id INTO character_id_val FROM characters WHERE name = '이로운';
-
-    -- Insert a chat message from the user
-    IF user_id_val IS NOT NULL AND character_id_val IS NOT NULL THEN
-        INSERT INTO chat_messages (user_id, character_id, sender_type, content)
-        VALUES (user_id_val, character_id_val, 'user', '안녕하세요, 탐정님. 소문 듣고 찾아왔습니다.')
-        RETURNING id INTO message_id_val;
-
-        -- Insert a response from the AI
-        INSERT INTO chat_messages (user_id, character_id, sender_type, content)
-        VALUES (user_id_val, character_id_val, 'ai', '...용건만 간단히. 시간은 금이라고, 여기선 더더욱.')
-        RETURNING id INTO message_id_val;
     END IF;
 END $$;

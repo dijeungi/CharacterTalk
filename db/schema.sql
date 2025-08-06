@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS characters (
     visibility VARCHAR(20) NOT NULL DEFAULT 'private',
     comments_enabled BOOLEAN NOT NULL DEFAULT TRUE,
     status VARCHAR(20) NOT NULL DEFAULT 'active',
+    conversation_count INT NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMPTZ
@@ -125,6 +126,33 @@ CREATE TABLE IF NOT EXISTS chat_messages (
 -- Create indexes for faster queries
 CREATE INDEX IF NOT EXISTS idx_chat_messages_user_id_character_id_created_at
 ON chat_messages (user_id, character_id, created_at DESC);
+
+-- 캐릭터 상호작용 기록 테이블 (랭킹용)
+CREATE TABLE IF NOT EXISTS character_interactions (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    character_id BIGINT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (user_id, character_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_character_interactions_character_id_created_at
+ON character_interactions (character_id, created_at DESC);
+
+-- 주기적 랭킹 데이터 테이블
+CREATE TABLE IF NOT EXISTS character_rankings (
+    id BIGSERIAL PRIMARY KEY,
+    character_id BIGINT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+    ranking_type VARCHAR(10) NOT NULL, -- 'daily', 'weekly', 'monthly'
+    rank INT NOT NULL,
+    score INT NOT NULL,
+    calculated_at DATE NOT NULL,
+    UNIQUE (ranking_type, calculated_at, character_id),
+    UNIQUE (ranking_type, calculated_at, rank)
+);
+
+CREATE INDEX IF NOT EXISTS idx_character_rankings_type_date_rank
+ON character_rankings (ranking_type, calculated_at, rank);
 
 -- 반응(Reaction) Table
 CREATE TABLE IF NOT EXISTS reactions (
