@@ -68,14 +68,7 @@ export async function GET(request: NextRequest) {
     // 정렬 기준 설정
     let orderByClause = 'ORDER BY c.created_at DESC';
     if (sort === 'popular') {
-      orderByClause = `
-        ORDER BY (
-          SELECT SUM(h.character_count)
-          FROM character_hashtags ch
-          JOIN hashtags h ON ch.hashtag_id = h.id
-          WHERE ch.character_id = c.id
-        ) DESC NULLS LAST, c.created_at DESC
-      `;
+      orderByClause = 'ORDER BY c.conversation_count DESC, c.created_at DESC';
     }
 
     const whereString = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
@@ -84,7 +77,7 @@ export async function GET(request: NextRequest) {
     const dataQuery = `
       SELECT
         c.id, c.code, c.name, c.profile_image_url, c.oneliner,
-        c.genre, c.target, u.name as creator_name
+        c.genre, c.target, u.name as creator_name, c.conversation_count
       FROM characters c
       JOIN users u ON c.creator_id = u.id
       ${whereString}
