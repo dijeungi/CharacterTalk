@@ -20,6 +20,7 @@ import { ChatMessageSkeleton } from '@/app/_skeletons/Skeletons';
 
 import { FaArrowUp } from 'react-icons/fa';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { LoadingIndicator } from '@/app/_components/chat/LoadingIndicator';
 
 export default function ChatPage() {
   const params = useParams();
@@ -32,6 +33,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isAiTyping, setIsAiTyping] = useState(false);
   const socketRef = useRef<WebSocket | null>(null);
   const messageListRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -71,6 +73,11 @@ export default function ChatPage() {
           if (isLoading) setIsLoading(false);
           const data = JSON.parse(event.data);
 
+          // AI로부터 메시지를 받았을 때만 "입력 중" 상태를 해제합니다.
+          if (data.sender === 'ai') {
+            setIsAiTyping(false);
+          }
+
           const { uuid, sender, text, created_at, reactions } = data;
 
           setMessages(prev => {
@@ -96,6 +103,7 @@ export default function ChatPage() {
 
         socketRef.current.onerror = error => {
           setIsLoading(false);
+          setIsAiTyping(false);
           console.error('WebSocket error:', error);
           setMessages(prev => [
             ...prev,
@@ -121,13 +129,14 @@ export default function ChatPage() {
     if (messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isAiTyping]);
 
   const sendMessage = () => {
     if (input.trim() && socketRef.current?.readyState === WebSocket.OPEN) {
       const messagePayload = { message: input };
       socketRef.current.send(JSON.stringify(messagePayload));
       setInput('');
+      setIsAiTyping(true);
     }
   };
 
@@ -213,33 +222,36 @@ export default function ChatPage() {
         {isLoading ? (
           <ChatMessageSkeleton />
         ) : (
-          messages.map((msg, index) => (
-            <ChatMessage
-              key={msg.uuid || index}
-              msg={msg}
-              characterName={character?.name}
-              characterImageUrl={character?.profile_image_url}
-              isStreaming={msg.sender === 'ai' && index === messages.length - 1 && !isLoading}
-              onLongPressStart={(e, m) => handleLongPressStart(e, m)}
-              onLongPressEnd={handleLongPressEnd}
-              reactions={
-                msg.reactions &&
-                Object.keys(msg.reactions).length > 0 && (
-                  <div className={styles.reactionsContainer}>
-                    {Object.entries(msg.reactions).map(([emoji, users]) => (
-                      <div
-                        key={emoji}
-                        className={styles.reaction}
-                        onClick={() => handleReaction(msg, emoji)}
-                      >
-                        {emoji} {users.length}
-                      </div>
-                    ))}
-                  </div>
-                )
-              }
-            />
-          ))
+          <>
+            {messages.map((msg, index) => (
+              <ChatMessage
+                key={msg.uuid || index}
+                msg={msg}
+                characterName={character?.name}
+                characterImageUrl={character?.profile_image_url}
+                isStreaming={msg.sender === 'ai' && index === messages.length - 1 && !isLoading}
+                onLongPressStart={(e, m) => handleLongPressStart(e, m)}
+                onLongPressEnd={handleLongPressEnd}
+                reactions={
+                  msg.reactions &&
+                  Object.keys(msg.reactions).length > 0 && (
+                    <div className={styles.reactionsContainer}>
+                      {Object.entries(msg.reactions).map(([emoji, users]) => (
+                        <div
+                          key={emoji}
+                          className={styles.reaction}
+                          onClick={() => handleReaction(msg, emoji)}
+                        >
+                          {emoji} {users.length}
+                        </div>
+                      ))}
+                    </div>
+                  )
+                }
+              />
+            ))}
+            {isAiTyping && <LoadingIndicator />}
+          </>
         )}
       </div>
       <form className={styles.inputForm} onSubmit={handleSendMessage}>
