@@ -10,8 +10,6 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-
-
 -- users 테이블: 사용자 정보
 CREATE TABLE IF NOT EXISTS users (
     id BIGSERIAL PRIMARY KEY,
@@ -124,6 +122,10 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Create indexes for faster queries
+CREATE INDEX IF NOT EXISTS idx_chat_messages_user_id_character_id_created_at
+ON chat_messages (user_id, character_id, created_at DESC);
+
 -- 반응(Reaction) Table
 CREATE TABLE IF NOT EXISTS reactions (
     id BIGSERIAL PRIMARY KEY,
@@ -133,10 +135,6 @@ CREATE TABLE IF NOT EXISTS reactions (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE (message_id, user_id, emoji)
 );
-
--- Create indexes for faster queries
-CREATE INDEX IF NOT EXISTS idx_chat_messages_user_id_character_id_created_at
-ON chat_messages (user_id, character_id, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_reactions_message_id
 ON reactions(message_id);
