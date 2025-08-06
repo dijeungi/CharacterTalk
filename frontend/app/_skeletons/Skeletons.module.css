@@ -98,3 +98,52 @@
   height: 0.8rem;
   border-radius: 4px;
 }
+
+/* ================== 채팅 메시지 스켈레톤 ================== */
+.chatAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chatBubbleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.chatSenderName {
+  width: 20%;
+  height: 1rem;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+}
+
+.chatBubbleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.chatBubbleWrapper.user {
+  align-items: flex-end;
+}
+
+.chatBubble {
+  height: 5rem;
+  border-radius: 1rem;
+  max-width: 70%;
+}
+
+/* AI 말풍선 꼬리 */
+.ai .chatBubble:first-child {
+  border-top-left-radius: 0.3rem;
+}
+
+/* 사용자 말풍선 꼬리 */
+.user .chatBubble:first-child {
+  border-top-right-radius: 0.3rem;
+}

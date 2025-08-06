@@ -118,7 +118,7 @@
   max-height: 12rem;
   padding: 0.7rem 1rem;
   border: 1px solid #d1d5db;
-  border-radius: 1.4rem;
+  border-radius: 5px;
   font-size: 0.9rem;
   resize: none;
   overflow-y: auto;

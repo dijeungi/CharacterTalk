@@ -24,8 +24,6 @@ export default function ChatHeader() {
 
   const { data: character, isLoading } = useCharacterDetailQuery(characterCode!);
 
-  const characterName = isLoading ? '로딩 중...' : character?.name || '캐릭터 정보 없음';
-
   return (
     <header className={styles.container}>
       <div className={styles.leftSection}>
@@ -34,9 +32,13 @@ export default function ChatHeader() {
         </button>
       </div>
       <div className={styles.centerSection}>
-        <h1 className={styles.title}>{characterName}</h1>
+        {isLoading ? (
+          <div className={styles.skeletonTitle} />
+        ) : (
+          <h1 className={styles.title}>{character?.name || '캐릭터 정보 없음'}</h1>
+        )}
       </div>
-      <div className={styles.rightSection}>{/* 오른쪽은 비워둠 */}</div>
+      <div className={styles.rightSection}></div>
     </header>
   );
 }

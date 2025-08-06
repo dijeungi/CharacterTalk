@@ -20,6 +20,8 @@ import { toggleReaction as toggleReactionAPI } from '@/app/_apis/character';
 import { FaArrowUp } from 'react-icons/fa';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
+import { ChatMessageSkeleton } from '@/app/_skeletons/Skeletons';
+
 export default function ChatPage() {
   const params = useParams();
   const characterCode = Array.isArray(params.characterCode)
@@ -231,7 +233,7 @@ export default function ChatPage() {
       )}
       <div className={styles.messageList} ref={messageListRef}>
         {isLoading ? (
-          <div className={styles.skeletonContainer}></div>
+          <ChatMessageSkeleton />
         ) : (
           messages.map((msg, index) => (
             <div
