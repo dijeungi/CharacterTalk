@@ -10,17 +10,16 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
-import Image from 'next/image';
 import styles from '@/app/(routes)/(private)/chat/[characterCode]/page.module.css';
 
 import { Message } from '@/app/(routes)/(private)/chat/[characterCode]/_types';
 import { useCharacterDetailQuery } from '@/app/_apis/character/_hooks';
 import { toggleReaction as toggleReactionAPI } from '@/app/_apis/character';
+import { ChatMessage } from './ChatMessage';
+import { ChatMessageSkeleton } from '@/app/_skeletons/Skeletons';
 
 import { FaArrowUp } from 'react-icons/fa';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
-
-import { ChatMessageSkeleton } from '@/app/_skeletons/Skeletons';
 
 export default function ChatPage() {
   const params = useParams();
@@ -32,7 +31,6 @@ export default function ChatPage() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const socketRef = useRef<WebSocket | null>(null);
   const messageListRef = useRef<HTMLDivElement>(null);
@@ -40,10 +38,7 @@ export default function ChatPage() {
 
   // Emoji Picker State
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [currentTargetMessage, setCurrentTargetMessage] = useState<{
-    msg: Message;
-    index: number;
-  } | null>(null);
+  const [currentTargetMessage, setCurrentTargetMessage] = useState<Message | null>(null);
   const [pickerPosition, setPickerPosition] = useState({ x: 0, y: 0 });
   const longPressTimer = useRef<NodeJS.Timeout>();
 
@@ -84,12 +79,9 @@ export default function ChatPage() {
             }
             return [...prev, { uuid, sender, text, created_at, reactions }];
           });
-
-          if (sender === 'ai') setIsTyping(false);
         };
 
         socketRef.current.onclose = () => {
-          setIsTyping(false);
           if (!messages.some(m => m.sender === 'system' && m.text.includes('연결이 끊어졌습니다')))
             setMessages(prev => [
               ...prev,
@@ -104,7 +96,6 @@ export default function ChatPage() {
 
         socketRef.current.onerror = error => {
           setIsLoading(false);
-          setIsTyping(false);
           console.error('WebSocket error:', error);
           setMessages(prev => [
             ...prev,
@@ -130,14 +121,13 @@ export default function ChatPage() {
     if (messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
-  }, [messages, isTyping]);
+  }, [messages]);
 
   const sendMessage = () => {
     if (input.trim() && socketRef.current?.readyState === WebSocket.OPEN) {
       const messagePayload = { message: input };
       socketRef.current.send(JSON.stringify(messagePayload));
       setInput('');
-      setIsTyping(true);
     }
   };
 
@@ -146,26 +136,12 @@ export default function ChatPage() {
     sendMessage();
   };
 
-  const formatTime = (isoString: string) => {
-    if (!isoString) return '';
-    const date = new Date(isoString);
-    return date.toLocaleTimeString('ko-KR', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
-  };
-
-  const handleLongPressStart = (
-    e: React.MouseEvent | React.TouchEvent,
-    msg: Message,
-    index: number
-  ) => {
+  const handleLongPressStart = (e: React.MouseEvent | React.TouchEvent, msg: Message) => {
     const target = e.currentTarget as HTMLElement;
     longPressTimer.current = setTimeout(() => {
       const rect = target.getBoundingClientRect();
       setPickerPosition({ x: rect.left, y: rect.top - 250 });
-      setCurrentTargetMessage({ msg, index });
+      setCurrentTargetMessage(msg);
       setPickerOpen(true);
     }, 500);
   };
@@ -174,10 +150,12 @@ export default function ChatPage() {
     clearTimeout(longPressTimer.current);
   };
 
-  const handleReaction = async (messageIndex: number, emoji: string) => {
+  const handleReaction = async (message: Message, emoji: string) => {
+    const messageIndex = messages.findIndex(m => m.uuid === message.uuid);
+    if (messageIndex === -1) return;
+
     const originalMessages = [...messages];
-    const messageToUpdate = messages[messageIndex];
-    if (!messageToUpdate.uuid) {
+    if (!message.uuid) {
       console.error('Message has no UUID, cannot add reaction.');
       return;
     }
@@ -203,7 +181,7 @@ export default function ChatPage() {
     setMessages(updatedMessages);
 
     try {
-      await toggleReactionAPI(messageToUpdate.uuid, emoji);
+      await toggleReactionAPI(message.uuid, emoji);
     } catch (error) {
       console.error('Failed to toggle reaction:', error);
       setMessages(originalMessages); // Revert on error
@@ -212,7 +190,7 @@ export default function ChatPage() {
 
   const onEmojiClick = (emojiData: EmojiClickData) => {
     if (!currentTargetMessage) return;
-    handleReaction(currentTargetMessage.index, emojiData.emoji);
+    handleReaction(currentTargetMessage, emojiData.emoji);
     setPickerOpen(false);
     setCurrentTargetMessage(null);
   };
@@ -236,75 +214,33 @@ export default function ChatPage() {
           <ChatMessageSkeleton />
         ) : (
           messages.map((msg, index) => (
-            <div
+            <ChatMessage
               key={msg.uuid || index}
-              className={`${styles.messageRow} ${
-                msg.sender === 'user'
-                  ? styles.user
-                  : msg.sender === 'ai'
-                  ? styles.ai
-                  : styles.system
-              }`}
-              onMouseDown={e => handleLongPressStart(e, msg, index)}
-              onMouseUp={handleLongPressEnd}
-              onMouseLeave={handleLongPressEnd}
-              onTouchStart={e => handleLongPressStart(e, msg, index)}
-              onTouchEnd={handleLongPressEnd}
-            >
-              {msg.sender === 'ai' && (
-                <Image
-                  src={character?.profile_image_url || '/img/default-profile.png'}
-                  alt="Character Avatar"
-                  width={40}
-                  height={40}
-                  className={styles.avatar}
-                />
-              )}
-
-              <div className={styles.messageContent}>
-                {msg.sender === 'ai' && (
-                  <span className={styles.senderName}>{character?.name}</span>
-                )}
-                <div className={styles.bubbleContainer}>
-                  <div className={styles.messageBubble}>
-                    {msg.text
-                      .split(/(\*.*?\*)/g)
-                      .filter(Boolean)
-                      .map((part, i) =>
-                        part.startsWith('*') && part.endsWith('*') ? (
-                          <em
-                            key={i}
-                            className={
-                              msg.sender === 'user' ? styles.userActionText : styles.actionText
-                            }
-                          >
-                            {part.slice(1, -1)}
-                          </em>
-                        ) : (
-                          part
-                        )
-                      )}
-                  </div>
-                  <span className={styles.timestamp}>{formatTime(msg.created_at)}</span>
-                </div>
-                {msg.reactions && Object.keys(msg.reactions).length > 0 && (
+              msg={msg}
+              characterName={character?.name}
+              characterImageUrl={character?.profile_image_url}
+              isStreaming={msg.sender === 'ai' && index === messages.length - 1 && !isLoading}
+              onLongPressStart={(e, m) => handleLongPressStart(e, m)}
+              onLongPressEnd={handleLongPressEnd}
+              reactions={
+                msg.reactions &&
+                Object.keys(msg.reactions).length > 0 && (
                   <div className={styles.reactionsContainer}>
                     {Object.entries(msg.reactions).map(([emoji, users]) => (
                       <div
                         key={emoji}
                         className={styles.reaction}
-                        onClick={() => handleReaction(index, emoji)}
+                        onClick={() => handleReaction(msg, emoji)}
                       >
                         {emoji} {users.length}
                       </div>
                     ))}
                   </div>
-                )}
-              </div>
-            </div>
+                )
+              }
+            />
           ))
         )}
-        {isTyping && <div className={`${styles.messageRow} ${styles.ai}`}></div>}
       </div>
       <form className={styles.inputForm} onSubmit={handleSendMessage}>
         <textarea
